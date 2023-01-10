@@ -1,0 +1,6 @@
+package com.sannpay.sannpay
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
