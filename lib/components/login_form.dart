@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import '../controllers/login_controller.dart';
 import '../utils/export_file.dart';
 
 class Login_form extends StatefulWidget {
@@ -10,6 +11,9 @@ class Login_form extends StatefulWidget {
 }
 
 class _LoginformState extends State<Login_form> {
+  final LoginController controller = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -88,8 +92,15 @@ class _LoginformState extends State<Login_form> {
           width: double.infinity,
           //decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
           child: TextButton(
-            onPressed: () {
-              Get.toNamed(kDashboardPage);
+            onPressed: () async {
+              debugPrint("Login Pressed");
+              bool isLoggedin =
+                  await controller.login(context, "root", "9640861076", "rest");
+              if (isLoggedin) {
+                Get.toNamed(kDashboardPage);
+              } else {
+                debugPrint("LoginFailed");
+              }
             },
             style: ButtonStyle(
                 backgroundColor: const MaterialStatePropertyAll<Color>(purple),

@@ -1,5 +1,6 @@
 import 'package:moon_start_builders/utils/export_file.dart';
 
+import '../bindings/login_bindings.dart';
 import '../bindings/signUp_bindings.dart';
 
 class Routes {
@@ -79,6 +80,7 @@ class Routes {
       name: KLogin,
       transition: Transition.rightToLeft,
       page: () => const Login_view(),
+      binding: LoginBinding(),
     ),
     GetPage(
       name: KMobile_Screen,

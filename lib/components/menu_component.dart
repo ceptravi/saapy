@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types
 
 import '../../utils/export_file.dart';
+import '../controllers/login_controller.dart';
 
 class Menu_Component extends StatefulWidget {
   const Menu_Component({super.key});
@@ -10,20 +11,44 @@ class Menu_Component extends StatefulWidget {
 }
 
 class _MenuComponentState extends State<Menu_Component> {
+  final LoginController controller = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
+
+    
   @override
+  void initState() {
+    if(!controller.isSkipped){
+      controller.getUserInfo();
+    }
+    super.initState();
+  }
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          menu_Profile(),
-          My_wallet(),
-          PayMoney(),
-          menu_list(),
-          SizedBox(
-            height: 20.h,
-          ),
-        ],
-      ),
+      child: controller.isSkipped == false
+          ? Column(
+              children: [
+                menu_Profile(),
+                My_wallet(),
+                PayMoney(),
+                menu_list(),
+                SizedBox(
+                  height: 20.h,
+                ),
+              ],
+            )
+          : Column(
+              children: [
+                // menu_Profile(),
+                // My_wallet(),
+                // PayMoney(),
+                // menu_list(),
+                const Text("Please Provide the Design when user Entered by clicking skip button",textAlign: TextAlign.center,),
+                SizedBox(
+                  height: 20.h,
+                ),
+              ],
+            ),
     );
   }
 
@@ -49,7 +74,7 @@ class _MenuComponentState extends State<Menu_Component> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Vishnu",
+              "${controller.myuser.data!.firstName}",
               style: GoogleFonts.inter(
                   fontSize: kFourteenFont,
                   color: darkGrey,

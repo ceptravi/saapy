@@ -27,10 +27,11 @@ class SignUpController extends GetxController {
       Register? register = await signUpServices.register(
           context, name, password, email, phone, fcm, referal);
       _register(register);
-      if (register == null)
+      if (register == null) {
         isUpdated = false;
-      else
+      } else {
         isUpdated = true;
+      }
     } catch (e) {
       debugPrint("API Failed");
       isUpdated = false;

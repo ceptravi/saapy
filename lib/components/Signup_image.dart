@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types, file_names
 
+import 'package:moon_start_builders/controllers/login_controller.dart';
+
 import '../../utils/export_file.dart';
 
 class Signup_image extends StatefulWidget {
@@ -10,6 +12,9 @@ class Signup_image extends StatefulWidget {
 }
 
 class _SignupimageState extends State<Signup_image> {
+    final LoginController controller = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,6 +35,7 @@ class _SignupimageState extends State<Signup_image> {
                           color: darkGrey, size: 23.w)),
                   GestureDetector(
                     onTap: () {
+                      controller.skipPressed(true);
                       Get.toNamed(kDashboardPage);
                     },
                     child: Text("skip",
