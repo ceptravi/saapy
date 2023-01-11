@@ -187,6 +187,7 @@ class UserData {
   DateTime? dob;
   String? phone;
   String? referral;
+  String? gender;
 
   UserData(
       {this.userId,
@@ -198,7 +199,8 @@ class UserData {
       this.address,
       this.dob,
       this.phone,
-      this.referral});
+      this.referral,
+      this.gender});
 
   UserData.fromJson(Map<String, dynamic> json) {
     userId = json['user_id'];
@@ -211,6 +213,7 @@ class UserData {
     dob = json['dob'];
     phone = json['phone'];
     referral = json['referral'];
+    gender = json['gender']??"Other";
   }
 
   Map<String, dynamic> toJson() {
@@ -225,6 +228,7 @@ class UserData {
     data['dob'] = dob;
     data['phone'] = phone;
     data['referral'] = referral;
+    data['gender'] = gender;
     return data;
   }
 }

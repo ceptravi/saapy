@@ -2,6 +2,7 @@
 
 import '../../utils/export_file.dart';
 import '../controllers/login_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Menu_Component extends StatefulWidget {
   const Menu_Component({super.key});
@@ -15,14 +16,14 @@ class _MenuComponentState extends State<Menu_Component> {
       ? Get.put(LoginController())
       : Get.find<LoginController>();
 
-    
   @override
   void initState() {
-    if(!controller.isSkipped){
+    if (!controller.isSkipped) {
       controller.getUserInfo();
     }
     super.initState();
   }
+
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: controller.isSkipped == false
@@ -43,7 +44,10 @@ class _MenuComponentState extends State<Menu_Component> {
                 // My_wallet(),
                 // PayMoney(),
                 // menu_list(),
-                const Text("Please Provide the Design when user Entered by clicking skip button",textAlign: TextAlign.center,),
+                const Text(
+                  "Please Provide the Design when user Entered by clicking skip button",
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -64,9 +68,19 @@ class _MenuComponentState extends State<Menu_Component> {
             // radius: 48, // Image radius
             child: ClipRRect(
               borderRadius: BorderRadius.circular(70),
-              child: Image.asset(
-                "assets/images/man1.png",
+              child: CachedNetworkImage(
+                progressIndicatorBuilder: (context, url, progress) => Center(
+                  child: CircularProgressIndicator(
+                    value: progress.progress,
+                  ),
+                ),
+                errorWidget: (context, url, error) => Image.asset(
+                "assets/images/man1.png",       //please change the error imagePath
               ),
+                imageUrl: controller.userInfo.data!.image!,
+              )
+              
+              ,
             )),
         const SizedBox(width: 10),
         Column(
@@ -124,20 +138,22 @@ class _MenuComponentState extends State<Menu_Component> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Text('\u{20B9}',
-                      style: GoogleFonts.inter(
-                          fontSize: kEighteenFont,
-                          color: darkGrey,
-                          fontWeight: FontWeight.w700)),
-                  Text('15,065',
-                      style: GoogleFonts.inter(
-                          fontSize: kEighteenFont,
-                          color: darkGrey,
-                          fontWeight: FontWeight.w700)),
-                ],
-              ),
+              Obx(() => controller.isLoading == false
+                  ? Row(
+                      children: [
+                        Text('\u{20B9}',
+                            style: GoogleFonts.inter(
+                                fontSize: kEighteenFont,
+                                color: darkGrey,
+                                fontWeight: FontWeight.w700)),
+                        Text('${controller.userInfo.data!.walletBalance}',
+                            style: GoogleFonts.inter(
+                                fontSize: kEighteenFont,
+                                color: darkGrey,
+                                fontWeight: FontWeight.w700)),
+                      ],
+                    )
+                  : const CircularProgressIndicator()),
               SizedBox(
                 height: 35.h,
                 child: ElevatedButton(
