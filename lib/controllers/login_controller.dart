@@ -6,9 +6,15 @@ class LoginController extends GetxController {
   final LoginServices loginServices = Get.find<LoginServices>();
   final Rxn<MyUser> _myuser = Rxn<MyUser>();
   MyUser get myuser => _myuser.value ?? MyUser();
+  final Rxn<UserInfo> _userInfo = Rxn<UserInfo>();
+  UserInfo get userInfo => _userInfo.value ?? UserInfo();
+
 
   final Rxn<bool> _isSkipped = Rxn<bool>();
   bool get isSkipped => _isSkipped.value ?? false;
+
+    final Rxn<bool> _isLoading = Rxn<bool>();
+  bool get isLoading => _isLoading.value ?? false;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -21,8 +27,12 @@ class LoginController extends GetxController {
     _isSkipped(isSkipped);
   }
 
+
   void getUserInfo()async{
+    _isLoading(true);
     UserInfo? userInfo = await loginServices.getUserInfo(_myuser.value!.token);
+    _userInfo(userInfo);
+     _isLoading(false);
   }
 
   Future<bool> login(
@@ -42,5 +52,16 @@ class LoginController extends GetxController {
     }
 
     return isUpdated;
+  }
+
+  updateDOB(String gender){
+    _userInfo.value!.data!.gender = gender;
+  }
+  updateProfileInfo(String name,String email,String dob,String address,String phone)async{
+
+    UserInfo? userInfo = await loginServices.updateUserInfo(_myuser.value!.token!,name,email,dob,address,phone);
+    _userInfo(userInfo);
+
+
   }
 }

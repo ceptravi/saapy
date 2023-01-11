@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import 'package:moon_start_builders/controllers/login_controller.dart';
+
 import '../utils/export_file.dart';
 
 class profile_form extends StatefulWidget {
@@ -10,6 +12,11 @@ class profile_form extends StatefulWidget {
 }
 
 class _profileformState extends State<profile_form> {
+  final LoginController controller = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
+String name='',address='',email='',dob='',phone='';
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,8 +47,10 @@ class _profileformState extends State<profile_form> {
     return Wrap(
       children: [
         TextFormField(
+          onChanged: (value){name=value;},
+          initialValue: "${controller.userInfo.data!.name}",
           decoration: InputDecoration(
-            hintText: "Vishnu",
+            hintText: "Name",
             contentPadding: const EdgeInsets.all(5),
             hintStyle: GoogleFonts.inter(
                 fontSize: kTwelveFont, color: lightgrey, fontWeight: kFW400),
@@ -51,8 +60,10 @@ class _profileformState extends State<profile_form> {
           height: 10.h,
         ),
         TextFormField(
+          onChanged: (value){email=value;},
+          initialValue: "${controller.userInfo.data!.email}",
           decoration: InputDecoration(
-            hintText: "vishnu@gmail.com",
+            hintText: "Email",
             contentPadding: const EdgeInsets.all(5),
             hintStyle: GoogleFonts.inter(
                 fontSize: kTwelveFont, color: lightgrey, fontWeight: kFW400),
@@ -62,9 +73,12 @@ class _profileformState extends State<profile_form> {
           height: 10.h,
         ),
         TextFormField(
+          onChanged: (value){dob=value;},
+          initialValue:
+              "${controller.userInfo.data!.dob != null ? controller.userInfo.data!.dob! : ''}",
           decoration: InputDecoration(
             suffixIcon: const Icon(Icons.calendar_month),
-            hintText: "12/10/2000",
+            hintText: "DOB",
             contentPadding: const EdgeInsets.only(left: 10, top: 15),
             hintStyle: GoogleFonts.inter(
                 fontSize: kTwelveFont, color: lightgrey, fontWeight: kFW400),
@@ -74,8 +88,10 @@ class _profileformState extends State<profile_form> {
           height: 10.h,
         ),
         TextFormField(
+          onChanged: (value){address=value;},
+          initialValue: "${controller.userInfo.data!.address}",
           decoration: InputDecoration(
-            hintText: "JNTU,Kukatpally,Hyderabad",
+            hintText: "Address",
             contentPadding: const EdgeInsets.all(5),
             hintStyle: GoogleFonts.inter(
                 fontSize: kTwelveFont, color: lightgrey, fontWeight: kFW400),
@@ -85,8 +101,10 @@ class _profileformState extends State<profile_form> {
           height: 10.h,
         ),
         TextFormField(
+          onChanged: (value){phone=value;},
+          initialValue: "${controller.userInfo.data!.phone}",
           decoration: InputDecoration(
-            hintText: "+91 8210****96",
+            hintText: "+91 99*******3",
             contentPadding: const EdgeInsets.all(5),
             hintStyle: GoogleFonts.inter(
                 fontSize: kTwelveFont, color: lightgrey, fontWeight: kFW400),
@@ -112,64 +130,79 @@ class _profileformState extends State<profile_form> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                elevation: 2,
-                child: Container(
-                    height: 45,
-                    width: 95,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: purple,
-                    ),
-                    child: Text(
-                      "Male",
-                      style: GoogleFonts.inter(
-                          fontSize: 13.sp, color: white, fontWeight: kFW500),
-                    )),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                elevation: 3,
-                child: Container(
-                    height: 45,
-                    width: 95,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white70,
-                    ),
-                    child: Text(
-                      "Female",
-                      style: GoogleFonts.inter(
-                          fontSize: 13.sp,
-                          color: Colors.black,
-                          fontWeight: kFW500),
-                    )),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                elevation: 3,
-                child: Container(
-                    height: 45,
-                    width: 95,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white70,
-                    ),
-                    child: Text(
-                      "Other",
-                      style: GoogleFonts.inter(
-                          fontSize: 13.sp,
-                          color: Colors.black,
-                          fontWeight: kFW500),
-                    )),
-              ),
+              Obx(() => InkWell(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 2,
+                  child: Container(
+                      height: 45,
+                      width: 95,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: controller.userInfo.data!.gender=="Male"? purple :Colors.white70 ,
+                      ),
+                      child: Text(
+                        "Male",
+                        style: GoogleFonts.inter(
+                            fontSize: 13.sp, color: controller.userInfo.data!.gender=="Male"?white :Colors.black , fontWeight: kFW500),
+                      )),
+                ),
+                onTap: () {
+                  controller.updateDOB("Male");
+                },
+              )),
+              Obx(() => InkWell(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 3,
+                  child: Container(
+                      height: 45,
+                      width: 95,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: controller.userInfo.data!.gender=="Female"? purple :Colors.white70 ,
+                      ),
+                      child: Text(
+                        "Female",
+                        style: GoogleFonts.inter(
+                            fontSize: 13.sp,
+                            color: controller.userInfo.data!.gender=="Female"?white :Colors.black ,
+                            fontWeight: kFW500),
+                      )),
+                ),
+                onTap: () {
+                  controller.updateDOB("Female");
+                },
+              )),
+              Obx(() => InkWell(
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 3,
+                  child: Container(
+                      height: 45,
+                      width: 95,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: controller.userInfo.data!.gender=="Other"? purple :Colors.white70 ,
+                      ),
+                      child: Text(
+                        "Other",
+                        style: GoogleFonts.inter(
+                            fontSize: 13.sp,
+                            color: controller.userInfo.data!.gender=="Other"?white :Colors.black ,
+                            fontWeight: kFW500),
+                      )),
+                ),
+                onTap: () {
+                  controller.updateDOB("Other");
+                },
+              )),
             ],
           ),
         ),
@@ -251,7 +284,14 @@ class _profileformState extends State<profile_form> {
       width: 150.w,
       child: TextButton(
         onPressed: () {
-          Get.toNamed(KRecipet);
+          controller.updateProfileInfo(
+            name,
+            email,
+            dob,
+            address,
+            phone
+          );
+          // Get.toNamed(KRecipet);
         },
         style: ButtonStyle(
             backgroundColor: const MaterialStatePropertyAll<Color>(purple),

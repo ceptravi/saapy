@@ -65,7 +65,27 @@ class LoginServices extends GetxService {
         },
       );
       debugPrint("StatusCode = ${response.statusCode}");
-      UserInfo? userInfo = UserInfo.fromJson(jsonDecode(response.body));
+       userInfo = UserInfo.fromJson(jsonDecode(response.body));
+      debugPrint("Serializing done");
+    }catch(e){
+      debugPrint("UserData API Calling Faield $e");
+    }
+    
+    return userInfo;
+  }
+  Future<UserInfo?>updateUserInfo(String token,String name,String email,String dob,String address,String phone)async{
+
+    var url = Uri.parse(NewDEVURL + getUserDataAPI);
+    UserInfo? userInfo;
+    try{
+      var response = await client.get(
+        url,
+        headers: {
+          "Authorization":token
+        },
+      );
+      debugPrint("StatusCode = ${response.statusCode}");
+       userInfo = UserInfo.fromJson(jsonDecode(response.body));
       debugPrint("Serializing done");
     }catch(e){
       debugPrint("UserData API Calling Faield $e");
