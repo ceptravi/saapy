@@ -232,3 +232,46 @@ class UserData {
     return data;
   }
 }
+
+class ResendOtp {
+  ResendOtpData? data;
+  String? message;
+
+  ResendOtp({this.data, this.message});
+
+  ResendOtp.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ?  ResendOtpData.fromJson(json['data']) : null;
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    data['message'] = this.message;
+    return data;
+  }
+}
+
+class ResendOtpData {
+  String? type;
+  int? userId;
+  String? otp;
+
+  ResendOtpData({this.type, this.userId, this.otp});
+
+  ResendOtpData.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    userId = json['user_id'];
+    otp = json['otp'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['user_id'] = this.userId;
+    data['otp'] = this.otp;
+    return data;
+  }
+}

@@ -153,7 +153,7 @@ class _SignupformState extends State<Signup_form> {
                   "Fcm_token",
                   controller.referralController.text);
               if (isUpdated) {
-                Get.toNamed(KLogin);
+                Get.toNamed(KOTP_screen);
               }
             },
             style: ButtonStyle(

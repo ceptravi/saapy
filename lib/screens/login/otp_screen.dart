@@ -1,6 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types
 
+import '../../controllers/signUp-controller.dart';
 import '../../utils/export_file.dart';
+
 
 class OTP_view extends StatefulWidget {
   const OTP_view({super.key});
@@ -10,6 +12,9 @@ class OTP_view extends StatefulWidget {
 }
 
 class _OTPviewState extends State<OTP_view> {
+    final SignUpController controller = !Get.isRegistered<SignUpController>()
+      ? Get.put(SignUpController())
+      : Get.find<SignUpController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,12 +95,12 @@ class _OTPviewState extends State<OTP_view> {
       child: Form(
         //key: formKey,
         child: PinCodeTextField(
+          controller: controller.otpController,
           backgroundColor: Colors.white,
           appContext: context,
           pastedTextStyle:
               const TextStyle(color: Colors.blue, fontWeight: kFW700),
           length: 6,
-
           animationType: AnimationType.fade,
           validator: (v) {
             if (v!.length < 4) {
@@ -127,7 +132,6 @@ class _OTPviewState extends State<OTP_view> {
           },
           beforeTextPaste: (text) {
             debugPrint("Allowing to paste $text");
-
             return true;
           },
         ),
@@ -155,13 +159,18 @@ class _OTPviewState extends State<OTP_view> {
               const Text("Sec time remaining"),
             ],
           ),
-          Text(
+          TextButton(onPressed: ()async{
+              bool isResent = await controller.resendOtp(context);
+              if(isResent){
+                controller.otpController.clear();
+              }
+          }, child: Text(
             "Resend OTP",
             style: GoogleFonts.inter(
                 fontSize: kTwelveFont,
                 color: darkGrey,
                 fontWeight: FontWeight.w600),
-          ),
+          )),
         ],
       ),
     );
@@ -176,8 +185,16 @@ class _OTPviewState extends State<OTP_view> {
       width: double.infinity,
       //decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
       child: TextButton(
-        onPressed: () {
-          Get.toNamed(kDashboardPage);
+        onPressed: () async{
+          bool isVerified = await controller.checkOtp(
+                  context,
+                  controller.otpController.text
+                  );
+              if (isVerified) {
+                Get.toNamed(kDashboardPage);
+              }
+          
+          
         },
         style: ButtonStyle(
             backgroundColor: const MaterialStatePropertyAll<Color>(purple),
