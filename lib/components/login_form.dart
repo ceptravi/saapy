@@ -46,8 +46,9 @@ class _LoginformState extends State<Login_form> {
           child: Column(
             children: [
               TextFormField(
+                controller: controller.fullNameController,
                 decoration: InputDecoration(
-                    hintText: "Full Name",
+                    hintText: "Email/Phone",
                     contentPadding: const EdgeInsets.all(5),
                     hintStyle: GoogleFonts.inter(
                         fontSize: 13.sp,
@@ -56,6 +57,7 @@ class _LoginformState extends State<Login_form> {
               ),
               SizedBox(height: 10.h),
               TextFormField(
+                controller: controller.passwordController,
                 decoration: InputDecoration(
                     suffixIcon: const Icon(Icons.remove_red_eye_sharp),
                     hintText: "Password",
@@ -94,8 +96,11 @@ class _LoginformState extends State<Login_form> {
           child: TextButton(
             onPressed: () async {
               debugPrint("Login Pressed");
-              bool isLoggedin =
-                  await controller.login(context, "root", "9640861076", "rest");
+              bool isLoggedin = await controller.login(
+                  context,
+                  controller.passwordController.text,
+                  controller.fcmController.text,
+                  "rest");
               if (isLoggedin) {
                 Get.toNamed(kDashboardPage);
               } else {

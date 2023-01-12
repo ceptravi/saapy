@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../models/signUpModes.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 // ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 
@@ -45,7 +45,17 @@ class SignUpServices extends GetxService {
       debugPrint('statusCode: ${response.body}');
       if (response.statusCode == 200) {
         try {
-          register = registerFromJson(response.body);
+          try {
+            register = registerFromJson(response.body);
+          } catch (e) {
+            if (register == null) {
+              Map map = jsonDecode(response.body);
+              Fluttertoast.showToast(
+                msg: '${map['message']}',
+                backgroundColor: Colors.grey,
+              );
+            }
+          }
         } on Exception catch (e) {
           debugPrint('Exception while parsing the json $e');
           throw Exception(e);
@@ -61,11 +71,7 @@ class SignUpServices extends GetxService {
     return register;
   }
 
-  Future checkOtp(
-    BuildContext context,
-    String? otp,
-    int? id
-  ) async {
+  Future checkOtp(BuildContext context, String? otp, int? id) async {
     var url = Uri.parse(NewDEVURL + loginWithotp);
     Register? register;
     try {
@@ -90,7 +96,17 @@ class SignUpServices extends GetxService {
       debugPrint('statusCode: ${response.body}');
       if (response.statusCode == 200) {
         try {
-          register = registerFromJson(response.body);
+          try {
+            register = registerFromJson(response.body);
+          } catch (e) {
+            if (register == null) {
+              Map map = jsonDecode(response.body);
+              Fluttertoast.showToast(
+                msg: '${map['message']}',
+                backgroundColor: Colors.grey,
+              );
+            }
+          }
         } on Exception catch (e) {
           debugPrint('Exception while parsing the json $e');
           throw Exception(e);

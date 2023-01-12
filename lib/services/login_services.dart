@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 import '../models/signUpModes.dart';
 
 // ignore: depend_on_referenced_packages
@@ -13,7 +15,7 @@ class LoginServices extends GetxService {
 
   static var client = http.Client();
 
-  Future<MyUser> login(
+  Future<MyUser?> login(
     BuildContext context,
     String? password,
     String? email,
@@ -37,7 +39,17 @@ class LoginServices extends GetxService {
       debugPrint('statusCode: ${response.body}');
       if (response.statusCode == 200) {
         try {
-          myUser = MyUser.fromJson(jsonDecode(response.body));
+          try {
+            myUser = MyUser.fromJson(jsonDecode(response.body));
+          } catch (e) {
+            if (myUser == null) {
+              Map map = jsonDecode(response.body);
+              Fluttertoast.showToast(
+                msg: '${map['message']}',
+                backgroundColor: Colors.grey,
+              );
+            }
+          }
         } on Exception catch (e) {
           debugPrint('Exception while parsing the json $e');
           throw Exception(e);
@@ -53,44 +65,40 @@ class LoginServices extends GetxService {
     return myUser;
   }
 
-  Future<UserInfo?>getUserInfo(String? token)async{
-
+  Future<UserInfo?> getUserInfo(String? token) async {
     var url = Uri.parse(NewDEVURL + getUserDataAPI);
     UserInfo? userInfo;
-    try{
+    try {
       var response = await client.get(
         url,
-        headers: {
-          "Authorization":token!
-        },
+        headers: {"Authorization": token!},
       );
       debugPrint("StatusCode = ${response.statusCode}");
-       userInfo = UserInfo.fromJson(jsonDecode(response.body));
+      userInfo = UserInfo.fromJson(jsonDecode(response.body));
       debugPrint("Serializing done");
-    }catch(e){
+    } catch (e) {
       debugPrint("UserData API Calling Faield $e");
     }
-    
+
     return userInfo;
   }
-  Future<UserInfo?>updateUserInfo(String token,String name,String email,String dob,String address,String phone)async{
 
+  Future<UserInfo?> updateUserInfo(String token, String name, String email,
+      String dob, String address, String phone) async {
     var url = Uri.parse(NewDEVURL + getUserDataAPI);
     UserInfo? userInfo;
-    try{
+    try {
       var response = await client.get(
         url,
-        headers: {
-          "Authorization":token
-        },
+        headers: {"Authorization": token},
       );
       debugPrint("StatusCode = ${response.statusCode}");
-       userInfo = UserInfo.fromJson(jsonDecode(response.body));
+      userInfo = UserInfo.fromJson(jsonDecode(response.body));
       debugPrint("Serializing done");
-    }catch(e){
+    } catch (e) {
       debugPrint("UserData API Calling Faield $e");
     }
-    
+
     return userInfo;
   }
 }
