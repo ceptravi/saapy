@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import '../../controllers/add_money_controller.dart';
 import '../../utils/export_file.dart';
 
 class Amount_Screen extends StatefulWidget {
@@ -10,6 +11,9 @@ class Amount_Screen extends StatefulWidget {
 }
 
 class _Amount_ScreenState extends State<Amount_Screen> {
+  final AddMoneyController controller = !Get.isRegistered<AddMoneyController>()
+      ? Get.put(AddMoneyController())
+      : Get.find<AddMoneyController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,13 +64,28 @@ class _Amount_ScreenState extends State<Amount_Screen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.currency_rupee),
-              Text(
-                "0",
-                style: GoogleFonts.inter(
-                  fontSize: 40.sp,
-                  fontWeight: kFW500,
+              Container(
+                width: 50,
+                child: TextField(
+                  controller: controller.moneyController,
+                  style: GoogleFonts.inter(
+                    fontSize: 35.sp,
+                    fontWeight: kFW500,
+                  ),
+                  onChanged: (value) {},
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hoverColor: Colors.blueAccent,
+                  ),
                 ),
-              ),
+              )
+              // Text(
+              //   "0",
+              // style: GoogleFonts.inter(
+              //   fontSize: 40.sp,
+              //   fontWeight: kFW500,
+              // ),
+              // ),
             ],
           ),
           SizedBox(height: 40.h),

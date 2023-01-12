@@ -41,17 +41,7 @@ class LoginServices extends GetxService {
       debugPrint('statusCode: ${response.body}');
       if (response.statusCode == 200) {
         try {
-          try {
-            myUser = MyUser.fromJson(jsonDecode(response.body));
-          } catch (e) {
-            if (myUser == null) {
-              Map map = jsonDecode(response.body);
-              Fluttertoast.showToast(
-                msg: '${map['message']}',
-                backgroundColor: Colors.grey,
-              );
-            }
-          }
+          myUser = MyUser.fromJson(jsonDecode(response.body));
         } on Exception catch (e) {
           debugPrint('Exception while parsing the json $e');
           throw Exception(e);
@@ -72,7 +62,7 @@ class LoginServices extends GetxService {
     try {
       var response = await client.post(
         url,
-        headers: {"Authorization": token},
+        headers: {"Authorization": token, 'Content-Type': 'application/json'},
         body: jsonEncode({
           "otp": 1,
           "ipaddress": "49.207.5.204",
@@ -84,11 +74,11 @@ class LoginServices extends GetxService {
       debugPrint('statusCode: ${response.body}');
       if (response.statusCode == 200) {
         try {
-              Map map = jsonDecode(response.body);
-              Fluttertoast.showToast(
-                msg: '${map['message']}',
-                backgroundColor: Colors.grey,
-              );
+          Map map = jsonDecode(response.body);
+          Fluttertoast.showToast(
+            msg: '${map['message']}',
+            backgroundColor: Colors.grey,
+          );
         } on Exception catch (e) {
           debugPrint('Exception while parsing the json $e');
           throw Exception(e);
@@ -110,9 +100,9 @@ class LoginServices extends GetxService {
     try {
       var response = await client.get(
         url,
-        headers: {"Authorization": token!},
+        headers: {"Authorization": token!, 'Content-Type': 'application/json'},
       );
-      debugPrint("StatusCode = ${response.statusCode}");
+      debugPrint("StatusCode = ${response.body}");
       userInfo = UserInfo.fromJson(jsonDecode(response.body));
       debugPrint("Serializing done");
     } catch (e) {
