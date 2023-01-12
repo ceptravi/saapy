@@ -63,6 +63,7 @@ dependencies:
   uuid: ^3.0.7
   flutter_chat_bubble: ^2.0.0
   cached_network_image: ^3.2.3
+  fluttertoast: ^8.1.2
 
 dev_dependencies:
   flutter_test:
