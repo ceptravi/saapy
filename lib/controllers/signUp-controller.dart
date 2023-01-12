@@ -7,12 +7,16 @@ class SignUpController extends GetxController {
   Rxn<Register> _register = Rxn<Register>();
   Register get register => _register.value ?? Register();
 
+    Rxn<ResendOtp> _resendOtp = Rxn<ResendOtp>();
+  ResendOtp get resendOTP => _resendOtp.value ?? ResendOtp();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController referralController = TextEditingController();
   TextEditingController fcmController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
 
   Future<bool> registerAccount(
       BuildContext context,
@@ -28,6 +32,47 @@ class SignUpController extends GetxController {
           context, name, password, email, phone, fcm, referal);
       _register(register);
       if (register == null) {
+        isUpdated = false;
+      } else {
+        isUpdated = true;
+      }
+    } catch (e) {
+      debugPrint("API Failed");
+      isUpdated = false;
+    }
+
+    return isUpdated;
+  }
+  Future<bool> checkOtp(
+      BuildContext context,
+      String otp,
+      ) async {
+    bool isUpdated = false;
+    try {
+      Register? register = await signUpServices.checkOtp(
+          context, otp,_register.value!.data!.userId!);
+      _register(register);
+      if (register == null) {
+        isUpdated = false;
+      } else {
+        isUpdated = true;
+      }
+    } catch (e) {
+      debugPrint("API Failed");
+      isUpdated = false;
+    }
+
+    return isUpdated;
+  }
+    Future<bool> resendOtp(
+      BuildContext context,
+      ) async {
+    bool isUpdated = false;
+    try {
+      ResendOtp? resendOtp = await signUpServices.resendOtp(
+          context, _register.value!.data!.userId!);
+      _resendOtp(resendOtp);
+      if (resendOtp == null) {
         isUpdated = false;
       } else {
         isUpdated = true;
