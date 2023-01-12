@@ -171,47 +171,47 @@ class _SignupformState extends State<Signup_form> {
             ),
           ),
         ),
-        Container(
-            margin: EdgeInsets.only(top: 6.h),
-            alignment: Alignment.center,
-            child: Text(
-              "Or",
-              style: GoogleFonts.inter(
-                  fontSize: kFourteenFont,
-                  color: darkGrey,
-                  fontWeight: FontWeight.w600),
-            )),
-        GestureDetector(
-          onTap: () {
-            Get.toNamed(KMobile_Screen);
-          },
-          child: Container(
-              margin: EdgeInsets.only(top: 6.h),
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  Text(
-                    "Login With",
-                    style: GoogleFonts.inter(
-                        letterSpacing: 1,
-                        fontSize: 13.sp,
-                        color: darkGrey,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  SizedBox(width: 5.w),
-                  Text(
-                    "Mob No",
-                    style: GoogleFonts.inter(
-                        letterSpacing: 2,
-                        fontSize: 13.sp,
-                        color: darkGrey,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              )),
-        ),
+        // Container(
+        //     margin: EdgeInsets.only(top: 6.h),
+        //     alignment: Alignment.center,
+        //     child: Text(
+        //       "Or",
+        //       style: GoogleFonts.inter(
+        //           fontSize: kFourteenFont,
+        //           color: darkGrey,
+        //           fontWeight: FontWeight.w600),
+        //     )),
+        // GestureDetector(
+        //   onTap: () {
+        //     Get.toNamed(KMobile_Screen);
+        //   },
+        //   child: Container(
+        //       margin: EdgeInsets.only(top: 6.h),
+        //       alignment: Alignment.center,
+        //       child: Row(
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         // ignore: prefer_const_literals_to_create_immutables
+        //         children: [
+        //           Text(
+        //             "Login With",
+        //             style: GoogleFonts.inter(
+        //                 letterSpacing: 1,
+        //                 fontSize: 13.sp,
+        //                 color: darkGrey,
+        //                 fontWeight: FontWeight.w600),
+        //           ),
+        //           SizedBox(width: 5.w),
+        //           Text(
+        //             "Mob No",
+        //             style: GoogleFonts.inter(
+        //                 letterSpacing: 2,
+        //                 fontSize: 13.sp,
+        //                 color: darkGrey,
+        //                 fontWeight: FontWeight.w600),
+        //           ),
+        //         ],
+        //       )),
+        // ),
       ],
     );
   }

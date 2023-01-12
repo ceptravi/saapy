@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:fluttertoast/fluttertoast.dart';
+
 import '../models/signUpModes.dart';
 import '../services/login_services.dart';
 import '../services/signUp_services.dart';
@@ -17,7 +21,7 @@ class LoginController extends GetxController {
   final Rxn<bool> _isLoading = Rxn<bool>();
   bool get isLoading => _isLoading.value ?? false;
 
-    final Rxn<int> _uid = Rxn<int>();
+  final Rxn<int> _uid = Rxn<int>();
   int get uid => _uid.value ?? 0;
 
   TextEditingController nameController = TextEditingController();
@@ -32,11 +36,17 @@ class LoginController extends GetxController {
     _isSkipped(isSkipped);
   }
 
-  void getUserInfo() async {
+  Future<bool> getUserInfo() async {
     _isLoading(true);
     UserInfo? userInfo = await loginServices.getUserInfo(_myuser.value!.token);
-    _userInfo(userInfo);
-    _isLoading(false);
+    if (userInfo!.data == null) {
+      _isLoading(false);
+      return false;
+    } else {
+      _userInfo(userInfo);
+      _isLoading(false);
+      return true;
+    }
   }
 
   Future<bool> login(
@@ -44,11 +54,15 @@ class LoginController extends GetxController {
     bool isUpdated = false;
     try {
       MyUser? myUser = await loginServices.login(context, password, email, fcm);
-      _myuser(myUser);
-      if (myUser == null) {
+      if (myUser!.data == null) {
         isUpdated = false;
+        Fluttertoast.showToast(
+          msg: '${myUser.message}',
+          backgroundColor: Colors.grey,
+        );
       } else {
         isUpdated = true;
+        _myuser(myUser);
       }
     } catch (e) {
       debugPrint("API Failed");
@@ -68,32 +82,34 @@ class LoginController extends GetxController {
         _myuser.value!.token!, name, email, dob, address, phone);
     _userInfo(userInfo);
   }
-  Future<String> logout()async{
+
+  Future<String> logout() async {
     fullNameController.clear();
     passwordController.clear();
-    bool isLogout = await  loginServices.logOut(_myuser.value!.token!);
+    bool isLogout = await loginServices.logOut(_myuser.value!.token!);
     return KLogin;
   }
+
   int userId = 0;
-  Future<bool> forgotPassword(String phone)async{
+  Future<bool> forgotPassword(String phone) async {
     Map<dynamic, dynamic>? map = await loginServices.forgotPassword(phone);
-    bool isSent= false;
-    try{
+    bool isSent = false;
+    try {
       _uid(map!['data']['user_id']);
       isSent = true;
-    }catch(e){
+    } catch (e) {
       isSent = false;
     }
     return isSent;
   }
-    Future<bool> checkOtp(
-      BuildContext context,
-      String otp,
-      ) async {
+
+  Future<bool> checkOtp(
+    BuildContext context,
+    String otp,
+  ) async {
     bool isUpdated = false;
     try {
-      MyUser? myUser  = await signUpServices.checkOtp(
-          context, otp,userId);
+      MyUser? myUser = await signUpServices.checkOtp(context, otp, userId);
       _myuser(myUser);
       if (myUser == null) {
         isUpdated = false;

@@ -21,13 +21,17 @@ class _MenuComponentState extends State<Menu_Component> {
       !Get.isRegistered<SignUpController>()
           ? Get.put(SignUpController())
           : Get.find<SignUpController>();
-
+  var isLoaded = false.obs;
   @override
   void initState() {
     if (!controller.isSkipped) {
-      controller.getUserInfo();
+      getData();
     }
     super.initState();
+  }
+
+  getData() async {
+    isLoaded.value = await controller.getUserInfo();
   }
 
   Widget build(BuildContext context) {
@@ -35,7 +39,13 @@ class _MenuComponentState extends State<Menu_Component> {
       child: controller.isSkipped == false
           ? Column(
               children: [
-                menu_Profile(),
+                isLoaded.value == true ? menu_Profile() : Container(),
+                isLoaded.value == true
+                    ? My_wallet()
+                    : Container(
+                        alignment: Alignment.center,
+                        child: const Text("User Data loading Failed"),
+                      ),
                 My_wallet(),
                 PayMoney(),
                 menu_list(),
@@ -156,7 +166,12 @@ class _MenuComponentState extends State<Menu_Component> {
                                 fontSize: kEighteenFont,
                                 color: darkGrey,
                                 fontWeight: FontWeight.w700)),
-                        Text('${controller.userInfo.data!.walletBalance}',
+                        // Text('${controller.userInfo.data!.walletBalance}',
+                        //     style: GoogleFonts.inter(
+                        //         fontSize: kEighteenFont,
+                        //         color: darkGrey,
+                        //         fontWeight: FontWeight.w700)),
+                        Text('1500',
                             style: GoogleFonts.inter(
                                 fontSize: kEighteenFont,
                                 color: darkGrey,
@@ -167,7 +182,9 @@ class _MenuComponentState extends State<Menu_Component> {
               SizedBox(
                 height: 35.h,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(KSelf_Tranfer);
+                  },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     backgroundColor: purple,
@@ -342,11 +359,12 @@ class _MenuComponentState extends State<Menu_Component> {
       children: [
         for (int i = 0; i < categories.length; i++)
           GestureDetector(
-            onTap: () {
-              if(categories[i]["name"]=='Logout'){
-                controller.logout();
+            onTap: () async {
+              if (categories[i]["name"] == 'Logout') {
+                Get.offAllNamed(await controller.logout());
+              } else {
+                Get.toNamed(categories[i]["route"]);
               }
-              Get.toNamed(categories[i]["route"]);
             },
             child: ListTile(
               title: Text(categories[i]["name"],

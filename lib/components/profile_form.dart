@@ -15,23 +15,32 @@ class _profileformState extends State<profile_form> {
   final LoginController controller = !Get.isRegistered<LoginController>()
       ? Get.put(LoginController())
       : Get.find<LoginController>();
-String name='',address='',email='',dob='',phone='';
+  String name = '', address = '', email = '', dob = '', phone = '';
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 12, left: 20, right: 20),
-      child: Column(
-        children: [
-          Edit_profile(),
-          Text_form(),
-          Gender(),
-          SizedBox(height: 10.h),
-          Approved(),
-          password(),
-          Save_button(),
-        ],
-      ),
+      child: controller.userInfo.data != null
+          ? Column(
+              children: [
+                Edit_profile(),
+                Text_form(),
+                Gender(),
+                SizedBox(height: 10.h),
+                Approved(),
+                password(),
+                Save_button(),
+              ],
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "${controller.userInfo.message}",
+                ),
+              ],
+            ),
     );
   }
 
@@ -47,7 +56,9 @@ String name='',address='',email='',dob='',phone='';
     return Wrap(
       children: [
         TextFormField(
-          onChanged: (value){name=value;},
+          onChanged: (value) {
+            name = value;
+          },
           initialValue: "${controller.userInfo.data!.name}",
           decoration: InputDecoration(
             hintText: "Name",
@@ -60,7 +71,9 @@ String name='',address='',email='',dob='',phone='';
           height: 10.h,
         ),
         TextFormField(
-          onChanged: (value){email=value;},
+          onChanged: (value) {
+            email = value;
+          },
           initialValue: "${controller.userInfo.data!.email}",
           decoration: InputDecoration(
             hintText: "Email",
@@ -73,7 +86,9 @@ String name='',address='',email='',dob='',phone='';
           height: 10.h,
         ),
         TextFormField(
-          onChanged: (value){dob=value;},
+          onChanged: (value) {
+            dob = value;
+          },
           initialValue:
               "${controller.userInfo.data!.dob != null ? controller.userInfo.data!.dob! : ''}",
           decoration: InputDecoration(
@@ -88,7 +103,9 @@ String name='',address='',email='',dob='',phone='';
           height: 10.h,
         ),
         TextFormField(
-          onChanged: (value){address=value;},
+          onChanged: (value) {
+            address = value;
+          },
           initialValue: "${controller.userInfo.data!.address}",
           decoration: InputDecoration(
             hintText: "Address",
@@ -101,7 +118,9 @@ String name='',address='',email='',dob='',phone='';
           height: 10.h,
         ),
         TextFormField(
-          onChanged: (value){phone=value;},
+          onChanged: (value) {
+            phone = value;
+          },
           initialValue: "${controller.userInfo.data!.phone}",
           decoration: InputDecoration(
             hintText: "+91 99*******3",
@@ -131,78 +150,95 @@ String name='',address='',email='',dob='',phone='';
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(() => InkWell(
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 2,
-                  child: Container(
-                      height: 45,
-                      width: 95,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: controller.userInfo.data!.gender=="Male"? purple :Colors.white70 ,
-                      ),
-                      child: Text(
-                        "Male",
-                        style: GoogleFonts.inter(
-                            fontSize: 13.sp, color: controller.userInfo.data!.gender=="Male"?white :Colors.black , fontWeight: kFW500),
-                      )),
-                ),
-                onTap: () {
-                  controller.updateDOB("Male");
-                },
-              )),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      elevation: 2,
+                      child: Container(
+                          height: 45,
+                          width: 95,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: controller.userInfo.data!.gender == "Male"
+                                ? purple
+                                : Colors.white70,
+                          ),
+                          child: Text(
+                            "Male",
+                            style: GoogleFonts.inter(
+                                fontSize: 13.sp,
+                                color:
+                                    controller.userInfo.data!.gender == "Male"
+                                        ? white
+                                        : Colors.black,
+                                fontWeight: kFW500),
+                          )),
+                    ),
+                    onTap: () {
+                      controller.updateDOB("Male");
+                    },
+                  )),
               Obx(() => InkWell(
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 3,
-                  child: Container(
-                      height: 45,
-                      width: 95,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: controller.userInfo.data!.gender=="Female"? purple :Colors.white70 ,
-                      ),
-                      child: Text(
-                        "Female",
-                        style: GoogleFonts.inter(
-                            fontSize: 13.sp,
-                            color: controller.userInfo.data!.gender=="Female"?white :Colors.black ,
-                            fontWeight: kFW500),
-                      )),
-                ),
-                onTap: () {
-                  controller.updateDOB("Female");
-                },
-              )),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      elevation: 3,
+                      child: Container(
+                          height: 45,
+                          width: 95,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: controller.userInfo.data!.gender == "Female"
+                                ? purple
+                                : Colors.white70,
+                          ),
+                          child: Text(
+                            "Female",
+                            style: GoogleFonts.inter(
+                                fontSize: 13.sp,
+                                color:
+                                    controller.userInfo.data!.gender == "Female"
+                                        ? white
+                                        : Colors.black,
+                                fontWeight: kFW500),
+                          )),
+                    ),
+                    onTap: () {
+                      controller.updateDOB("Female");
+                    },
+                  )),
               Obx(() => InkWell(
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 3,
-                  child: Container(
-                      height: 45,
-                      width: 95,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: controller.userInfo.data!.gender=="Other"? purple :Colors.white70 ,
-                      ),
-                      child: Text(
-                        "Other",
-                        style: GoogleFonts.inter(
-                            fontSize: 13.sp,
-                            color: controller.userInfo.data!.gender=="Other"?white :Colors.black ,
-                            fontWeight: kFW500),
-                      )),
-                ),
-                onTap: () {
-                  controller.updateDOB("Other");
-                },
-              )),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      elevation: 3,
+                      child: Container(
+                          height: 45,
+                          width: 95,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: controller.userInfo.data!.gender == "Other"
+                                ? purple
+                                : Colors.white70,
+                          ),
+                          child: Text(
+                            "Other",
+                            style: GoogleFonts.inter(
+                                fontSize: 13.sp,
+                                color:
+                                    controller.userInfo.data!.gender == "Other"
+                                        ? white
+                                        : Colors.black,
+                                fontWeight: kFW500),
+                          )),
+                    ),
+                    onTap: () {
+                      controller.updateDOB("Other");
+                    },
+                  )),
             ],
           ),
         ),
@@ -284,13 +320,7 @@ String name='',address='',email='',dob='',phone='';
       width: 150.w,
       child: TextButton(
         onPressed: () {
-          controller.updateProfileInfo(
-            name,
-            email,
-            dob,
-            address,
-            phone
-          );
+          controller.updateProfileInfo(name, email, dob, address, phone);
           // Get.toNamed(KRecipet);
         },
         style: ButtonStyle(
