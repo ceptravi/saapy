@@ -1,3 +1,5 @@
+import 'package:moon_start_builders/controllers/login_controller.dart';
+
 import '../models/signUpModes.dart';
 import '../services/signUp_services.dart';
 import '../utils/export_file.dart';
@@ -10,6 +12,12 @@ class SignUpController extends GetxController {
     Rxn<ResendOtp> _resendOtp = Rxn<ResendOtp>();
   ResendOtp get resendOTP => _resendOtp.value ?? ResendOtp();
 
+    final Rxn<MyUser> _myuser = Rxn<MyUser>();
+  MyUser get myuser => _myuser.value ?? MyUser();
+
+    final Rxn<bool> _isSkipped = Rxn<bool>();
+  bool get isSkipped => _isSkipped.value ?? false;
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -17,6 +25,10 @@ class SignUpController extends GetxController {
   TextEditingController referralController = TextEditingController();
   TextEditingController fcmController = TextEditingController();
   TextEditingController otpController = TextEditingController();
+
+    void skipPressed(bool isSkipped) {
+    _isSkipped(isSkipped);
+  }
 
   Future<bool> registerAccount(
       BuildContext context,
@@ -49,10 +61,10 @@ class SignUpController extends GetxController {
       ) async {
     bool isUpdated = false;
     try {
-      Register? register = await signUpServices.checkOtp(
-          context, otp,_register.value!.data!.userId!);
-      _register(register);
-      if (register == null) {
+      MyUser? myUser  = await signUpServices.checkOtp(
+          context, otp,_register.value!=null?_register.value!.data!.userId!:Get.find<LoginController>().uid);
+      _myuser(myUser);
+      if (myUser == null) {
         isUpdated = false;
       } else {
         isUpdated = true;
@@ -61,7 +73,6 @@ class SignUpController extends GetxController {
       debugPrint("API Failed");
       isUpdated = false;
     }
-
     return isUpdated;
   }
     Future<bool> resendOtp(

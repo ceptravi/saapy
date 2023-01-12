@@ -70,11 +70,14 @@ class _LoginformState extends State<Login_form> {
               SizedBox(height: 20.h),
               Align(
                 alignment: Alignment.centerRight,
-                child: Text("ForgetPassword?",
+                child: TextButton(child: Text("ForgetPassword?",
                     style: GoogleFonts.inter(
                         fontSize: kTwelveFont,
                         color: darkGrey,
-                        fontWeight: FontWeight.w500)),
+                        fontWeight: FontWeight.w500)),onPressed: (){
+                          Get.toNamed(KMobile_Screen);
+                          // controller.forgotPassword();
+                        },),
               ),
             ],
           ),
@@ -99,7 +102,7 @@ class _LoginformState extends State<Login_form> {
               bool isLoggedin = await controller.login(
                   context,
                   controller.passwordController.text,
-                  controller.fcmController.text,
+                  controller.fullNameController.text,
                   "rest");
               if (isLoggedin) {
                 Get.toNamed(kDashboardPage);
