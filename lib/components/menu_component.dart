@@ -4,6 +4,8 @@ import '../../utils/export_file.dart';
 import '../controllers/login_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../controllers/signUp-controller.dart';
+
 class Menu_Component extends StatefulWidget {
   const Menu_Component({super.key});
 
@@ -15,6 +17,10 @@ class _MenuComponentState extends State<Menu_Component> {
   final LoginController controller = !Get.isRegistered<LoginController>()
       ? Get.put(LoginController())
       : Get.find<LoginController>();
+  final SignUpController signUpController =
+      !Get.isRegistered<SignUpController>()
+          ? Get.put(SignUpController())
+          : Get.find<SignUpController>();
 
   @override
   void initState() {
@@ -66,21 +72,25 @@ class _MenuComponentState extends State<Menu_Component> {
             decoration: const BoxDecoration(shape: BoxShape.circle),
 
             // radius: 48, // Image radius
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(70),
-              child: CachedNetworkImage(
-                progressIndicatorBuilder: (context, url, progress) => Center(
-                  child: CircularProgressIndicator(
-                    value: progress.progress,
+            child: Obx(
+              () => ClipRRect(
+                borderRadius: BorderRadius.circular(70),
+                child: CachedNetworkImage(
+                  progressIndicatorBuilder: (context, url, progress) => Center(
+                    child: CircularProgressIndicator(
+                      value: progress.progress,
+                    ),
                   ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    "assets/images/man1.png", //please change the error imagePath
+                  ),
+                  imageUrl: controller.isLoading == true
+                      ? "https://th.bing.com/th/id/R.5c2cd59a45fc00aa3d5de63eb949ebe9?rik=brY%2bR0aEUse1rw&riu=http%3a%2f%2fcdn.onlinewebfonts.com%2fsvg%2fimg_526949.png&ehk=Rt58Ja72hUDm3%2ftogOfh%2fvJstFcuZCV39CyQJj53Lb4%3d&risl=&pid=ImgRaw&r=0"
+                      : controller.userInfo.data!.image == null
+                          ? "https://th.bing.com/th/id/R.5c2cd59a45fc00aa3d5de63eb949ebe9?rik=brY%2bR0aEUse1rw&riu=http%3a%2f%2fcdn.onlinewebfonts.com%2fsvg%2fimg_526949.png&ehk=Rt58Ja72hUDm3%2ftogOfh%2fvJstFcuZCV39CyQJj53Lb4%3d&risl=&pid=ImgRaw&r=0"
+                          : controller.userInfo.data!.image!,
                 ),
-                errorWidget: (context, url, error) => Image.asset(
-                "assets/images/man1.png",       //please change the error imagePath
               ),
-                imageUrl: controller.userInfo.data!.image!,
-              )
-              
-              ,
             )),
         const SizedBox(width: 10),
         Column(
@@ -326,13 +336,16 @@ class _MenuComponentState extends State<Menu_Component> {
         "route": KQrcode
       },
       {"name": "About US", "image": "assets/images/info.png", "route": KQrcode},
-      {"name": "Logout", "image": "assets/images/logout.png", "route": KQrcode},
+      {"name": "Logout", "image": "assets/images/logout.png", "route": KLogin},
     ];
     return Column(
       children: [
         for (int i = 0; i < categories.length; i++)
           GestureDetector(
             onTap: () {
+              if(categories[i]["name"]=='Logout'){
+                controller.logout();
+              }
               Get.toNamed(categories[i]["route"]);
             },
             child: ListTile(

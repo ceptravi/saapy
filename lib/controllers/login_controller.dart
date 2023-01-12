@@ -1,9 +1,11 @@
 import '../models/signUpModes.dart';
 import '../services/login_services.dart';
+import '../services/signUp_services.dart';
 import '../utils/export_file.dart';
 
 class LoginController extends GetxController {
   final LoginServices loginServices = Get.find<LoginServices>();
+  final SignUpServices signUpServices = Get.find<SignUpServices>();
   final Rxn<MyUser> _myuser = Rxn<MyUser>();
   MyUser get myuser => _myuser.value ?? MyUser();
   final Rxn<UserInfo> _userInfo = Rxn<UserInfo>();
@@ -14,6 +16,9 @@ class LoginController extends GetxController {
 
   final Rxn<bool> _isLoading = Rxn<bool>();
   bool get isLoading => _isLoading.value ?? false;
+
+    final Rxn<int> _uid = Rxn<int>();
+  int get uid => _uid.value ?? 0;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -62,5 +67,44 @@ class LoginController extends GetxController {
     UserInfo? userInfo = await loginServices.updateUserInfo(
         _myuser.value!.token!, name, email, dob, address, phone);
     _userInfo(userInfo);
+  }
+  Future<String> logout()async{
+    fullNameController.clear();
+    passwordController.clear();
+    bool isLogout = await  loginServices.logOut(_myuser.value!.token!);
+    return KLogin;
+  }
+  int userId = 0;
+  Future<bool> forgotPassword(String phone)async{
+    Map<dynamic, dynamic>? map = await loginServices.forgotPassword(phone);
+    bool isSent= false;
+    try{
+      _uid(map!['data']['user_id']);
+      isSent = true;
+    }catch(e){
+      isSent = false;
+    }
+    return isSent;
+  }
+    Future<bool> checkOtp(
+      BuildContext context,
+      String otp,
+      ) async {
+    bool isUpdated = false;
+    try {
+      MyUser? myUser  = await signUpServices.checkOtp(
+          context, otp,userId);
+      _myuser(myUser);
+      if (myUser == null) {
+        isUpdated = false;
+      } else {
+        isUpdated = true;
+      }
+    } catch (e) {
+      debugPrint("API Failed");
+      isUpdated = false;
+    }
+
+    return isUpdated;
   }
 }

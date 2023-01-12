@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import '../../controllers/login_controller.dart';
 import '../../utils/export_file.dart';
 
 class Mobile_login extends StatefulWidget {
@@ -10,6 +11,9 @@ class Mobile_login extends StatefulWidget {
 }
 
 class _MobileloginState extends State<Mobile_login> {
+    final LoginController controller = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,6 +52,7 @@ class _MobileloginState extends State<Mobile_login> {
           child: Column(
             children: [
               TextFormField(
+                controller: controller.mobileController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   prefixIcon:
@@ -87,8 +92,11 @@ class _MobileloginState extends State<Mobile_login> {
       width: double.infinity,
       //decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
       child: TextButton(
-        onPressed: () {
-          Get.toNamed(KOTP_screen);
+        onPressed: () async{
+           bool isSentOtp = await controller.forgotPassword(controller.mobileController.text);
+          if(isSentOtp){
+              Get.toNamed(KOTP_screen);
+          }
         },
         style: ButtonStyle(
             backgroundColor: const MaterialStatePropertyAll<Color>(purple),

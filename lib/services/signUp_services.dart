@@ -73,7 +73,7 @@ class SignUpServices extends GetxService {
 
   Future checkOtp(BuildContext context, String? otp, int? id) async {
     var url = Uri.parse(NewDEVURL + loginWithotp);
-    Register? register;
+    MyUser? myUser;
     try {
       var response = await client.post(
         url,
@@ -97,9 +97,9 @@ class SignUpServices extends GetxService {
       if (response.statusCode == 200) {
         try {
           try {
-            register = registerFromJson(response.body);
+            myUser = MyUser.fromJson(jsonDecode(response.body));
           } catch (e) {
-            if (register == null) {
+            if (myUser == null) {
               Map map = jsonDecode(response.body);
               Fluttertoast.showToast(
                 msg: '${map['message']}',
@@ -119,9 +119,8 @@ class SignUpServices extends GetxService {
       debugPrint('Update profile Failed on Backend - ${e.toString()}');
       throw Exception('Update profile Failed on Backend');
     }
-    return register;
+    return myUser;
   }
-
   Future resendOtp(
     BuildContext context,
     int? id,
@@ -141,6 +140,10 @@ class SignUpServices extends GetxService {
       if (response.statusCode == 200) {
         try {
           resendOtp = ResendOtp.fromJson(jsonDecode(response.body));
+              Fluttertoast.showToast(
+                msg: '${resendOtp.message}',
+                backgroundColor: Colors.grey,
+              );
         } on Exception catch (e) {
           debugPrint('Exception while parsing the json $e');
           throw Exception(e);
