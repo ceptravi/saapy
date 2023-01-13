@@ -1,5 +1,6 @@
 import 'package:moon_start_builders/utils/export_file.dart';
 
+import '../bindings/home_bindings.dart';
 import '../bindings/login_bindings.dart';
 import '../bindings/signUp_bindings.dart';
 
@@ -14,11 +15,13 @@ class Routes {
       name: kDashboardPage,
       transition: Transition.rightToLeft,
       page: () => const Dashboard(),
+      binding: HomeBinding(),
     ),
     GetPage(
       name: kHomePage,
       transition: Transition.rightToLeft,
       page: () => const Home_Screen(),
+      binding: HomeBinding(),
     ),
     GetPage(
       name: kAllserviesPage,

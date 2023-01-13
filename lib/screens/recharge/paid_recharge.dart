@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types
 
+import '../../controllers/recharge_controller.dart';
 import '../../utils/export_file.dart';
 
 class Paid_Recharge extends StatefulWidget {
@@ -10,6 +11,9 @@ class Paid_Recharge extends StatefulWidget {
 }
 
 class _PaidRechargeState extends State<Paid_Recharge> {
+    final RechargeController controller = !Get.isRegistered<RechargeController>()
+      ? Get.put(RechargeController())
+      : Get.find<RechargeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,18 +36,20 @@ class _PaidRechargeState extends State<Paid_Recharge> {
                   color: darkGrey,
                   fontWeight: FontWeight.w600)),
         ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: 15.h,
-            ),
-            upi_search(),
-            Recharge_list(),
-            SizedBox(
-              height: 250.h,
-            ),
-            proceed_button(),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 15.h,
+              ),
+              upi_search(),
+              Recharge_list(),
+              SizedBox(
+                height: 250.h,
+              ),
+              proceed_button(),
+            ],
+          ),
         ));
   }
 
@@ -64,25 +70,25 @@ class _PaidRechargeState extends State<Paid_Recharge> {
   }
 
   Widget Recharge_list() {
-    List categories = [
-      {"name": "Airtel", "image": "assets/images/airtel.png", "route": KQrcode},
-      {"name": "JIo", "image": "assets/images/Jio.png", "route": KProfile},
-      {
-        "name": "Vodafone",
-        "image": "assets/images/Vodafone.png",
-        "route": KQrcode
-      },
-      {"name": "Bsnl", "image": "assets/images/Bsnl.png", "route": KQrcode}
-    ];
+    // List categories = [
+    //   {"name": "Airtel", "image": "assets/images/airtel.png", "route": KQrcode},
+    //   {"name": "JIo", "image": "assets/images/Jio.png", "route": KProfile},
+    //   {
+    //     "name": "Vodafone",
+    //     "image": "assets/images/Vodafone.png",
+    //     "route": KQrcode
+    //   },
+    //   {"name": "Bsnl", "image": "assets/images/Bsnl.png", "route": KQrcode}
+    // ];
     return Column(
       children: [
-        for (int i = 0; i < categories.length; i++)
+        for (int i = 0; i < controller.services.data!.length; i++)
           GestureDetector(
             onTap: () {
               //Get.toNamed(categories[i]["route"]);
             },
             child: ListTile(
-              title: Text(categories[i]["name"],
+              title: Text(controller.services.data![i]!.name!,
                   textAlign: TextAlign.left,
                   maxLines: 2,
                   style: GoogleFonts.inter(
@@ -90,7 +96,7 @@ class _PaidRechargeState extends State<Paid_Recharge> {
                       color: darkGrey,
                       fontWeight: FontWeight.w500)),
               leading: Image.asset(
-                categories[i]["image"],
+                controller.services.data![i]!.icon!,
                 width: 30.w,
               ),
             ),
@@ -102,6 +108,7 @@ class _PaidRechargeState extends State<Paid_Recharge> {
   Widget proceed_button() {
     return GestureDetector(
       onTap: () {
+        debugPrint(controller.numberController.text);
         Get.toNamed(KPersonal_Recharge);
       },
       child: Container(
