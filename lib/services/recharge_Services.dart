@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/rechargePlans.dart';
 import '../utils/export_file.dart';
 
-class LoginServices extends GetxService {
+class RechargeServices extends GetxService {
   final String mobilePlan = 'MobilePlan/';
 
   static var client = http.Client();

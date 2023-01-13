@@ -1,16 +1,15 @@
-
 import '../controllers/login_controller.dart';
+import '../controllers/recharge_controller.dart';
 import '../services/homeCategory_services.dart';
-import '../services/login_services.dart';
-import '../services/signUp_services.dart';
+import '../services/recharge_Services.dart';
 import '../utils/export_file.dart';
 
-class LoginBinding extends Bindings {
+class HomeBinding extends Bindings {
   @override
   void dependencies() {
+    Get.lazyPut<RechargeController>(() => RechargeController());
     Get.lazyPut<LoginController>(() => LoginController());
-    Get.lazyPut<LoginServices>(() => LoginServices());
-    Get.lazyPut<SignUpServices>(() => SignUpServices());
+    Get.lazyPut<RechargeServices>(() => RechargeServices());
     Get.lazyPut<HomeServices>(() => HomeServices());
   }
 }

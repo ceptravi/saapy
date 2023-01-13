@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import '../../controllers/recharge_controller.dart';
 import '../../utils/export_file.dart';
 
 class Recharge extends StatefulWidget {
@@ -10,6 +11,9 @@ class Recharge extends StatefulWidget {
 }
 
 class _RechargeState extends State<Recharge> {
+      final RechargeController controller = !Get.isRegistered<RechargeController>()
+      ? Get.put(RechargeController())
+      : Get.find<RechargeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +48,7 @@ class _RechargeState extends State<Recharge> {
     return Container(
       margin: EdgeInsets.all(13.r),
       child: TextFormField(
+        controller: controller.numberController,
         decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(10),
             suffixIcon: Image.asset(
