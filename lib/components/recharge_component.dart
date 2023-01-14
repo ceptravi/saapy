@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
 import '../../utils/export_file.dart';
+import '../controllers/recharge_controller.dart';
 
 class Recaharge_tab extends StatefulWidget {
   const Recaharge_tab({super.key});
@@ -10,6 +11,10 @@ class Recaharge_tab extends StatefulWidget {
 }
 
 class _RecahargetabState extends State<Recaharge_tab> {
+  final RechargeController controller = !Get.isRegistered<RechargeController>()
+      ? Get.put(RechargeController())
+      : Get.find<RechargeController>();
+
   /// List of Tab Bar Item
   List<String> items = [
     "Polpular",
@@ -31,65 +36,67 @@ class _RecahargetabState extends State<Recaharge_tab> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      //height: 500.w,
+      // height: 100.w,
       margin: const EdgeInsets.all(5),
       child: Column(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 60,
-            child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: items.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (ctx, index) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            current = index;
-                          });
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          margin: EdgeInsets.all(3.r),
-                          padding: EdgeInsets.only(
-                              left: 15.w, right: 15.w, top: 5.h, bottom: 5.h),
-                          height: 30.h,
-                          decoration: BoxDecoration(
-                              color: current == index ? purple : Colors.white54,
-                              borderRadius: current == index
-                                  ? BorderRadius.circular(13.r)
-                                  : BorderRadius.circular(13.r),
-                              border: current == index
-                                  ? Border.all(color: purple, width: 2)
-                                  : Border.all(color: purple, width: 1)),
-                          child: Center(
-                            child: Text(
-                              items[index],
-                              style: GoogleFonts.inter(
-                                  fontWeight: FontWeight.w500,
-                                  color: current == index ? white : purple),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Visibility(
-                      //     visible: current == index,
-                      //     child: Container(
-                      //       width: 5,
-                      //       height: 5,
-                      //       decoration: const BoxDecoration(
-                      //           color: purple, shape: BoxShape.circle),
-                      //     ))
-                    ],
-                  );
-                }),
-          ),
+          // SizedBox(
+          //   width: double.infinity,
+          //   height: 60,
+          //   child: ListView.builder(
+          //       physics: const BouncingScrollPhysics(),
+          //       itemCount: items.length,
+          //       scrollDirection: Axis.horizontal,
+          //       itemBuilder: (ctx, index) {
+          //         return Column(
+          //           children: [
+          //             GestureDetector(
+          //               onTap: () {
+          //                 setState(() {
+          //                   current = index;
+          //                 });
+          //               },
+          //               child: AnimatedContainer(
+          //                 duration: const Duration(milliseconds: 300),
+          //                 margin: EdgeInsets.all(3.r),
+          //                 padding: EdgeInsets.only(
+          //                     left: 15.w, right: 15.w, top: 5.h, bottom: 5.h),
+          //                 height: 30.h,
+          //                 decoration: BoxDecoration(
+          //                     color: current == index ? purple : Colors.white54,
+          //                     borderRadius: current == index
+          //                         ? BorderRadius.circular(13.r)
+          //                         : BorderRadius.circular(13.r),
+          //                     border: current == index
+          //                         ? Border.all(color: purple, width: 2)
+          //                         : Border.all(color: purple, width: 1)),
+          //                 child: Center(
+          //                   child: Text(
+          //                     items[index],
+          //                     style: GoogleFonts.inter(
+          //                         fontWeight: FontWeight.w500,
+          //                         color: current == index ? white : purple),
+          //                   ),
+          //                 ),
+          //               ),
+          //             ),
+          //             // Visibility(
+          //             //     visible: current == index,
+          //             //     child: Container(
+          //             //       width: 5,
+          //             //       height: 5,
+          //             //       decoration: const BoxDecoration(
+          //             //           color: purple, shape: BoxShape.circle),
+          //             //     ))
+          //           ],
+          //         );
+          //       }),
+          // ),
 
           /// MAIN BODY
-          Package_tab(),
+          Obx(() => controller.isLoading == true
+              ? CircularProgressIndicator()
+              : Package_tab()),
         ],
       ),
     );
@@ -99,10 +106,12 @@ class _RecahargetabState extends State<Recaharge_tab> {
     return SizedBox(
       height: 500.h,
       child: ListView.builder(
-          itemCount: 5,
+          itemCount: controller.rechargePlans.data!.length,
           itemBuilder: ((context, index) {
             return GestureDetector(
               onTap: () {
+                controller
+                    .storeRechargePlan(controller.rechargePlans.data![index]);
                 Get.toNamed(KRecharge_Payment);
               },
               child: Container(
@@ -145,12 +154,16 @@ class _RecahargetabState extends State<Recaharge_tab> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('2.5GB/Day',
-                              style: GoogleFonts.inter(
-                                  fontSize: kFourteenFont,
-                                  color: darkGrey,
-                                  fontWeight: FontWeight.w600)),
-                          Text('\u{20B9}${665}',
+                          Text(
+                            '${controller.rechargePlans.data![index]!.desc.toString().split('\n')[0].contains('Data') ? controller.rechargePlans.data![index]!.desc.toString().split('\n')[0] : controller.rechargePlans.data![index]!.desc.toString().split('\n')[1]}',
+                            style: GoogleFonts.inter(
+                                fontSize: kFourteenFont,
+                                color: darkGrey,
+                                fontWeight: FontWeight.w600),
+                            maxLines: 2,
+                          ),
+                          Text(
+                              '\u{20B9}${controller.rechargePlans.data![index]!.rs!}',
                               style: GoogleFonts.inter(
                                   fontSize: kFourteenFont,
                                   color: darkGrey,
@@ -168,16 +181,17 @@ class _RecahargetabState extends State<Recaharge_tab> {
                       SizedBox(
                         height: 3.h,
                       ),
-                      Text("252 Days (28 Days * 9 Cycles)",
-                          style: GoogleFonts.inter(
-                              fontSize: kFourteenFont,
-                              color: darkGrey,
-                              fontWeight: FontWeight.w600)),
+                      // Text(
+                      //     '${controller.rechargePlans.data![index]!.desc.toString().split('\n')[0].contains('Data') ? controller.rechargePlans.data![index]!.desc.toString().split('\n')[3] : controller.rechargePlans.data![index]!.desc.toString().split('\n')[4]}',
+                      //     style: GoogleFonts.inter(
+                      //         fontSize: kFourteenFont,
+                      //         color: darkGrey,
+                      //         fontWeight: FontWeight.w600)),
                       SizedBox(
                         height: 3.h,
                       ),
                       Text(
-                          " New Year special plan/voice :unlimited calls:/SMS:100sms/Day",
+                          " ${controller.rechargePlans.data![index]!.desc.toString().split('\n')[controller.rechargePlans.data![index]!.desc.toString().split('\n').length - 1]}",
                           style: GoogleFonts.inter(
                               fontSize: kTenFont,
                               color: lightgrey,

@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import '../../controllers/recharge_controller.dart';
 import '../../utils/export_file.dart';
 
 class Personal_recharge extends StatefulWidget {
@@ -10,6 +11,9 @@ class Personal_recharge extends StatefulWidget {
 }
 
 class _PersonalrechargeState extends State<Personal_recharge> {
+  final RechargeController controller = !Get.isRegistered<RechargeController>()
+      ? Get.put(RechargeController())
+      : Get.find<RechargeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,16 +30,17 @@ class _PersonalrechargeState extends State<Personal_recharge> {
               color: darkGrey,
             )),
         titleSpacing: 90.w,
-        title: Text('Vishnu',
+        // ignore: unnecessary_string_interpolations
+        title: Text('${controller.numberController.text}',
             style: GoogleFonts.inter(
                 fontSize: kEighteenFont,
                 color: darkGrey,
                 fontWeight: FontWeight.w600)),
       ),
       body: Column(
-        children: [
-          Package_search(),
-          const Recaharge_tab(),
+        children: const [
+          // Package_search(),
+          Recaharge_tab(),
         ],
       ),
     );

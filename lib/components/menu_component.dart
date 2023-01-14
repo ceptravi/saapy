@@ -39,14 +39,18 @@ class _MenuComponentState extends State<Menu_Component> {
       child: controller.isSkipped == false
           ? Column(
               children: [
-                isLoaded.value == true ? menu_Profile() : Container(),
-                isLoaded.value == true
-                    ? My_wallet()
-                    : Container(
-                        alignment: Alignment.center,
-                        child: const Text("User Data loading Failed"),
-                      ),
-                My_wallet(),
+                Obx(
+                  () => isLoaded.value == true ? menu_Profile() : Container(),
+                ),
+                Obx(
+                  () => isLoaded.value == true
+                      ? My_wallet()
+                      : Container(
+                          alignment: Alignment.center,
+                          child: const Text("User Data loading Failed"),
+                        ),
+                ),
+                // My_wallet(),
                 PayMoney(),
                 menu_list(),
                 SizedBox(
@@ -166,16 +170,16 @@ class _MenuComponentState extends State<Menu_Component> {
                                 fontSize: kEighteenFont,
                                 color: darkGrey,
                                 fontWeight: FontWeight.w700)),
-                        // Text('${controller.userInfo.data!.walletBalance}',
-                        //     style: GoogleFonts.inter(
-                        //         fontSize: kEighteenFont,
-                        //         color: darkGrey,
-                        //         fontWeight: FontWeight.w700)),
-                        Text('1500',
+                        Text('${controller.userInfo.data!.walletBalance}',
                             style: GoogleFonts.inter(
                                 fontSize: kEighteenFont,
                                 color: darkGrey,
                                 fontWeight: FontWeight.w700)),
+                        // Text('1500',
+                        //     style: GoogleFonts.inter(
+                        //         fontSize: kEighteenFont,
+                        //         color: darkGrey,
+                        //         fontWeight: FontWeight.w700)),
                       ],
                     )
                   : const CircularProgressIndicator()),

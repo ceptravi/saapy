@@ -3,18 +3,24 @@
 import '../../controllers/recharge_controller.dart';
 import '../../utils/export_file.dart';
 
-class Paid_Recharge extends StatefulWidget {
-  const Paid_Recharge({super.key});
+class AllCircles extends StatefulWidget {
+  const AllCircles({super.key});
 
   @override
-  State<Paid_Recharge> createState() => _PaidRechargeState();
+  State<AllCircles> createState() => _AllCirclesState();
 }
 
-class _PaidRechargeState extends State<Paid_Recharge> {
+class _AllCirclesState extends State<AllCircles> {
   final RechargeController controller = !Get.isRegistered<RechargeController>()
       ? Get.put(RechargeController())
       : Get.find<RechargeController>();
+
   @override
+  void initState() {
+    controller.getCircleDetails();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: white,
@@ -30,7 +36,7 @@ class _PaidRechargeState extends State<Paid_Recharge> {
                 color: darkGrey,
               )),
           titleSpacing: 80.w,
-          title: Text('Pre-Paid',
+          title: Text('Select Circle',
               style: GoogleFonts.inter(
                   fontSize: kEighteenFont,
                   color: darkGrey,
@@ -42,7 +48,7 @@ class _PaidRechargeState extends State<Paid_Recharge> {
               SizedBox(
                 height: 15.h,
               ),
-              upi_search(),
+              // upi_search(),
               Recharge_list(),
               SizedBox(
                 height: 250.h,
@@ -80,53 +86,56 @@ class _PaidRechargeState extends State<Paid_Recharge> {
     //   },
     //   {"name": "Bsnl", "image": "assets/images/Bsnl.png", "route": KQrcode}
     // ];
-    return Column(
-      children: [
-        for (int i = 0; i < controller.services.data!.length; i++)
-          GestureDetector(
-            onTap: () {
-              //Get.toNamed(categories[i]["route"]);
-            },
-            child: InkWell(
-                onTap: () {},
-                child: ListTile(
-                  title: Text(controller.services.data![i]!.name!,
-                      textAlign: TextAlign.left,
-                      maxLines: 2,
-                      style: GoogleFonts.inter(
-                          fontSize: kTwelveFont,
-                          color: darkGrey,
-                          fontWeight: FontWeight.w500)),
-                  // leading: Image.asset(
-                  //   controller.services.data![i]!.icon!,
-                  //   width: 30.w,
-                  // ),
-                  trailing: Obx(() => Checkbox(
-                        value: controller.network ==
-                                controller.services.data![i]!.name!
-                            ? true
-                            : false,
-                        onChanged: (value) {
-                          setState(() {
-                            controller.networkSelected(
-                                controller.services.data![i]!.name!,
-                                controller.services.data![i]!.code!);
-                            // this.valuesecond = value;
-                          });
-                        },
-                      )),
-                )),
-          ),
-      ],
+    return Obx(
+      () => controller.isLoading == true
+          ? CircularProgressIndicator()
+          : Column(
+              children: [
+                for (int i = 0; i < controller.circles.data!.length; i++)
+                  GestureDetector(
+                    onTap: () {
+                      //Get.toNamed(categories[i]["route"]);
+                    },
+                    child: InkWell(
+                        onTap: () {},
+                        child: ListTile(
+                          title: Text(controller.circles.data![i].circle!,
+                              textAlign: TextAlign.left,
+                              maxLines: 2,
+                              style: GoogleFonts.inter(
+                                  fontSize: kTwelveFont,
+                                  color: darkGrey,
+                                  fontWeight: FontWeight.w500)),
+                          // leading: Image.asset(
+                          //   controller.services.data![i]!.icon!,
+                          //   width: 30.w,
+                          // ),
+                          trailing: Obx(() => Checkbox(
+                                value: controller.circle ==
+                                        controller.circles.data![i].circle!
+                                    ? true
+                                    : false,
+                                onChanged: (value) {
+                                  setState(() {
+                                    controller.circleSelected(
+                                        controller.circles.data![i].circle!);
+                                    // this.valuesecond = value;
+                                  });
+                                },
+                              )),
+                        )),
+                  ),
+              ],
+            ),
     );
   }
 
   Widget proceed_button() {
     return GestureDetector(
       onTap: () {
-        debugPrint(controller.numberController.text);
-        // Get.toNamed(KPersonal_Recharge);
-        Get.toNamed(KAllCircles);
+        debugPrint("Mobile number is ${controller.numberController.text}");
+        controller.getRechargePlans();
+        Get.toNamed(KPersonal_Recharge);
       },
       child: Container(
         height: 42.h,

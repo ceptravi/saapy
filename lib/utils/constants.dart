@@ -30,6 +30,7 @@ const String KId_proof = '/kyc/idproof.dart';
 const String KReferral = '/referral.dart';
 const String KRecharge = '/rechange/rechange.dart';
 const String KPaid_Recharge = '/recharge/paid_recharge.dart';
+const String KAllCircles = '/recharge/circle_screen.dart';
 const String KPersonal_Recharge = '/recharge/personal_recharge.dart';
 const String KRecharge_Payment = '/recharge/recharge_payment.dart';
 const String KSelf_Tranfer = '/self_transfer/self_tranfer.dart';

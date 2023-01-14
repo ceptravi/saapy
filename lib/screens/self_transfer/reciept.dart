@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import '../../controllers/wallet_controller.dart';
 import '../../utils/export_file.dart';
 
 class Recipet extends StatefulWidget {
@@ -10,6 +11,9 @@ class Recipet extends StatefulWidget {
 }
 
 class _RecipetState extends State<Recipet> {
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +70,7 @@ class _RecipetState extends State<Recipet> {
                       fontWeight: FontWeight.w600))
             ],
           ),
-          Text('\u{20B9}${15065}',
+          Text('\u{20B9}${controller.addmoney.data!.amount}',
               style: GoogleFonts.inter(
                   fontSize: kTwentyFont,
                   color: Colors.black,

@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types
 
+import '../../controllers/recharge_controller.dart';
 import '../../utils/export_file.dart';
 
 class Recharge_payment extends StatefulWidget {
@@ -10,6 +11,9 @@ class Recharge_payment extends StatefulWidget {
 }
 
 class _RechargepaymentState extends State<Recharge_payment> {
+  final RechargeController controller = !Get.isRegistered<RechargeController>()
+      ? Get.put(RechargeController())
+      : Get.find<RechargeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +30,7 @@ class _RechargepaymentState extends State<Recharge_payment> {
               color: darkGrey,
             )),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
             //mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -92,7 +96,7 @@ class _RechargepaymentState extends State<Recharge_payment> {
                     fontSize: kTwelveFont,
                     color: darkGrey,
                     fontWeight: FontWeight.w600)),
-            Text('665',
+            Text('${controller.rechargePlan.rs}',
                 style: GoogleFonts.inter(
                     fontSize: 40.sp,
                     color: darkGrey,
@@ -103,7 +107,7 @@ class _RechargepaymentState extends State<Recharge_payment> {
             margin: EdgeInsets.all(12.h),
             padding: EdgeInsets.all(10.r),
             width: double.infinity,
-            height: 100.h,
+            // height: 150.h,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.r),
                 gradient: const LinearGradient(
@@ -131,7 +135,11 @@ class _RechargepaymentState extends State<Recharge_payment> {
                         SizedBox(
                           height: 5.h,
                         ),
-                        Text('2.5GB/Day',
+                        Text('${controller.rechargePlan.desc}}',
+                            maxLines: controller.rechargePlan.desc!
+                                .split('\n')
+                                .length,
+                            overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.inter(
                                 fontSize: kTwelveFont,
                                 color: darkGrey,
@@ -141,24 +149,24 @@ class _RechargepaymentState extends State<Recharge_payment> {
                     SizedBox(
                       height: 5.h,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Validity',
-                            style: GoogleFonts.inter(
-                                fontSize: kTenFont,
-                                color: lightgrey,
-                                fontWeight: FontWeight.w500)),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        Text("252 Days (28 Days * 9 Cycles)",
-                            style: GoogleFonts.inter(
-                                fontSize: kTwelveFont,
-                                color: darkGrey,
-                                fontWeight: FontWeight.w600)),
-                      ],
-                    ),
+                    // Column(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     Text('Validity',
+                    //         style: GoogleFonts.inter(
+                    //             fontSize: kTenFont,
+                    //             color: lightgrey,
+                    //             fontWeight: FontWeight.w500)),
+                    //     SizedBox(
+                    //       height: 5.h,
+                    //     ),
+                    //     Text("252 Days (28 Days * 9 Cycles)",
+                    //         style: GoogleFonts.inter(
+                    //             fontSize: kTwelveFont,
+                    //             color: darkGrey,
+                    //             fontWeight: FontWeight.w600)),
+                    //   ],
+                    // ),
                   ],
                 ),
                 SizedBox(
