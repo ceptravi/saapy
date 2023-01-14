@@ -3,6 +3,8 @@ import 'package:moon_start_builders/utils/export_file.dart';
 import '../bindings/home_bindings.dart';
 import '../bindings/login_bindings.dart';
 import '../bindings/signUp_bindings.dart';
+import '../bindings/wallet_bindings.dart';
+import '../screens/recharge/circle_screen.dart';
 
 class Routes {
   static List<GetPage<dynamic>> routes = [
@@ -42,6 +44,7 @@ class Routes {
       name: KWallet,
       transition: Transition.rightToLeft,
       page: () => const Own_Wallet(),
+      binding: WalletBinding(),
     ),
     GetPage(
       name: KQrcode,
@@ -129,6 +132,11 @@ class Routes {
       name: KPaid_Recharge,
       transition: Transition.rightToLeft,
       page: () => const Paid_Recharge(),
+    ),
+    GetPage(
+      name: KAllCircles,
+      transition: Transition.rightToLeft,
+      page: () => const AllCircles(),
     ),
     GetPage(
       name: KPersonal_Recharge,

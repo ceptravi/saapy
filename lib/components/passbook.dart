@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import '../../utils/export_file.dart';
+import '../controllers/wallet_controller.dart';
 
 class Passbook_view extends StatefulWidget {
   const Passbook_view({super.key});
@@ -10,6 +11,9 @@ class Passbook_view extends StatefulWidget {
 }
 
 class _PassbookState extends State<Passbook_view> {
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
   @override
   Widget build(BuildContext context) {
     List categories = [
@@ -49,6 +53,9 @@ class _PassbookState extends State<Passbook_view> {
                       InkWell(
                         onTap: () {
                           //categories[i]["image"][0]["wallet1"];
+                          if (categories[i]["name"] == 'Passbook & History') {
+                            controller.buttonPressed(categories[i]["route"]);
+                          }
                           Get.toNamed(categories[i]["route"]);
                         },
                         child: Image.asset(

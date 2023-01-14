@@ -12,14 +12,15 @@ class RechargePlans {
     this.message,
   });
 
-  List<Datum?>? data;
+  List<RechargePlansData?>? data;
   String? api;
   String? message;
 
   factory RechargePlans.fromJson(Map<String, dynamic> json) => RechargePlans(
         data: json["data"] == null
             ? []
-            : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+            : List<RechargePlansData?>.from(
+                json["data"]!.map((x) => RechargePlansData.fromJson(x))),
         api: json["api"],
         message: json["message"],
       );
@@ -33,8 +34,8 @@ class RechargePlans {
       };
 }
 
-class Datum {
-  Datum({
+class RechargePlansData {
+  RechargePlansData({
     this.rs,
     this.desc,
   });
@@ -42,7 +43,8 @@ class Datum {
   int? rs;
   String? desc;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory RechargePlansData.fromJson(Map<String, dynamic> json) =>
+      RechargePlansData(
         rs: json["rs"],
         desc: json["desc"],
       );
@@ -253,13 +255,13 @@ class KycTypesData {
 /**************AddPayment */
 class AddWalletPayment {
   AddWalletPayment({
-     this.data,
-     this.message,
+    this.data,
+    this.message,
   });
- AddPaymentData? data;
- String? message;
-  
-  AddWalletPayment.fromJson(Map<String, dynamic> json){
+  AddPaymentData? data;
+  String? message;
+
+  AddWalletPayment.fromJson(Map<String, dynamic> json) {
     data = AddPaymentData.fromJson(json['data']);
     message = json['message'];
   }
@@ -274,19 +276,19 @@ class AddWalletPayment {
 
 class AddPaymentData {
   AddPaymentData({
-     this.id,
-     this.amount,
-     this.orderid,
-     this.module,
-     this.txnid,
+    this.id,
+    this.amount,
+    this.orderid,
+    this.module,
+    this.txnid,
   });
- int? id;
- int? amount;
- int? orderid;
- String? module;
- String? txnid;
-  
-  AddPaymentData.fromJson(Map<String, dynamic> json){
+  int? id;
+  int? amount;
+  int? orderid;
+  String? module;
+  String? txnid;
+
+  AddPaymentData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     amount = json['amount'];
     orderid = json['orderid'];

@@ -1,5 +1,9 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../controllers/login_controller.dart';
+import '../controllers/wallet_controller.dart';
 import '../utils/export_file.dart';
 
 class Wallet_view extends StatefulWidget {
@@ -11,6 +15,18 @@ class Wallet_view extends StatefulWidget {
 
 class _WalletviewState extends State<Wallet_view> {
   // Our first view in viewport
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
+  final LoginController loginController = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
+  @override
+  void initState() {
+    // TODO: implement initState
+    loginController.getUserInfo();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +46,24 @@ class _WalletviewState extends State<Wallet_view> {
               SizedBox(
                 height: 10.h,
               ),
-              Row(
-                children: [
-                  Text('\u{20B9}',
-                      style: GoogleFonts.inter(
-                          fontSize: kTwentyFourFont,
-                          color: darkGrey,
-                          fontWeight: FontWeight.w300)),
-                  Text('15,065',
-                      style: GoogleFonts.inter(
-                          fontSize: kTwentyFourFont,
-                          color: darkGrey,
-                          fontWeight: FontWeight.w700)),
-                ],
+              Obx(
+                () => loginController.isLoading == false
+                    ? Row(
+                        children: [
+                          Text('\u{20B9}',
+                              style: GoogleFonts.inter(
+                                  fontSize: kTwentyFourFont,
+                                  color: darkGrey,
+                                  fontWeight: FontWeight.w300)),
+                          Text(
+                              '${loginController.userInfo.data!.walletBalance}',
+                              style: GoogleFonts.inter(
+                                  fontSize: kTwentyFourFont,
+                                  color: darkGrey,
+                                  fontWeight: FontWeight.w700)),
+                        ],
+                      )
+                    : CircularProgressIndicator(),
               ),
               wallet_card(),
               SizedBox(
@@ -80,6 +101,7 @@ class _WalletviewState extends State<Wallet_view> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      controller.setLoadingFalse();
                       showModalBottomSheet(
                         context: context,
                         backgroundColor: white,
@@ -290,6 +312,7 @@ class _WalletviewState extends State<Wallet_view> {
               height: 20.h,
             ),
             TextFormField(
+              controller: controller.addMoneyController,
               decoration: InputDecoration(
                 hintText: "1000",
                 contentPadding: const EdgeInsets.only(left: 5, top: 10),
@@ -334,22 +357,37 @@ class _WalletviewState extends State<Wallet_view> {
       margin: const EdgeInsets.only(top: 20),
       height: 40.h,
       width: 150.w,
-      child: TextButton(
-        onPressed: () {
-          // Get.toNamed(KRecipet);
-        },
-        style: ButtonStyle(
-            backgroundColor: const MaterialStatePropertyAll<Color>(purple),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r),
-                    side: const BorderSide(color: purple)))),
-        child: Text(
-          "Prossed & Add",
-          style: GoogleFonts.inter(
-              fontSize: kFourteenFont, color: white, fontWeight: kFW600),
-        ),
-      ),
+      child: Obx(() => controller.isLoading == true
+          ? SizedBox(
+              width: 5.w,
+              child: const CircularProgressIndicator(),
+            )
+          : TextButton(
+              onPressed: () async {
+                bool isAdded = await controller.addMoney(
+                    controller.addMoneyController.text, "test");
+                if (isAdded) {
+                  Get.toNamed(KRecipet);
+                } else {
+                  Fluttertoast.showToast(
+                    msg: 'Try Again',
+                    backgroundColor: Colors.grey,
+                  );
+                }
+              },
+              style: ButtonStyle(
+                  backgroundColor:
+                      const MaterialStatePropertyAll<Color>(purple),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          side: const BorderSide(color: purple)))),
+              child: Text(
+                "Prossed & Add",
+                style: GoogleFonts.inter(
+                    fontSize: kFourteenFont, color: white, fontWeight: kFW600),
+              ),
+            )),
     );
   }
 

@@ -13,6 +13,7 @@ class HomeServices extends GetxService {
   final String getScratchAPI = 'Myscratchcards';
   final String getKycTypes = 'KyvTypes';
   final String addWallentMoney = 'AddMoney';
+  final String mobilePlans = 'MobilePlan/';
 
   static var client = http.Client();
 
@@ -32,9 +33,9 @@ class HomeServices extends GetxService {
   }
 
   Future<Circles?> getCircles(String token, String modules) async {
-    var url = Uri.parse("$NewDEVURL$allProviders$getCirclesAPI$modules/");
+    var url = Uri.parse("$NewDEVURL$getCirclesAPI:$modules");
     var headers = {'Authorization': token};
-    //'http://97.74.81.248:2020/api/all_circles/PrePaid'
+    //'http://97.74.81.248:2020/api/all_circles/:module/'
     var response = await client.get(url, headers: headers);
     Circles? circlesData;
     if (response.statusCode == 200) {
@@ -47,7 +48,7 @@ class HomeServices extends GetxService {
   }
 
   Future<MyScratchCards?> getScratchCards(String token) async {
-    var url = Uri.parse("$NewDEVURL$allProviders$getScratchAPI");
+    var url = Uri.parse("$NewDEVURL$getScratchAPI");
     var headers = {'Authorization': token};
     var response = await client.get(url, headers: headers);
     MyScratchCards? myScratchCards;
@@ -61,13 +62,11 @@ class HomeServices extends GetxService {
   }
 
   Future<KycTypes?> getKycType(String token) async {
-    var url = Uri.parse("$NewDEVURL$allProviders$addWallentMoney");
+    var url = Uri.parse("$NewDEVURL$addWallentMoney");
     var headers = {'Authorization': token};
-    var data = {
-    "amount":100,
-    "coupon_code":"1234"
-};
-    var response = await client.post(url, headers: headers,body: jsonEncode(data));
+    var data = {"amount": 100, "coupon_code": "1234"};
+    var response =
+        await client.post(url, headers: headers, body: jsonEncode(data));
     KycTypes? kycTypes;
     if (response.statusCode == 200) {
       debugPrint(response.body);
@@ -77,8 +76,9 @@ class HomeServices extends GetxService {
     }
     return kycTypes;
   }
+
   Future<AddWalletPayment?> addWalletAmount(String token) async {
-    var url = Uri.parse("$NewDEVURL$allProviders$getKycTypes");
+    var url = Uri.parse("$NewDEVURL$getKycTypes");
     var headers = {'Authorization': token};
     var response = await client.get(url, headers: headers);
     AddWalletPayment? addWalletPayment;
@@ -89,5 +89,21 @@ class HomeServices extends GetxService {
       debugPrint("API Calling Failed");
     }
     return addWalletPayment;
+  }
+
+  Future<RechargePlans?> rechargePlans(
+      String token, String mobile, String providerCode, int circleCode) async {
+    var url =
+        Uri.parse("$NewDEVURL$mobilePlans$mobile/$providerCode/$circleCode");
+    var headers = {'Authorization': token};
+    var response = await client.get(url, headers: headers);
+    RechargePlans? rechargePlans;
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      rechargePlans = RechargePlans.fromJson(jsonDecode(response.body));
+    } else {
+      debugPrint("API Calling Failed");
+    }
+    return rechargePlans;
   }
 }

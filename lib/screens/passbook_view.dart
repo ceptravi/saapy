@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import '../controllers/wallet_controller.dart';
 import '../utils/export_file.dart';
 
 class Passbook extends StatefulWidget {
@@ -10,6 +11,9 @@ class Passbook extends StatefulWidget {
 }
 
 class _PassbookState extends State<Passbook> {
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,11 +60,15 @@ class _PassbookState extends State<Passbook> {
                                   color: darkGrey,
                                   fontWeight: FontWeight.w300)),
                           SizedBox(width: 4.w),
-                          Text('15,065',
-                              style: GoogleFonts.inter(
-                                  fontSize: kTwentyFourFont,
-                                  color: darkGrey,
-                                  fontWeight: FontWeight.w700)),
+                          Obx(() => controller.isLoading == false
+                              ? Text(
+                                  controller.myPassBookData.data!.balance
+                                      .toString(),
+                                  style: GoogleFonts.inter(
+                                      fontSize: kTwentyFourFont,
+                                      color: darkGrey,
+                                      fontWeight: FontWeight.w700))
+                              : CircularProgressIndicator()),
                         ],
                       ),
                       SizedBox(
@@ -147,7 +155,9 @@ class _PassbookState extends State<Passbook> {
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  history_list(),
+                  Obx(() => controller.isLoading == false
+                      ? history_list()
+                      : CircularProgressIndicator()),
                 ],
               ),
             ),
@@ -417,7 +427,7 @@ class _PassbookState extends State<Passbook> {
     return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: 5,
+        itemCount: controller.myPassBookData.data!.all!.length,
         itemBuilder: ((context, index) {
           return Container(
             //alignment: Alignment.center,
@@ -447,19 +457,23 @@ class _PassbookState extends State<Passbook> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Paid to Vishnu",
+                        Text(
+                            controller
+                                .myPassBookData.data!.all![index]!.message!,
                             style: GoogleFonts.inter(
                                 fontSize: kFourteenFont,
                                 color: darkGrey,
                                 fontWeight: kFW600)),
                         SizedBox(height: 5.h),
-                        Text("Via UPI",
+                        Text(
+                            "Via ${controller.myPassBookData.data!.all![index]!.paymentModeId == 1 ? "Wallet" : "UPI"}",
                             style: GoogleFonts.inter(
                                 fontSize: kTwelveFont,
                                 color: darkGrey,
                                 fontWeight: kFW500)),
                         SizedBox(height: 20.h),
-                        Text("24th Dec 2022",
+                        Text(
+                            "${controller.myPassBookData.data!.all![index]!.paymentDate!.day.toString()}th - ${controller.myPassBookData.data!.all![index]!.paymentDate!.month.toString()}- ${controller.myPassBookData.data!.all![index]!.paymentDate!.year.toString()}",
                             style: GoogleFonts.inter(
                                 fontSize: kTenFont,
                                 color: lightgrey,
@@ -482,7 +496,9 @@ class _PassbookState extends State<Passbook> {
                                     color: darkGrey,
                                     fontWeight: FontWeight.w300)),
                             SizedBox(width: 4.w),
-                            Text('15,065',
+                            Text(
+                                controller
+                                    .myPassBookData.data!.all![index]!.amount!,
                                 style: GoogleFonts.inter(
                                     fontSize: kSixteenFont,
                                     color: darkGrey,
