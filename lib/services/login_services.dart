@@ -12,6 +12,7 @@ import '../utils/export_file.dart';
 class LoginServices extends GetxService {
   final String loginAPI = 'UserLogin';
   final String getUserDataAPI = 'UserDetails';
+  final String updateUserDataAPI = 'UpdateUser';
   final String forgotpassword = 'Forgotpassword';
   final String userLogout = 'UserLogout';
 
@@ -112,17 +113,35 @@ class LoginServices extends GetxService {
     return userInfo;
   }
 
-  Future<UserInfo?> updateUserInfo(String token, String name, String email,
-      String dob, String address, String phone) async {
-    var url = Uri.parse(NewDEVURL + getUserDataAPI);
-    UserInfo? userInfo;
+  Future<UpdateUser?> updateUserInfo(String token, String name, String email,
+      String dob, String address, String phone, String gender) async {
+    var url = Uri.parse(NewDEVURL + updateUserDataAPI);
+    UpdateUser? userInfo;
+    var data = jsonEncode({
+      "name": name,
+      "email": email,
+      "dob": dob,
+      "address": address,
+      "gender": gender
+    });
     try {
-      var response = await client.get(
-        url,
-        headers: {"Authorization": token},
-      );
+      var response = await client.put(url,
+          headers: {"Authorization": token, 'Content-Type': 'application/json'},
+          body: data);
       debugPrint("StatusCode = ${response.statusCode}");
-      userInfo = UserInfo.fromJson(jsonDecode(response.body));
+      try {
+        userInfo = UpdateUser.fromJson(jsonDecode(response.body));
+        Fluttertoast.showToast(
+          msg: 'Updated Succesfully',
+          backgroundColor: Colors.grey,
+        );
+      } catch (e) {
+        Map map = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: '${map['message'][0]}',
+          backgroundColor: Colors.grey,
+        );
+      }
       debugPrint("Serializing done");
     } catch (e) {
       debugPrint("UserData API Calling Faield $e");

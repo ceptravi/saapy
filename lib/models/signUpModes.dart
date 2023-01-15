@@ -50,7 +50,6 @@ class Data {
       };
 }
 
-
 class MyUser {
   LoginData? data;
   int? status;
@@ -60,14 +59,14 @@ class MyUser {
   MyUser({this.data, this.status, this.message, this.token});
 
   MyUser.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ?  LoginData.fromJson(json['data']) : null;
+    data = json['data'] != null ? LoginData.fromJson(json['data']) : null;
     status = json['status'];
     message = json['message'];
     token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -121,7 +120,7 @@ class LoginData {
     isSuperuser = json['is_superuser'];
     username = json['username'];
     firstName = json['first_name'];
-    lastName = json['last_name']!="null"?json['last_name']:"";
+    lastName = json['last_name'] != "null" ? json['last_name'] : "";
     email = json['email'];
     deletedEmail = json['deleted_email'];
     deletedUsername = json['deleted_username'];
@@ -184,7 +183,7 @@ class UserData {
   String? image;
   dynamic qrcode;
   String? address;
-  DateTime? dob;
+  String? dob;
   String? phone;
   String? referral;
   String? gender;
@@ -213,7 +212,7 @@ class UserData {
     dob = json['dob'];
     phone = json['phone'];
     referral = json['referral'];
-    gender = json['gender']??"Other";
+    gender = json['gender'] ?? "Other";
   }
 
   Map<String, dynamic> toJson() {
@@ -240,7 +239,7 @@ class ResendOtp {
   ResendOtp({this.data, this.message});
 
   ResendOtp.fromJson(Map<String, dynamic> json) {
-    data = json['data'] != null ?  ResendOtpData.fromJson(json['data']) : null;
+    data = json['data'] != null ? ResendOtpData.fromJson(json['data']) : null;
     message = json['message'];
   }
 
@@ -274,4 +273,78 @@ class ResendOtpData {
     data['otp'] = this.otp;
     return data;
   }
+}
+
+UpdateUser? updateUserFromJson(String str) =>
+    UpdateUser.fromJson(json.decode(str));
+
+String updateUserToJson(UpdateUser? data) => json.encode(data!.toJson());
+
+class UpdateUser {
+  UpdateUser({
+    this.data,
+    this.message,
+  });
+
+  UpdateUserData? data;
+  String? message;
+
+  factory UpdateUser.fromJson(Map<String, dynamic> json) => UpdateUser(
+        data: UpdateUserData.fromJson(json["data"]),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+        "message": message,
+      };
+}
+
+class UpdateUserData {
+  UpdateUserData({
+    this.userId,
+    this.name,
+    this.email,
+    this.walletBalance,
+    this.image,
+    this.qrcode,
+    this.address,
+    this.dob,
+    this.phone,
+  });
+
+  int? userId;
+  String? name;
+  String? email;
+  String? walletBalance;
+  dynamic image;
+  dynamic qrcode;
+  String? address;
+  DateTime? dob;
+  String? phone;
+
+  factory UpdateUserData.fromJson(Map<String, dynamic> json) => UpdateUserData(
+        userId: json["user_id"],
+        name: json["name"],
+        email: json["email"],
+        walletBalance: json["wallet_balance"],
+        image: json["image"],
+        qrcode: json["qrcode"],
+        address: json["address"],
+        dob: DateTime.parse(json["dob"]),
+        phone: json["phone"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user_id": userId,
+        "name": name,
+        "email": email,
+        "wallet_balance": walletBalance,
+        "image": image,
+        "qrcode": qrcode,
+        "address": address,
+        "dob":
+            "${dob!.year.toString().padLeft(4, '0')}-${dob!.month.toString().padLeft(2, '0')}-${dob!.day.toString().padLeft(2, '0')}",
+        "phone": phone,
+      };
 }

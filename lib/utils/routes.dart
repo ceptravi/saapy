@@ -4,6 +4,7 @@ import '../bindings/home_bindings.dart';
 import '../bindings/login_bindings.dart';
 import '../bindings/signUp_bindings.dart';
 import '../bindings/wallet_bindings.dart';
+import '../screens/myOrders_view.dart';
 import '../screens/recharge/circle_screen.dart';
 
 class Routes {
@@ -177,6 +178,11 @@ class Routes {
       name: KPassbook_view,
       transition: Transition.rightToLeft,
       page: () => const Passbook(),
+    ),
+    GetPage(
+      name: KMyorders,
+      transition: Transition.rightToLeft,
+      page: () => const MyOrders(),
     ),
     GetPage(
       name: KPersonal_chat,

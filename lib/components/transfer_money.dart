@@ -65,6 +65,11 @@ class _TransferviewState extends State<Transfer_view> {
         "route": KSelect_bank
       },
       {
+        "name": "Wallet to Wallet",
+        "image": "assets/images/bank.png",
+        "route": KRecharge
+      },
+      {
         "name": "Self Transfer",
         "image": "assets/images/Pay.png",
         "route": KSelf_Tranfer

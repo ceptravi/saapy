@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, sized_box_for_whitespace, camel_case_types
 
+import '../../controllers/wallet_controller.dart';
 import '../../utils/export_file.dart';
 
 class Kyc_screen extends StatefulWidget {
@@ -10,7 +11,15 @@ class Kyc_screen extends StatefulWidget {
 }
 
 class _KycscreenState extends State<Kyc_screen> {
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
   @override
+  void initState() {
+    controller.getKycTypes();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

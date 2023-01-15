@@ -12,6 +12,10 @@ class LoginController extends GetxController {
   final SignUpServices signUpServices = Get.find<SignUpServices>();
   final Rxn<MyUser> _myuser = Rxn<MyUser>();
   MyUser get myuser => _myuser.value ?? MyUser();
+
+  final Rxn<UpdateUser> _updateuser = Rxn<UpdateUser>();
+  UpdateUser get updateuser => _updateuser.value ?? UpdateUser();
+
   final Rxn<UserInfo> _userInfo = Rxn<UserInfo>();
   UserInfo get userInfo => _userInfo.value ?? UserInfo();
 
@@ -31,6 +35,8 @@ class LoginController extends GetxController {
   TextEditingController referralController = TextEditingController();
   TextEditingController fcmController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   void skipPressed(bool isSkipped) {
     _isSkipped(isSkipped);
@@ -44,6 +50,13 @@ class LoginController extends GetxController {
       return false;
     } else {
       _userInfo(userInfo);
+      nameController.text = userInfo.data!.name!;
+      emailController.text = userInfo.data!.email!;
+      dobController.text =
+          userInfo.data!.dob != null ? userInfo.data!.dob!.toString() : "null";
+      addressController.text =
+          userInfo.data!.address != null ? userInfo.data!.address! : "";
+      mobileController.text = userInfo.data!.phone!;
       _isLoading(false);
       return true;
     }
@@ -78,9 +91,15 @@ class LoginController extends GetxController {
 
   updateProfileInfo(String name, String email, String dob, String address,
       String phone) async {
-    UserInfo? userInfo = await loginServices.updateUserInfo(
-        _myuser.value!.token!, name, email, dob, address, phone);
-    _userInfo(userInfo);
+    UpdateUser? userInfo = await loginServices.updateUserInfo(
+        _myuser.value!.token!,
+        name,
+        email,
+        dob,
+        address,
+        phone,
+        _userInfo.value!.data!.gender!);
+    _updateuser(userInfo);
   }
 
   Future<String> logout() async {

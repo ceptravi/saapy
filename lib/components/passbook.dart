@@ -28,6 +28,11 @@ class _PassbookState extends State<Passbook_view> {
         "route": KPassbook_view
       },
       {
+        "name": "My Orders",
+        "image": "assets/images/passbook.png",
+        "route": KMyorders
+      },
+      {
         "name": "Refer & Earn",
         "image": "assets/images/Earn.png",
         "route": KWallet

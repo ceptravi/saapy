@@ -245,7 +245,8 @@ class _WalletviewState extends State<Wallet_view> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(KPassbook_view);
+                      controller.buttonPressed(KPassbook_view);
+                      // Get.toNamed(KPassbook_view);
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -284,6 +285,99 @@ class _WalletviewState extends State<Wallet_view> {
                       ),
                     ),
                   ),
+                ],
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      controller.myCardsPressed(KScratch);
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      elevation: 3,
+                      child: SizedBox(
+                        width: 154.w,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/images/Frame3.png",
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 4.r),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    "assets/images/statement.png",
+                                    width: 50.w,
+                                  ),
+                                  SizedBox(
+                                    width: 100.w,
+                                    child: Text('My SCratch Cards',
+                                        maxLines: 2,
+                                        style: GoogleFonts.inter(
+                                            fontSize: 13.sp,
+                                            color: darkGrey,
+                                            fontWeight: FontWeight.w500)),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: 6.w,
+                  // ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     controller.buttonPressed(KPassbook_view);
+                  //     // Get.toNamed(KPassbook_view);
+                  //   },
+                  //   child: Card(
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(10)),
+                  //     elevation: 3,
+                  //     child: SizedBox(
+                  //       width: 154.w,
+                  //       child: Stack(
+                  //         alignment: Alignment.center,
+                  //         children: [
+                  //           Image.asset(
+                  //             "assets/images/Frame4.png",
+                  //           ),
+                  //           Container(
+                  //             padding: EdgeInsets.only(left: 4.r),
+                  //             child: Row(
+                  //               children: [
+                  //                 Image.asset(
+                  //                   "assets/images/phonebook.png",
+                  //                   width: 50.w,
+                  //                 ),
+                  //                 SizedBox(
+                  //                   width: 100.w,
+                  //                   child: Text('Passbook',
+                  //                       maxLines: 2,
+                  //                       style: GoogleFonts.inter(
+                  //                           fontSize: 13.sp,
+                  //                           color: darkGrey,
+                  //                           fontWeight: FontWeight.w500)),
+                  //                 )
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ],
