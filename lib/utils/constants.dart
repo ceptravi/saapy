@@ -39,6 +39,7 @@ const String KAmount_screen = '/self_transfer/amount_screen.dart';
 const String KSelect_bank = '/select_bank/select_bank.dart';
 const String kAdd_acount = '/select_bank/add_acount.dart';
 const String KPassbook_view = '/passbook_view.dart';
+const String KMyorders = '/myOrders_view.dart';
 const String KScratch = '/screens/scratch_screen.dart';
 const String KNotify = '/screens/notify_screen.dart';
 

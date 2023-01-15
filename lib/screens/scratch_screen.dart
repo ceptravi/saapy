@@ -1,4 +1,6 @@
 // ignore_for_file: camel_case_types
+import '../controllers/wallet_controller.dart';
+import '../models/wallet.dart';
 import '../utils/export_file.dart';
 
 class Scratch_Screen extends StatefulWidget {
@@ -9,6 +11,9 @@ class Scratch_Screen extends StatefulWidget {
 }
 
 class _ScratchScreenState extends State<Scratch_Screen> {
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,119 +33,168 @@ class _ScratchScreenState extends State<Scratch_Screen> {
             style: GoogleFonts.inter(
                 fontSize: kEighteenFont, color: darkGrey, fontWeight: kFW600)),
       ),
-      body: Column(
-        children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            margin: EdgeInsets.only(top: 20.h, left: 20.h),
-            child: Text(
-              "Amount",
-              style: GoogleFonts.inter(
-                  fontSize: kFourteenFont,
-                  color: lightgrey,
-                  fontWeight: FontWeight.w500),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10.h, left: 20.h),
-            child: Row(
+      body: Obx(() => controller.isLoading == false
+          ? Column(
               children: [
-                Text('\u{20B9}',
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(top: 20.h, left: 20.h),
+                  child: Text(
+                    "Amount",
                     style: GoogleFonts.inter(
-                        fontSize: kTwentyFourFont,
-                        color: darkGrey,
-                        fontWeight: FontWeight.w300)),
-                SizedBox(width: 4.w),
-                Text('15,065',
-                    style: GoogleFonts.inter(
-                        fontSize: kTwentyFourFont,
-                        color: darkGrey,
-                        fontWeight: FontWeight.w700)),
-              ],
-            ),
-          ),
-          Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(top: 30.h, left: 10.h),
-              child: Text("My Rewards",
-                  style: GoogleFonts.inter(
-                      fontSize: kSixteenFont,
-                      color: darkGrey,
-                      fontWeight: kFW600))),
-          Container(
-            margin: EdgeInsets.all(10.r),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        backgroundColor: white,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r)),
-                        builder: (BuildContext context) {
-                          return Bottom_sheet();
-                        });
-                  },
+                        fontSize: kFourteenFont,
+                        color: lightgrey,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10.h, left: 20.h),
                   child: Row(
                     children: [
-                      Container(
-                        // height: 250.h,
-                        width: 160.w,
-                        child: Image.asset(
-                          'assets/images/blur1.png',
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Container(
-                          width: 160.w,
-                          child: Image.asset('assets/images/blur2.png')),
+                      Text('\u{20B9}',
+                          style: GoogleFonts.inter(
+                              fontSize: kTwentyFourFont,
+                              color: darkGrey,
+                              fontWeight: FontWeight.w300)),
+                      SizedBox(width: 4.w),
+                      Text('15,065',
+                          style: GoogleFonts.inter(
+                              fontSize: kTwentyFourFont,
+                              color: darkGrey,
+                              fontWeight: FontWeight.w700)),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        backgroundColor: white,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r)),
-                        builder: (BuildContext context) {
-                          return Bottom_sheet();
-                        });
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        // height: 250.h,
-                        width: 160.w,
-                        child: Image.asset(
-                          'assets/images/blur2.png',
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Container(
-                          width: 160.w,
-                          child: Image.asset('assets/images/blur1.png')),
-                    ],
-                  ),
-                ),
+                Container(
+                    alignment: Alignment.centerLeft,
+                    margin: EdgeInsets.only(top: 30.h, left: 10.h),
+                    child: Text("My Rewards",
+                        style: GoogleFonts.inter(
+                            fontSize: kSixteenFont,
+                            color: darkGrey,
+                            fontWeight: kFW600))),
+                Expanded(
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                childAspectRatio: 1.5,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 1),
+                        itemCount:
+                            controller.myScratchCards.data!.scratchCard!.length,
+                        itemBuilder: (BuildContext ctx, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                  context: context,
+                                  backgroundColor: white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10.r)),
+                                  builder: (BuildContext context) {
+                                    return Bottom_sheet(controller
+                                        .myScratchCards
+                                        .data!
+                                        .scratchCard![index]!);
+                                  });
+                            },
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                Container(
+                                    width: 160.w,
+                                    child:
+                                        Image.asset('assets/images/blur2.png')),
+                                Container(
+                                  // height: 250.h,
+                                  width: 160.w,
+                                  child: Image.asset(
+                                    'assets/images/blur1.png',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        })),
+
+                // Container(
+                //   margin: EdgeInsets.all(10.r),
+                //   child: Column(
+                //     children: [
+                //       GestureDetector(
+                //         onTap: () {
+                //           showModalBottomSheet(
+                //               context: context,
+                //               backgroundColor: white,
+                //               shape: RoundedRectangleBorder(
+                //                   borderRadius: BorderRadius.circular(10.r)),
+                //               builder: (BuildContext context) {
+                //                 return Bottom_sheet();
+                //               });
+                //         },
+                //         child: Row(
+                //           children: [
+                //             Container(
+                //               // height: 250.h,
+                //               width: 160.w,
+                //               child: Image.asset(
+                //                 'assets/images/blur1.png',
+                //               ),
+                //             ),
+                //             SizedBox(
+                //               width: 10.w,
+                //             ),
+                //             Container(
+                //                 width: 160.w,
+                //                 child: Image.asset('assets/images/blur2.png')),
+                //           ],
+                //         ),
+                //       ),
+                //       SizedBox(
+                //         height: 10.h,
+                //       ),
+                //       GestureDetector(
+                //         onTap: () {
+                //           showModalBottomSheet(
+                //               context: context,
+                //               backgroundColor: white,
+                //               shape: RoundedRectangleBorder(
+                //                   borderRadius: BorderRadius.circular(10.r)),
+                //               builder: (BuildContext context) {
+                //                 return Bottom_sheet();
+                //               });
+                //         },
+                //         child: Row(
+                //           children: [
+                //             Container(
+                //               // height: 250.h,
+                //               width: 160.w,
+                //               child: Image.asset(
+                //                 'assets/images/blur2.png',
+                //               ),
+                //             ),
+                //             SizedBox(
+                //               width: 10.w,
+                //             ),
+                //             Container(
+                //                 width: 160.w,
+                //                 child: Image.asset('assets/images/blur1.png')),
+                //           ],
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
-            ),
-          ),
-        ],
-      ),
+            )
+          : CircularProgressIndicator()),
     );
   }
 
-  Widget Bottom_sheet() {
+  Widget Bottom_sheet(ScratchCard myScratchCardsData) {
     return SizedBox(
       height: 350.h,
       child: Column(
@@ -155,12 +209,12 @@ class _ScratchScreenState extends State<Scratch_Screen> {
                     child: Scratcher(
                       brushSize: 30,
                       threshold: 50,
-
                       // image: AssetImage("assets/images/blurone.png"),
                       //image: Image.asset('assets/images/blur2.png', width: 5.h),
                       color: const Color.fromARGB(255, 236, 187, 223),
                       onChange: (value) => print("Scratch progress: $value%"),
-                      onThreshold: () => print("Threshold reached, you won!"),
+                      onThreshold: () =>
+                          controller.cardScratched(myScratchCardsData.id!),
                       child: Container(
                           height: 136.h,
                           width: 230.w,

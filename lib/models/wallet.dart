@@ -322,3 +322,297 @@ class MasterPaymentmode {
         "title": title,
       };
 }
+
+/****************PAY to Wallet */
+PayToWallet? payToWalletFromJson(String str) =>
+    PayToWallet.fromJson(json.decode(str));
+
+String payToWalletToJson(PayToWallet? data) => json.encode(data!.toJson());
+
+class PayToWallet {
+  PayToWallet({
+    this.data,
+    this.message,
+  });
+
+  PayToWalletData? data;
+  String? message;
+
+  factory PayToWallet.fromJson(Map<String, dynamic> json) => PayToWallet(
+        data: PayToWalletData.fromJson(json["data"]),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+        "message": message,
+      };
+}
+
+class PayToWalletData {
+  PayToWalletData({
+    this.id,
+    this.amount,
+    this.orderid,
+    this.paymentstatus,
+    this.module,
+    this.txnid,
+  });
+
+  int? id;
+  int? amount;
+  int? orderid;
+  int? paymentstatus;
+  String? module;
+  String? txnid;
+
+  factory PayToWalletData.fromJson(Map<String, dynamic> json) =>
+      PayToWalletData(
+        id: json["id"],
+        amount: json["amount"],
+        orderid: json["orderid"],
+        paymentstatus: json["paymentstatus"],
+        module: json["module"],
+        txnid: json["txnid"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "amount": amount,
+        "orderid": orderid,
+        "paymentstatus": paymentstatus,
+        "module": module,
+        "txnid": txnid,
+      };
+}
+
+KycTypes? kycTypesFromJson(String str) => KycTypes.fromJson(json.decode(str));
+
+String kycTypesToJson(KycTypes? data) => json.encode(data!.toJson());
+
+class KycTypes {
+  KycTypes({
+    this.data,
+    this.message,
+  });
+
+  List<KycTypesData?>? data;
+  String? message;
+
+  factory KycTypes.fromJson(Map<String, dynamic> json) => KycTypes(
+        data: json["data"] == null
+            ? []
+            : List<KycTypesData?>.from(
+                json["data"]!.map((x) => KycTypesData.fromJson(x))),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x!.toJson())),
+        "message": message,
+      };
+}
+
+class KycTypesData {
+  KycTypesData({
+    this.id,
+    this.title,
+    this.isActive,
+    this.createdAt,
+  });
+
+  int? id;
+  String? title;
+  bool? isActive;
+  DateTime? createdAt;
+
+  factory KycTypesData.fromJson(Map<String, dynamic> json) => KycTypesData(
+        id: json["id"],
+        title: json["title"],
+        isActive: json["is_active"],
+        createdAt: json["created_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "is_active": isActive,
+        "created_at": createdAt,
+      };
+}
+
+MyScratchCards? myScratchCardsFromJson(String str) =>
+    MyScratchCards.fromJson(json.decode(str));
+
+String myScratchCardsToJson(MyScratchCards? data) =>
+    json.encode(data!.toJson());
+
+class MyScratchCards {
+  MyScratchCards({
+    this.data,
+    this.message,
+  });
+
+  MyScratchCardsData? data;
+  String? message;
+
+  factory MyScratchCards.fromJson(Map<String, dynamic> json) => MyScratchCards(
+        data: MyScratchCardsData.fromJson(json["data"]),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+        "message": message,
+      };
+}
+
+class MyScratchCardsData {
+  MyScratchCardsData({
+    this.scratchCard,
+    this.scratchAmount,
+    this.notScratchAmount,
+  });
+
+  List<ScratchCard?>? scratchCard;
+  int? scratchAmount;
+  int? notScratchAmount;
+
+  factory MyScratchCardsData.fromJson(Map<String, dynamic> json) =>
+      MyScratchCardsData(
+        scratchCard: json["scratch_card"] == null
+            ? []
+            : List<ScratchCard?>.from(
+                json["scratch_card"]!.map((x) => ScratchCard.fromJson(x))),
+        scratchAmount: json["scratch_amount"],
+        notScratchAmount: json["not_scratch_amount"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "scratch_card": scratchCard == null
+            ? []
+            : List<dynamic>.from(scratchCard!.map((x) => x!.toJson())),
+        "scratch_amount": scratchAmount,
+        "not_scratch_amount": notScratchAmount,
+      };
+}
+
+class ScratchCard {
+  ScratchCard({
+    this.id,
+    this.scratchCardCode,
+    this.amount,
+    this.isScratched,
+    this.createdAt,
+    this.passbookId,
+    this.scratchcardId,
+    this.userId,
+  });
+
+  int? id;
+  String? scratchCardCode;
+  String? amount;
+  bool? isScratched;
+  DateTime? createdAt;
+  int? passbookId;
+  int? scratchcardId;
+  int? userId;
+
+  factory ScratchCard.fromJson(Map<String, dynamic> json) => ScratchCard(
+        id: json["id"],
+        scratchCardCode: json["scratch_card_code"],
+        amount: json["amount"],
+        isScratched: json["is_scratched"],
+        createdAt: DateTime.parse(json["created_at"]),
+        passbookId: json["passbook_id"],
+        scratchcardId: json["scratchcard_id"],
+        userId: json["user_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "scratch_card_code": scratchCardCode,
+        "amount": amount,
+        "is_scratched": isScratched,
+        "created_at": createdAt?.toIso8601String(),
+        "passbook_id": passbookId,
+        "scratchcard_id": scratchcardId,
+        "user_id": userId,
+      };
+}
+
+CardCleared? cardClearedFromJson(String str) =>
+    CardCleared.fromJson(json.decode(str));
+
+String cardClearedToJson(CardCleared? data) => json.encode(data!.toJson());
+
+class CardCleared {
+  CardCleared({
+    this.data,
+    this.amount,
+    this.message,
+  });
+
+  CardClearedData? data;
+  String? amount;
+  String? message;
+
+  factory CardCleared.fromJson(Map<String, dynamic> json) => CardCleared(
+        data: CardClearedData.fromJson(json["data"]),
+        amount: json["amount"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+        "amount": amount,
+        "message": message,
+      };
+}
+
+class CardClearedData {
+  CardClearedData({
+    this.id,
+    this.scratchCardCode,
+    this.amount,
+    this.isScratched,
+    this.createdAt,
+    this.passbookId,
+    this.scratchcardId,
+    this.userId,
+  });
+
+  int? id;
+  String? scratchCardCode;
+  String? amount;
+  bool? isScratched;
+  DateTime? createdAt;
+  int? passbookId;
+  int? scratchcardId;
+  int? userId;
+
+  factory CardClearedData.fromJson(Map<String, dynamic> json) =>
+      CardClearedData(
+        id: json["id"],
+        scratchCardCode: json["scratch_card_code"],
+        amount: json["amount"],
+        isScratched: json["is_scratched"],
+        createdAt: DateTime.parse(json["created_at"]),
+        passbookId: json["passbook_id"],
+        scratchcardId: json["scratchcard_id"],
+        userId: json["user_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "scratch_card_code": scratchCardCode,
+        "amount": amount,
+        "is_scratched": isScratched,
+        "created_at": createdAt?.toIso8601String(),
+        "passbook_id": passbookId,
+        "scratchcard_id": scratchcardId,
+        "user_id": userId,
+      };
+}

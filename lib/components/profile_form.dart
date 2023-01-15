@@ -15,7 +15,6 @@ class _profileformState extends State<profile_form> {
   final LoginController controller = !Get.isRegistered<LoginController>()
       ? Get.put(LoginController())
       : Get.find<LoginController>();
-  String name = '', address = '', email = '', dob = '', phone = '';
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +55,8 @@ class _profileformState extends State<profile_form> {
     return Wrap(
       children: [
         TextFormField(
-          onChanged: (value) {
-            name = value;
-          },
-          initialValue: "${controller.userInfo.data!.name}",
+          controller: controller.nameController,
+          // initialValue: "${controller.userInfo.data!.name}",
           decoration: InputDecoration(
             hintText: "Name",
             contentPadding: const EdgeInsets.all(5),
@@ -71,10 +68,8 @@ class _profileformState extends State<profile_form> {
           height: 10.h,
         ),
         TextFormField(
-          onChanged: (value) {
-            email = value;
-          },
-          initialValue: "${controller.userInfo.data!.email}",
+          controller: controller.emailController,
+          // initialValue: "${controller.userInfo.data!.email}",
           decoration: InputDecoration(
             hintText: "Email",
             contentPadding: const EdgeInsets.all(5),
@@ -86,11 +81,9 @@ class _profileformState extends State<profile_form> {
           height: 10.h,
         ),
         TextFormField(
-          onChanged: (value) {
-            dob = value;
-          },
-          initialValue:
-              "${controller.userInfo.data!.dob != null ? controller.userInfo.data!.dob! : ''}",
+          controller: controller.dobController,
+          // initialValue:
+          //     "${controller.userInfo.data!.dob != null ? controller.userInfo.data!.dob! : ''}",
           decoration: InputDecoration(
             suffixIcon: const Icon(Icons.calendar_month),
             hintText: "DOB",
@@ -103,10 +96,8 @@ class _profileformState extends State<profile_form> {
           height: 10.h,
         ),
         TextFormField(
-          onChanged: (value) {
-            address = value;
-          },
-          initialValue: "${controller.userInfo.data!.address}",
+          controller: controller.addressController,
+          // initialValue: "${controller.userInfo.data!.address}",
           decoration: InputDecoration(
             hintText: "Address",
             contentPadding: const EdgeInsets.all(5),
@@ -118,10 +109,8 @@ class _profileformState extends State<profile_form> {
           height: 10.h,
         ),
         TextFormField(
-          onChanged: (value) {
-            phone = value;
-          },
-          initialValue: "${controller.userInfo.data!.phone}",
+          controller: controller.mobileController,
+          // initialValue: "${controller.userInfo.data!.phone}",
           decoration: InputDecoration(
             hintText: "+91 99*******3",
             contentPadding: const EdgeInsets.all(5),
@@ -320,7 +309,13 @@ class _profileformState extends State<profile_form> {
       width: 150.w,
       child: TextButton(
         onPressed: () {
-          controller.updateProfileInfo(name, email, dob, address, phone);
+          controller.updateProfileInfo(
+            controller.nameController.text,
+            controller.emailController.text,
+            controller.dobController.text,
+            controller.addressController.text,
+            controller.mobileController.text,
+          );
           // Get.toNamed(KRecipet);
         },
         style: ButtonStyle(
