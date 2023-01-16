@@ -11,7 +11,7 @@ class Mobile_login extends StatefulWidget {
 }
 
 class _MobileloginState extends State<Mobile_login> {
-    final LoginController controller = !Get.isRegistered<LoginController>()
+  final LoginController controller = !Get.isRegistered<LoginController>()
       ? Get.put(LoginController())
       : Get.find<LoginController>();
   @override
@@ -55,20 +55,20 @@ class _MobileloginState extends State<Mobile_login> {
                 controller: controller.mobileController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  prefixIcon:
-                      //contentPadding:EdgeInsets.only(top:15),
-                      Container(
-                    margin: const EdgeInsets.only(top: 15),
-                    child: Text(
-                      "+91",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                          fontSize: kFourteenFont,
-                          color: darkGrey,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  hintText: "8210****96",
+                  //prefixIcon:
+                  //contentPadding:EdgeInsets.only(top:15),
+                  //     Container(
+                  //   margin: const EdgeInsets.only(top: 15),
+                  //   child: Text(
+                  //     "+91",
+                  //     textAlign: TextAlign.center,
+                  //     style: GoogleFonts.inter(
+                  //         fontSize: kFourteenFont,
+                  //         color: darkGrey,
+                  //         fontWeight: FontWeight.w700),
+                  //   ),
+                  // ),
+                  hintText: "Registered Email",
                   contentPadding: const EdgeInsets.only(top: 15),
                   hintStyle: GoogleFonts.inter(
                       fontSize: 11.sp,
@@ -92,10 +92,11 @@ class _MobileloginState extends State<Mobile_login> {
       width: double.infinity,
       //decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
       child: TextButton(
-        onPressed: () async{
-           bool isSentOtp = await controller.forgotPassword(controller.mobileController.text);
-          if(isSentOtp){
-              Get.toNamed(KOTP_screen);
+        onPressed: () async {
+          bool isSentOtp =
+              await controller.forgotPassword(controller.mobileController.text);
+          if (isSentOtp) {
+            Get.toNamed(KOTP_screen);
           }
         },
         style: ButtonStyle(

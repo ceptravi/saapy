@@ -24,6 +24,8 @@ class LoginController extends GetxController {
 
   final Rxn<bool> _isLoading = Rxn<bool>();
   bool get isLoading => _isLoading.value ?? false;
+  final Rxn<bool> _isProfileLoading = Rxn<bool>();
+  bool get isProfileLoading => _isProfileLoading.value ?? false;
 
   final Rxn<int> _uid = Rxn<int>();
   int get uid => _uid.value ?? 0;
@@ -43,7 +45,7 @@ class LoginController extends GetxController {
   }
 
   Future<bool> getUserInfo() async {
-    _isLoading(true);
+    _isProfileLoading(true);
     UserInfo? userInfo = await loginServices.getUserInfo(_myuser.value!.token);
     if (userInfo!.data == null) {
       _isLoading(false);
@@ -57,13 +59,14 @@ class LoginController extends GetxController {
       addressController.text =
           userInfo.data!.address != null ? userInfo.data!.address! : "";
       mobileController.text = userInfo.data!.phone!;
-      _isLoading(false);
+      _isProfileLoading(false);
       return true;
     }
   }
 
   Future<bool> login(
       BuildContext context, String password, String email, String fcm) async {
+    _isLoading(true);
     bool isUpdated = false;
     try {
       MyUser? myUser = await loginServices.login(context, password, email, fcm);
@@ -81,7 +84,7 @@ class LoginController extends GetxController {
       debugPrint("API Failed");
       isUpdated = false;
     }
-
+    _isLoading(false);
     return isUpdated;
   }
 

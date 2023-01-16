@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import '../../controllers/login_controller.dart';
 import '../../utils/export_file.dart';
 
 class UPI_code extends StatefulWidget {
@@ -10,39 +11,57 @@ class UPI_code extends StatefulWidget {
 }
 
 class _UPIcodeState extends State<UPI_code> {
+  final LoginController controller = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
+  @override
+  void initState() {
+    controller.getUserInfo();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: white,
-      appBar: AppBar(
-        elevation: 0.3,
         backgroundColor: white,
-        leading: InkWell(
-            onTap: () {
-              Get.back();
-            },
-            child: const Icon(
-              Icons.arrow_back_ios_rounded,
-              color: darkGrey,
-            )),
-      ),
-      body: Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.all(12.r),
-        child: Column(children: [
-          profile(),
-          Details(),
-          SizedBox(
-            height: 15.h,
-          ),
-          const Qr_generater(),
-          SizedBox(
-            height: 15.h,
-          ),
-          buttons(),
-        ]),
-      ),
-    );
+        appBar: AppBar(
+          elevation: 0.3,
+          backgroundColor: white,
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(
+                Icons.arrow_back_ios_rounded,
+                color: darkGrey,
+              )),
+        ),
+        body: Obx(
+          () => controller.isSkipped == false
+              ? controller.isProfileLoading == false
+                  ? Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.all(12.r),
+                      child: Column(children: [
+                        profile(),
+                        Details(),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        const Qr_generater(),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        buttons(),
+                      ]),
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    )
+              : const Center(
+                  child: Text("Please Login"),
+                ),
+        ));
   }
 
   Widget profile() {
@@ -61,12 +80,12 @@ class _UPIcodeState extends State<UPI_code> {
         SizedBox(
           height: 10.h,
         ),
-        Text('Vishnu',
+        Text(controller.userInfo.data!.name!,
             style: GoogleFonts.inter(
                 fontSize: kFourteenFont,
                 color: darkGrey,
                 fontWeight: FontWeight.w700)),
-        Text('+91 821071199',
+        Text(controller.userInfo.data!.phone!,
             style: GoogleFonts.inter(
                 fontSize: kFourteenFont,
                 color: darkGrey,

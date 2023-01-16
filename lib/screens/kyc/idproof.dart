@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import '../../controllers/wallet_controller.dart';
 import '../../utils/export_file.dart';
 
 class IdProof extends StatefulWidget {
@@ -10,6 +11,35 @@ class IdProof extends StatefulWidget {
 }
 
 class _MyIdProofState extends State<IdProof> {
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
+  String dropdownvalue1 = 'Select Document';
+  String dropdownvalue2 = 'Select Document';
+
+  // List of items in our dropdown menu
+  // var items = [
+  //   'Select Document',
+  //   'Item 2',
+  //   'Item 3',
+  //   'Item 4',
+  //   'Item 5',
+  // ];
+
+  var listData = [];
+  var items = [
+    'Select Document',
+  ];
+  @override
+  void initState() {
+    for (int i = 0; i < controller.kycTypes.data!.length; i++) {
+      listData.add(controller.kycTypes.data![i]!.title);
+      items.add(controller.kycTypes.data![i]!.title.toString());
+    }
+    // items.add(listData)
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,19 +140,39 @@ class _MyIdProofState extends State<IdProof> {
     return Column(
       children: [
         Container(
-          width: double.infinity,
-          margin: const EdgeInsets.only(left: 10, right: 10),
-          child: TextField(
-            decoration: InputDecoration(
-              suffixIcon: const Icon(Icons.arrow_drop_down_circle_outlined),
-              hintText: "Select Document",
-              hintStyle: GoogleFonts.inter(
-                fontSize: kFourteenFont,
-                fontWeight: kFW600,
-              ),
+            width: double.infinity,
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                DropdownButton(
+                  value: dropdownvalue1,
+                  items: items.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownvalue1 = newValue!;
+                    });
+                  },
+                ),
+                // const Icon(Icons.arrow_drop_down_circle_outlined),
+              ],
+            )
+            // TextField(
+            //   decoration: InputDecoration(
+            //     suffixIcon: const Icon(Icons.arrow_drop_down_circle_outlined),
+            //     hintText: "Select Document",
+            //     hintStyle: GoogleFonts.inter(
+            //       fontSize: kFourteenFont,
+            //       fontWeight: kFW600,
+            //     ),
+            //   ),
+            // ),
             ),
-          ),
-        ),
         const SizedBox(height: 20),
         Stack(
           children: [
@@ -179,15 +229,19 @@ class _MyIdProofState extends State<IdProof> {
         Container(
           width: double.infinity,
           margin: const EdgeInsets.only(left: 10, right: 10),
-          child: TextField(
-            decoration: InputDecoration(
-              suffixIcon: const Icon(Icons.arrow_drop_down_circle_outlined),
-              hintText: "Select Document",
-              hintStyle: GoogleFonts.inter(
-                fontSize: kFourteenFont,
-                fontWeight: kFW600,
-              ),
-            ),
+          child: DropdownButton(
+            value: dropdownvalue2,
+            items: items.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              setState(() {
+                dropdownvalue2 = newValue!;
+              });
+            },
           ),
         ),
         const SizedBox(height: 20),

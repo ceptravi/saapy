@@ -1,8 +1,8 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types
 
+import '../../controllers/login_controller.dart';
 import '../../controllers/signUp-controller.dart';
 import '../../utils/export_file.dart';
-
 
 class OTP_view extends StatefulWidget {
   const OTP_view({super.key});
@@ -12,9 +12,12 @@ class OTP_view extends StatefulWidget {
 }
 
 class _OTPviewState extends State<OTP_view> {
-    final SignUpController controller = !Get.isRegistered<SignUpController>()
+  final SignUpController controller = !Get.isRegistered<SignUpController>()
       ? Get.put(SignUpController())
       : Get.find<SignUpController>();
+  final LoginController loginController = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +64,7 @@ class _OTPviewState extends State<OTP_view> {
                 children: [
                   const Text("OTP Sent to"),
                   Text(
-                    "91+8210****96",
+                    "Phone",
                     style: GoogleFonts.inter(
                         fontSize: kTwelveFont,
                         color: darkGrey,
@@ -71,9 +74,9 @@ class _OTPviewState extends State<OTP_view> {
               ),
               Row(
                 children: [
-                  const Text("and"),
+                  const Text("of "),
                   Text(
-                    "toufique******@gmail.com",
+                    loginController.mobileController.text,
                     style: GoogleFonts.inter(
                         fontSize: kTwelveFont,
                         color: darkGrey,
@@ -159,18 +162,24 @@ class _OTPviewState extends State<OTP_view> {
               const Text("Sec time remaining"),
             ],
           ),
-          TextButton(onPressed: ()async{
-              bool isResent = await controller.resendOtp(context);
-              if(isResent){
-                controller.otpController.clear();
-              }
-          }, child: Text(
-            "Resend OTP",
-            style: GoogleFonts.inter(
-                fontSize: kTwelveFont,
-                color: darkGrey,
-                fontWeight: FontWeight.w600),
-          )),
+          Obx(
+            () => controller.isLoading == false
+                ? TextButton(
+                    onPressed: () async {
+                      bool isResent = await controller.resendOtp(context);
+                      if (isResent) {
+                        controller.otpController.clear();
+                      }
+                    },
+                    child: Text(
+                      "Resend OTP",
+                      style: GoogleFonts.inter(
+                          fontSize: kTwelveFont,
+                          color: darkGrey,
+                          fontWeight: FontWeight.w600),
+                    ))
+                : CircularProgressIndicator(),
+          )
         ],
       ),
     );
@@ -185,16 +194,12 @@ class _OTPviewState extends State<OTP_view> {
       width: double.infinity,
       //decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
       child: TextButton(
-        onPressed: () async{
-          bool isVerified = await controller.checkOtp(
-                  context,
-                  controller.otpController.text
-                  );
-              if (isVerified) {
-                Get.toNamed(kDashboardPage);
-              }
-          
-          
+        onPressed: () async {
+          bool isVerified =
+              await controller.checkOtp(context, controller.otpController.text);
+          if (isVerified) {
+            Get.toNamed(kDashboardPage);
+          }
         },
         style: ButtonStyle(
             backgroundColor: const MaterialStatePropertyAll<Color>(purple),

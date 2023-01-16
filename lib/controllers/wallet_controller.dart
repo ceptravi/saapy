@@ -24,6 +24,15 @@ class WalletController extends GetxController {
   Rxn<MyPassbook> _myOrders = Rxn<MyPassbook>();
   MyPassbook get myOrders => _myOrders.value ?? MyPassbook();
 
+  Rxn<MybeneficiersDetails> _myBenificerDetails = Rxn<MybeneficiersDetails>();
+  MybeneficiersDetails get myBenificerDetails =>
+      _myBenificerDetails.value ?? MybeneficiersDetails();
+
+  Rxn<AddbeneficiersDetailsData> _addBenificerDetails =
+      Rxn<AddbeneficiersDetailsData>();
+  AddbeneficiersDetailsData get addBenificerDetails =>
+      _addBenificerDetails.value ?? AddbeneficiersDetailsData();
+
   Rxn<CardCleared> _clearedCard = Rxn<CardCleared>();
   CardCleared get clearedCard => _clearedCard.value ?? CardCleared();
 
@@ -43,6 +52,9 @@ class WalletController extends GetxController {
     AddMoney? addMoney =
         await walletServices.addMoneyToWallet(token, money, couponCode!);
     _addmoney(addMoney);
+    if (addMoney != null) {
+      await walletServices.addMoneyToWalletConfirmationStatus(token, addMoney);
+    }
     _isLoading(false);
     return true;
   }
@@ -63,6 +75,10 @@ class WalletController extends GetxController {
     PayToWallet? payToWallet = await walletServices.paytoWalletApi(
         token, phone, amount, payMentMode, description, couponCode);
     _payToWallet(payToWallet);
+    if (payToWallet != null) {
+      WalletPaymentStatus? walletPaymentStatus =
+          await walletServices.paytoWalletApiResponse(token, payToWallet);
+    }
     _isLoading(false);
     return true;
   }
@@ -90,6 +106,80 @@ class WalletController extends GetxController {
     String token = Get.find<LoginController>().myuser.token!;
     KycTypes? kycTypes = await walletServices.getKycTypes(token);
     _kycTypes(kycTypes);
+    _isLoading(false);
+  }
+
+  getMybeneficiersDetails() async {
+    _isLoading(true);
+    String token = Get.find<LoginController>().myuser.token!;
+    MybeneficiersDetails? mybeneficiersDetails =
+        await walletServices.getMybeneficiersDetails(token);
+    _myBenificerDetails(mybeneficiersDetails);
+    _isLoading(false);
+  }
+
+  addMybeneficiersDetails(
+      String beneficiername,
+      String accountnumber,
+      String ifsc,
+      String bankname,
+      String mobilenumber,
+      String upiid,
+      String paytmNumber,
+      String amazonNumber) async {
+    _isLoading(true);
+    String token = Get.find<LoginController>().myuser.token!;
+    AddbeneficiersDetailsData? addbeneficiersDetailsData =
+        await walletServices.addMybeneficiersDetails(
+            token,
+            beneficiername,
+            accountnumber,
+            ifsc,
+            bankname,
+            mobilenumber,
+            upiid,
+            paytmNumber,
+            amazonNumber);
+    _addBenificerDetails(addbeneficiersDetailsData);
+    _isLoading(false);
+  }
+
+  updateMybeneficiersDetails(
+      int id,
+      String beneficiername,
+      String accountnumber,
+      String ifsc,
+      String bankname,
+      String mobilenumber,
+      String upiid,
+      String paytmNumber,
+      String amazonNumber) async {
+    _isLoading(true);
+    String token = Get.find<LoginController>().myuser.token!;
+    UpdatebeneficiersDetails? updatebeneficiersDetails =
+        await walletServices.updateMybeneficiersDetails(
+            id,
+            token,
+            beneficiername,
+            accountnumber,
+            ifsc,
+            bankname,
+            mobilenumber,
+            upiid,
+            paytmNumber,
+            amazonNumber);
+    // _addBenificerDetails(addbeneficiersDetailsData);
+    _isLoading(false);
+  }
+
+  deleteMybeneficiersDetails(
+    int id,
+  ) async {
+    _isLoading(true);
+    String token = Get.find<LoginController>().myuser.token!;
+    DeleteBeneficierAccount? deleteBeneficierAccount =
+        await walletServices.deleteMybeneficiersDetails(id, token);
+    getMybeneficiersDetails();
     _isLoading(false);
   }
 

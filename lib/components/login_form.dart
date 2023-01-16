@@ -70,14 +70,17 @@ class _LoginformState extends State<Login_form> {
               SizedBox(height: 20.h),
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(child: Text("ForgetPassword?",
-                    style: GoogleFonts.inter(
-                        fontSize: kTwelveFont,
-                        color: darkGrey,
-                        fontWeight: FontWeight.w500)),onPressed: (){
-                          Get.toNamed(KMobile_Screen);
-                          // controller.forgotPassword();
-                        },),
+                child: TextButton(
+                  child: Text("ForgetPassword?",
+                      style: GoogleFonts.inter(
+                          fontSize: kTwelveFont,
+                          color: darkGrey,
+                          fontWeight: FontWeight.w500)),
+                  onPressed: () {
+                    Get.toNamed(KMobile_Screen);
+                    // controller.forgotPassword();
+                  },
+                ),
               ),
             ],
           ),
@@ -96,32 +99,35 @@ class _LoginformState extends State<Login_form> {
           padding: const EdgeInsets.only(left: 100, right: 100),
           width: double.infinity,
           //decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-          child: TextButton(
-            onPressed: () async {
-              debugPrint("Login Pressed");
-              bool isLoggedin = await controller.login(
-                  context,
-                  controller.passwordController.text,
-                  controller.fullNameController.text,
-                  "rest");
-              if (isLoggedin) {
-                Get.toNamed(kDashboardPage);
-              } else {
-                debugPrint("LoginFailed");
-              }
-            },
-            style: ButtonStyle(
-                backgroundColor: const MaterialStatePropertyAll<Color>(purple),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r),
-                        side: const BorderSide(color: purple)))),
-            child: const Text("Login",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15)),
-          ),
+          child: Obx(() => controller.isLoading == false
+              ? TextButton(
+                  onPressed: () async {
+                    debugPrint("Login Pressed");
+                    bool isLoggedin = await controller.login(
+                        context,
+                        controller.passwordController.text,
+                        controller.fullNameController.text,
+                        "rest");
+                    if (isLoggedin) {
+                      Get.toNamed(kDashboardPage);
+                    } else {
+                      debugPrint("LoginFailed");
+                    }
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          const MaterialStatePropertyAll<Color>(purple),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              side: const BorderSide(color: purple)))),
+                  child: const Text("Login",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15)),
+                )
+              : CircularProgressIndicator()),
         ),
         Container(
             margin: const EdgeInsets.only(top: 10),

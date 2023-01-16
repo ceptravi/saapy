@@ -1,5 +1,41 @@
 import 'dart:convert';
 
+Charges? chargesFromJson(String str) => Charges.fromJson(json.decode(str));
+
+String chargesToJson(Charges? data) => json.encode(data!.toJson());
+
+class Charges {
+  Charges({
+    this.data,
+  });
+
+  ChargesData? data;
+
+  factory Charges.fromJson(Map<String, dynamic> json) => Charges(
+        data: ChargesData.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+      };
+}
+
+class ChargesData {
+  ChargesData({
+    this.charge,
+  });
+
+  String? charge;
+
+  factory ChargesData.fromJson(Map<String, dynamic> json) => ChargesData(
+        charge: json["charge"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "charge": charge,
+      };
+}
+
 RechargePlans? mobilePlansFromJson(String str) =>
     RechargePlans.fromJson(json.decode(str));
 
