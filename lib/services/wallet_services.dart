@@ -8,10 +8,16 @@ import '../utils/export_file.dart';
 
 class WalletServices extends GetxService {
   final String addMoneyApi = 'AddMoney';
+  final String addMoneyApiStatus = 'AddMoneyPaymentStatusUpdate/';
   final String passbook = 'Passbook';
   final String paytoWalletAPI = 'PayToWallet';
+  final String paytoWalletAPIStatus = 'PayToWalletPayMentStatusUpdate/';
   final String myOrdersAPI = 'MyOrders';
   final String myKycTypes = 'KyvTypes';
+  final String mybeneficiers = 'Mybeneficiers';
+  final String addbeneficiers = 'AddBeneficier';
+  final String updatebeneficiers = 'UpdateBeneficier/';
+  final String deletebeneficiers = 'DeleteBeneficier/';
   final String myScraychCards = 'Myscratchcards';
   final String myScraychCardsCleared = 'Clear_scratchcard/';
 
@@ -101,6 +107,160 @@ class WalletServices extends GetxService {
     return kycTypes;
   }
 
+  Future<MybeneficiersDetails?> getMybeneficiersDetails(String token) async {
+    MybeneficiersDetails? mybeneficiersDetails;
+
+    var url = Uri.parse(NewDEVURL + mybeneficiers);
+    var headers = {'Authorization': token};
+    try {
+      var response = await client.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        mybeneficiersDetails =
+            MybeneficiersDetails.fromJson(jsonDecode(response.body));
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return mybeneficiersDetails;
+  }
+
+  Future<AddbeneficiersDetailsData?> addMybeneficiersDetails(
+      String token,
+      String beneficiername,
+      String accountnumber,
+      String ifsc,
+      String bankname,
+      String mobilenumber,
+      String upiid,
+      String paytmNumber,
+      String amazonNumber) async {
+    AddbeneficiersDetailsData? addbeneficiersDetailsData;
+
+    var url = Uri.parse(NewDEVURL + addbeneficiers);
+    var headers = {'Authorization': token};
+    var data = {
+      "beneficiername": beneficiername,
+      "accountnumber": accountnumber,
+      "ifsc": ifsc,
+      "bankname": bankname,
+      "mobilenumber": bankname,
+      "upiid": upiid,
+      "paytm_number": paytmNumber,
+      "amazon_number": amazonNumber
+    };
+    try {
+      var response =
+          await client.post(url, headers: headers, body: jsonEncode(data));
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        addbeneficiersDetailsData =
+            AddbeneficiersDetailsData.fromJson(jsonDecode(response.body));
+        if (addbeneficiersDetailsData == null) {
+          Map map = jsonDecode(response.body);
+          Fluttertoast.showToast(
+            msg: '${map['message']}',
+            backgroundColor: Colors.grey,
+          );
+        }
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return addbeneficiersDetailsData;
+  }
+
+  Future<UpdatebeneficiersDetails?> updateMybeneficiersDetails(
+      int id,
+      String token,
+      String beneficiername,
+      String accountnumber,
+      String ifsc,
+      String bankname,
+      String mobilenumber,
+      String upiid,
+      String paytmNumber,
+      String amazonNumber) async {
+    UpdatebeneficiersDetails? updatebeneficiersDetails;
+
+    var url = Uri.parse(NewDEVURL + updatebeneficiers + "$id");
+    var headers = {'Authorization': token};
+    var data = {
+      "beneficiername": beneficiername,
+      "accountnumber": accountnumber,
+      "ifsc": ifsc,
+      "bankname": bankname,
+      "mobilenumber": bankname,
+      "upiid": upiid,
+      "paytm_number": paytmNumber,
+      "amazon_number": amazonNumber
+    };
+    try {
+      var response =
+          await client.put(url, headers: headers, body: jsonEncode(data));
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        updatebeneficiersDetails =
+            UpdatebeneficiersDetails.fromJson(jsonDecode(response.body));
+        if (updatebeneficiersDetails == null) {
+          Map map = jsonDecode(response.body);
+          Fluttertoast.showToast(
+            msg: '${map['message']}',
+            backgroundColor: Colors.grey,
+          );
+        }
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return updatebeneficiersDetails;
+  }
+
+  Future<DeleteBeneficierAccount?> deleteMybeneficiersDetails(
+    int id,
+    String token,
+  ) async {
+    DeleteBeneficierAccount? deleteBeneficierAccount;
+
+    var url = Uri.parse(NewDEVURL + deletebeneficiers + "$id");
+    var headers = {'Authorization': token};
+    try {
+      var response = await client.put(url, headers: headers);
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        deleteBeneficierAccount =
+            DeleteBeneficierAccount.fromJson(jsonDecode(response.body));
+        if (deleteBeneficierAccount == null) {
+          Map map = jsonDecode(response.body);
+          Fluttertoast.showToast(
+            msg: '${map['message']}',
+            backgroundColor: Colors.grey,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: '${deleteBeneficierAccount.message}',
+            backgroundColor: Colors.grey,
+          );
+        }
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return deleteBeneficierAccount;
+  }
+
   Future<PayToWallet?> paytoWalletApi(
       String token,
       String phone,
@@ -136,6 +296,41 @@ class WalletServices extends GetxService {
     return payToWallet;
   }
 
+  Future<WalletPaymentStatus?> paytoWalletApiResponse(
+      String token, PayToWallet payToWallet) async {
+    WalletPaymentStatus? walletPaymentStatus;
+
+    var url = Uri.parse(NewDEVURL +
+        paytoWalletAPIStatus +
+        "${walletPaymentStatus!.data!.txnid}");
+    var headers = {'Authorization': token};
+    var data = jsonEncode({
+      {
+        "order_id": walletPaymentStatus.data!.orderid,
+        "status": "Success",
+        "payment_response": walletPaymentStatus.data!.txnid,
+        "ipaddress": "49.207.5.204",
+        "browser":
+            "Dalvik/2.1.0 (Linux; U; Android 9; RMX1831 Build/PPR1.180610.011)",
+        "app_version": "1.2"
+      }
+    });
+    try {
+      var response = await client.post(url, headers: headers, body: data);
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        walletPaymentStatus =
+            WalletPaymentStatus.fromJson(jsonDecode(response.body));
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return walletPaymentStatus;
+  }
+
   Future<AddMoney?> addMoneyToWallet(
       String token, String money, String coupon) async {
     AddMoney? addMoney;
@@ -158,6 +353,38 @@ class WalletServices extends GetxService {
     }
 
     return addMoney;
+  }
+
+  Future<AddMoneyStatus?> addMoneyToWalletConfirmationStatus(
+      String token, AddMoney addMoney) async {
+    AddMoneyStatus? addMoneyStatus;
+
+    var url = Uri.parse(NewDEVURL + addMoneyApiStatus + "${addMoney.data!.id}");
+    var headers = {'Authorization': token, 'Content-Type': 'application/json'};
+
+    try {
+      var response = await client.put(url,
+          headers: headers,
+          body: jsonEncode({
+            "status": "Success",
+            "payment_response": addMoney.data!.txnid,
+            "order_id": addMoney.data!.orderid,
+            "ipaddress": "49.207.5.204",
+            "browser":
+                "Dalvik/2.1.0 (Linux; U; Android 9; RMX1831 Build/PPR1.180610.011)",
+            "app_version": "1.2"
+          }));
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        addMoneyStatus = AddMoneyStatus.fromJson(jsonDecode(response.body));
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return addMoneyStatus;
   }
 
   Future<MyScratchCards?> getMyScratchCards(String token) async {

@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import '../../utils/export_file.dart';
+import '../controllers/wallet_controller.dart';
 
 class Rewards_screens extends StatefulWidget {
   const Rewards_screens({super.key});
@@ -10,6 +11,9 @@ class Rewards_screens extends StatefulWidget {
 }
 
 class _RewardsscreensState extends State<Rewards_screens> {
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,16 +59,24 @@ class _RewardsscreensState extends State<Rewards_screens> {
   Widget transfer() {
     List categories = [
       {
+        "name": "My Scratch Cards",
+        "image": "assets/images/scratch.png",
+        "route": KScratch
+      },
+      {
         "name": "Offers",
         "image": "assets/images/giftbox.png",
+        "route": KCoupons
       },
       {
         "name": "Refer & Earn",
         "image": "assets/images/ReferEarn.png",
+        "route": KCoupons
       },
       {
         "name": "Self Transfer",
         "image": "assets/images/scratch.png",
+        "route": KCoupons
       },
     ];
     return SizedBox(
@@ -81,7 +93,12 @@ class _RewardsscreensState extends State<Rewards_screens> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(KCoupons);
+                    // Get.toNamed(KCoupons);
+                    if (categories[i]["name"] == 'My Scratch Cards') {
+                      controller.myCardsPressed(KScratch);
+                    } else {
+                      Get.toNamed(categories[i]["route"]);
+                    }
                   },
                   child: Image.asset(
                     categories[i]["image"],

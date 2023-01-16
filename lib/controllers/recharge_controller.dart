@@ -36,6 +36,9 @@ class RechargeController extends GetxController {
   final Rxn<Circles> _circles = Rxn<Circles>();
   Circles get circles => _circles.value ?? Circles();
 
+  final Rxn<Charges> _charges = Rxn<Charges>();
+  Charges get charges => _charges.value ?? Charges();
+
   final Rxn<RechargePlansData> _rechargePlan = Rxn<RechargePlansData>();
   RechargePlansData get rechargePlan =>
       _rechargePlan.value ?? RechargePlansData();
@@ -111,6 +114,17 @@ class RechargeController extends GetxController {
         token, "9985091823", _providerCode.value!, _preOrPosr.value!);
     _rechargePlans(rechargePlans);
     _addWalletPayment(addWalletPayment);
+    _isLoading(false);
+  }
+
+  getChargesForService(String amount, String type) async {
+    _isLoading(true);
+    String token = Get.find<LoginController>().myuser.token!;
+
+    Charges? charges =
+        await _homeServices.getChargesForService(token, amount, type);
+    _charges(charges);
+    // _addWalletPayment(addWalletPayment);
     _isLoading(false);
   }
 

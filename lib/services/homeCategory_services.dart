@@ -14,6 +14,7 @@ class HomeServices extends GetxService {
   final String getKycTypes = 'KyvTypes';
   final String addWallentMoney = 'AddMoney';
   final String mobilePlans = 'MobilePlan/';
+  final String getCharges = 'GetCharges/';
 
   static var client = http.Client();
 
@@ -105,5 +106,20 @@ class HomeServices extends GetxService {
       debugPrint("API Calling Failed");
     }
     return rechargePlans;
+  }
+
+  Future<Charges?> getChargesForService(
+      String token, String amount, String type) async {
+    var url = Uri.parse("$NewDEVURL$getCharges$type/$amount");
+    var headers = {'Authorization': token};
+    var response = await client.get(url, headers: headers);
+    Charges? charges;
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      charges = Charges.fromJson(jsonDecode(response.body));
+    } else {
+      debugPrint("API Calling Failed");
+    }
+    return charges;
   }
 }

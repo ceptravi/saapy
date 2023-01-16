@@ -1,4 +1,5 @@
 // ignore_for_file: camel_case_types
+import '../controllers/login_controller.dart';
 import '../controllers/wallet_controller.dart';
 import '../models/wallet.dart';
 import '../utils/export_file.dart';
@@ -14,6 +15,9 @@ class _ScratchScreenState extends State<Scratch_Screen> {
   final WalletController controller = !Get.isRegistered<WalletController>()
       ? Get.put(WalletController())
       : Get.find<WalletController>();
+  final LoginController loginController = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,17 +55,31 @@ class _ScratchScreenState extends State<Scratch_Screen> {
                   margin: EdgeInsets.only(top: 10.h, left: 20.h),
                   child: Row(
                     children: [
-                      Text('\u{20B9}',
-                          style: GoogleFonts.inter(
-                              fontSize: kTwentyFourFont,
-                              color: darkGrey,
-                              fontWeight: FontWeight.w300)),
-                      SizedBox(width: 4.w),
-                      Text('15,065',
-                          style: GoogleFonts.inter(
-                              fontSize: kTwentyFourFont,
-                              color: darkGrey,
-                              fontWeight: FontWeight.w700)),
+                      // Text('\u{20B9}',
+                      //     style: GoogleFonts.inter(
+                      //         fontSize: kTwentyFourFont,
+                      //         color: darkGrey,
+                      //         fontWeight: FontWeight.w300)),
+                      // SizedBox(width: 4.w),
+                      Obx(
+                        () => loginController.isLoading == false
+                            ? Row(
+                                children: [
+                                  Text('\u{20B9}',
+                                      style: GoogleFonts.inter(
+                                          fontSize: kTwentyFourFont,
+                                          color: darkGrey,
+                                          fontWeight: FontWeight.w300)),
+                                  Text(
+                                      '${loginController.userInfo.data!.walletBalance}',
+                                      style: GoogleFonts.inter(
+                                          fontSize: kTwentyFourFont,
+                                          color: darkGrey,
+                                          fontWeight: FontWeight.w700)),
+                                ],
+                              )
+                            : CircularProgressIndicator(),
+                      ),
                     ],
                   ),
                 ),

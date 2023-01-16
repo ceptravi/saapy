@@ -121,6 +121,7 @@ class SignUpServices extends GetxService {
     }
     return myUser;
   }
+
   Future resendOtp(
     BuildContext context,
     int? id,
@@ -140,10 +141,10 @@ class SignUpServices extends GetxService {
       if (response.statusCode == 200) {
         try {
           resendOtp = ResendOtp.fromJson(jsonDecode(response.body));
-              Fluttertoast.showToast(
-                msg: '${resendOtp.message}',
-                backgroundColor: Colors.grey,
-              );
+          Fluttertoast.showToast(
+            msg: '${resendOtp.message}',
+            backgroundColor: Colors.grey,
+          );
         } on Exception catch (e) {
           debugPrint('Exception while parsing the json $e');
           throw Exception(e);

@@ -56,6 +56,110 @@ class AddMoneyData {
         "txnid": txnid,
       };
 }
+
+AddMoneyStatus? addMoneyStatusFromJson(String str) =>
+    AddMoneyStatus.fromJson(json.decode(str));
+
+String addMoneyStatusToJson(AddMoneyStatus? data) =>
+    json.encode(data!.toJson());
+
+class AddMoneyStatus {
+  AddMoneyStatus({
+    this.data,
+    this.isScratch,
+    this.message,
+  });
+
+  AddMoneyStatusData? data;
+  int? isScratch;
+  String? message;
+
+  factory AddMoneyStatus.fromJson(Map<String, dynamic> json) => AddMoneyStatus(
+        data: AddMoneyStatusData.fromJson(json["data"]),
+        isScratch: json["is_scratch"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+        "is_scratch": isScratch,
+        "message": message,
+      };
+}
+
+class AddMoneyStatusData {
+  AddMoneyStatusData({
+    this.id,
+    this.txnid,
+    this.orderid,
+    this.amount,
+    this.paymentResponse,
+    this.paymentDate,
+    this.description,
+    this.message,
+    this.paymentModeId,
+    this.paymentStatusId,
+    this.userId,
+    this.couponId,
+    this.couponAmount,
+    this.charges,
+    this.recharge,
+  });
+
+  int? id;
+  String? txnid;
+  String? orderid;
+  String? amount;
+  String? paymentResponse;
+  DateTime? paymentDate;
+  String? description;
+  String? message;
+  int? paymentModeId;
+  int? paymentStatusId;
+  int? userId;
+  dynamic couponId;
+  dynamic couponAmount;
+  String? charges;
+  String? recharge;
+
+  factory AddMoneyStatusData.fromJson(Map<String, dynamic> json) =>
+      AddMoneyStatusData(
+        id: json["id"],
+        txnid: json["txnid"],
+        orderid: json["orderid"],
+        amount: json["amount"],
+        paymentResponse: json["payment_response"],
+        paymentDate: DateTime.parse(json["payment_date"]),
+        description: json["description"],
+        message: json["message"],
+        paymentModeId: json["payment_mode_id"],
+        paymentStatusId: json["payment_status_id"],
+        userId: json["user_id"],
+        couponId: json["coupon_id"],
+        couponAmount: json["coupon_amount"],
+        charges: json["charges"],
+        recharge: json["recharge"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "txnid": txnid,
+        "orderid": orderid,
+        "amount": amount,
+        "payment_response": paymentResponse,
+        "payment_date": paymentDate?.toIso8601String(),
+        "description": description,
+        "message": message,
+        "payment_mode_id": paymentModeId,
+        "payment_status_id": paymentStatusId,
+        "user_id": userId,
+        "coupon_id": couponId,
+        "coupon_amount": couponAmount,
+        "charges": charges,
+        "recharge": recharge,
+      };
+}
+
 /*******************PASSBOOK */
 
 MyPassbook? passbookFromJson(String str) =>
@@ -386,6 +490,63 @@ class PayToWalletData {
       };
 }
 
+/**********************Payment Wallet STatus */
+WalletPaymentStatus? walletPaymentStatusFromJson(String str) =>
+    WalletPaymentStatus.fromJson(json.decode(str));
+
+String walletPaymentStatusToJson(WalletPaymentStatus? data) =>
+    json.encode(data!.toJson());
+
+class WalletPaymentStatus {
+  WalletPaymentStatus({
+    this.data,
+    this.isScratch,
+    this.message,
+  });
+
+  WalletPaymentStatusData? data;
+  int? isScratch;
+  String? message;
+
+  factory WalletPaymentStatus.fromJson(Map<String, dynamic> json) =>
+      WalletPaymentStatus(
+        data: WalletPaymentStatusData.fromJson(json["data"]),
+        isScratch: json["is_scratch"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+        "is_scratch": isScratch,
+        "message": message,
+      };
+}
+
+class WalletPaymentStatusData {
+  WalletPaymentStatusData({
+    this.txnid,
+    this.orderid,
+    this.status,
+  });
+
+  String? txnid;
+  String? orderid;
+  String? status;
+
+  factory WalletPaymentStatusData.fromJson(Map<String, dynamic> json) =>
+      WalletPaymentStatusData(
+        txnid: json["txnid"],
+        orderid: json["orderid"],
+        status: json["status"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "txnid": txnid,
+        "orderid": orderid,
+        "status": status,
+      };
+}
+
 KycTypes? kycTypesFromJson(String str) => KycTypes.fromJson(json.decode(str));
 
 String kycTypesToJson(KycTypes? data) => json.encode(data!.toJson());
@@ -426,13 +587,13 @@ class KycTypesData {
   int? id;
   String? title;
   bool? isActive;
-  DateTime? createdAt;
+  String? createdAt;
 
   factory KycTypesData.fromJson(Map<String, dynamic> json) => KycTypesData(
         id: json["id"],
         title: json["title"],
         isActive: json["is_active"],
-        createdAt: json["created_at"],
+        createdAt: json["created_at"] != null ? json["created_at"] : "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -614,5 +775,246 @@ class CardClearedData {
         "passbook_id": passbookId,
         "scratchcard_id": scratchcardId,
         "user_id": userId,
+      };
+}
+
+MybeneficiersDetails? mybeneficiersDetailsFromJson(String str) =>
+    MybeneficiersDetails.fromJson(json.decode(str));
+
+String mybeneficiersDetailsToJson(MybeneficiersDetails? data) =>
+    json.encode(data!.toJson());
+
+class MybeneficiersDetails {
+  MybeneficiersDetails({
+    this.data,
+  });
+
+  List<MybeneficiersDetailsData?>? data;
+
+  factory MybeneficiersDetails.fromJson(Map<String, dynamic> json) =>
+      MybeneficiersDetails(
+        data: json["data"] == null
+            ? []
+            : List<MybeneficiersDetailsData?>.from(
+                json["data"]!.map((x) => MybeneficiersDetailsData.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data == null
+            ? []
+            : List<dynamic>.from(data!.map((x) => x!.toJson())),
+      };
+}
+
+class MybeneficiersDetailsData {
+  MybeneficiersDetailsData({
+    this.id,
+    this.beneName,
+    this.beneAccountNumber,
+    this.validatedAt,
+    this.createdAt,
+    this.apiId,
+    this.userId,
+    this.amazonNumber,
+    this.bankName,
+    this.ifsc,
+    this.isActive,
+    this.paytmNumber,
+    this.upi,
+    this.mobilenumber,
+  });
+
+  int? id;
+  String? beneName;
+  String? beneAccountNumber;
+  dynamic validatedAt;
+  DateTime? createdAt;
+  int? apiId;
+  int? userId;
+  String? amazonNumber;
+  dynamic bankName;
+  String? ifsc;
+  bool? isActive;
+  String? paytmNumber;
+  String? upi;
+  String? mobilenumber;
+
+  factory MybeneficiersDetailsData.fromJson(Map<String, dynamic> json) =>
+      MybeneficiersDetailsData(
+        id: json["id"],
+        beneName: json["beneName"],
+        beneAccountNumber: json["beneAccountNumber"],
+        validatedAt: json["validated_at"],
+        createdAt: DateTime.parse(json["created_at"]),
+        apiId: json["api_id"],
+        userId: json["user_id"],
+        amazonNumber: json["amazonNumber"],
+        bankName: json["bankName"],
+        ifsc: json["ifsc"],
+        isActive: json["is_active"],
+        paytmNumber: json["paytmNumber"],
+        upi: json["upi"],
+        mobilenumber: json["mobilenumber"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "beneName": beneName,
+        "beneAccountNumber": beneAccountNumber,
+        "validated_at": validatedAt,
+        "created_at": createdAt?.toIso8601String(),
+        "api_id": apiId,
+        "user_id": userId,
+        "amazonNumber": amazonNumber,
+        "bankName": bankName,
+        "ifsc": ifsc,
+        "is_active": isActive,
+        "paytmNumber": paytmNumber,
+        "upi": upi,
+        "mobilenumber": mobilenumber,
+      };
+}
+
+AddbeneficiersDetails? addbeneficiersDetailsFromJson(String str) =>
+    AddbeneficiersDetails.fromJson(json.decode(str));
+
+String addbeneficiersDetailsToJson(AddbeneficiersDetails? data) =>
+    json.encode(data!.toJson());
+
+class AddbeneficiersDetails {
+  AddbeneficiersDetails({
+    this.data,
+    this.message,
+  });
+
+  AddbeneficiersDetailsData? data;
+  String? message;
+
+  factory AddbeneficiersDetails.fromJson(Map<String, dynamic> json) =>
+      AddbeneficiersDetails(
+        data: AddbeneficiersDetailsData.fromJson(json["data"]),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+        "message": message,
+      };
+}
+
+class AddbeneficiersDetailsData {
+  AddbeneficiersDetailsData({
+    this.id,
+    this.beneName,
+    this.createdAt,
+    this.apiId,
+    this.userId,
+    this.isActive,
+    this.beneAccountNumber,
+    this.ifsc,
+    this.upi,
+    this.paytmNumber,
+    this.amazonNumber,
+    this.mobilenumber,
+  });
+
+  int? id;
+  String? beneName;
+  DateTime? createdAt;
+  int? apiId;
+  int? userId;
+  bool? isActive;
+  String? beneAccountNumber;
+  String? ifsc;
+  String? upi;
+  String? paytmNumber;
+  String? amazonNumber;
+  String? mobilenumber;
+
+  factory AddbeneficiersDetailsData.fromJson(Map<String, dynamic> json) =>
+      AddbeneficiersDetailsData(
+        id: json["id"],
+        beneName: json["beneName"],
+        createdAt: DateTime.parse(json["created_at"]),
+        apiId: json["api_id"],
+        userId: json["user_id"],
+        isActive: json["is_active"],
+        beneAccountNumber: json["beneAccountNumber"],
+        ifsc: json["ifsc"],
+        upi: json["upi"],
+        paytmNumber: json["paytmNumber"],
+        amazonNumber: json["amazonNumber"],
+        mobilenumber: json["mobilenumber"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "beneName": beneName,
+        "created_at": createdAt?.toIso8601String(),
+        "api_id": apiId,
+        "user_id": userId,
+        "is_active": isActive,
+        "beneAccountNumber": beneAccountNumber,
+        "ifsc": ifsc,
+        "upi": upi,
+        "paytmNumber": paytmNumber,
+        "amazonNumber": amazonNumber,
+        "mobilenumber": mobilenumber,
+      };
+}
+
+UpdatebeneficiersDetails? updatebeneficiersDetailsFromJson(String str) =>
+    UpdatebeneficiersDetails.fromJson(json.decode(str));
+
+String updatebeneficiersDetailsToJson(UpdatebeneficiersDetails? data) =>
+    json.encode(data!.toJson());
+
+class UpdatebeneficiersDetails {
+  UpdatebeneficiersDetails({
+    this.data,
+    this.message,
+  });
+
+  List<int?>? data;
+  String? message;
+
+  factory UpdatebeneficiersDetails.fromJson(Map<String, dynamic> json) =>
+      UpdatebeneficiersDetails(
+        data: json["data"] == null
+            ? []
+            : List<int?>.from(json["data"]!.map((x) => x)),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x)),
+        "message": message,
+      };
+}
+
+DeleteBeneficierAccount? deleteBeneficierAccountFromJson(String str) =>
+    DeleteBeneficierAccount.fromJson(json.decode(str));
+
+String deleteBeneficierAccountToJson(DeleteBeneficierAccount? data) =>
+    json.encode(data!.toJson());
+
+class DeleteBeneficierAccount {
+  DeleteBeneficierAccount({
+    this.data,
+    this.message,
+  });
+
+  int? data;
+  String? message;
+
+  factory DeleteBeneficierAccount.fromJson(Map<String, dynamic> json) =>
+      DeleteBeneficierAccount(
+        data: json["data"],
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data,
+        "message": message,
       };
 }

@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moon_start_builders/controllers/login_controller.dart';
 
 import '../models/signUpModes.dart';
@@ -9,14 +10,17 @@ class SignUpController extends GetxController {
   Rxn<Register> _register = Rxn<Register>();
   Register get register => _register.value ?? Register();
 
-    Rxn<ResendOtp> _resendOtp = Rxn<ResendOtp>();
+  Rxn<ResendOtp> _resendOtp = Rxn<ResendOtp>();
   ResendOtp get resendOTP => _resendOtp.value ?? ResendOtp();
 
-    final Rxn<MyUser> _myuser = Rxn<MyUser>();
+  final Rxn<MyUser> _myuser = Rxn<MyUser>();
   MyUser get myuser => _myuser.value ?? MyUser();
 
-    final Rxn<bool> _isSkipped = Rxn<bool>();
+  final Rxn<bool> _isSkipped = Rxn<bool>();
   bool get isSkipped => _isSkipped.value ?? false;
+
+  final Rxn<bool> _isLoading = Rxn<bool>();
+  bool get isLoading => _isLoading.value ?? false;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -26,7 +30,7 @@ class SignUpController extends GetxController {
   TextEditingController fcmController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 
-    void skipPressed(bool isSkipped) {
+  void skipPressed(bool isSkipped) {
     _isSkipped(isSkipped);
   }
 
@@ -55,14 +59,19 @@ class SignUpController extends GetxController {
 
     return isUpdated;
   }
+
   Future<bool> checkOtp(
-      BuildContext context,
-      String otp,
-      ) async {
+    BuildContext context,
+    String otp,
+  ) async {
     bool isUpdated = false;
     try {
-      MyUser? myUser  = await signUpServices.checkOtp(
-          context, otp,_register.value!=null?_register.value!.data!.userId!:Get.find<LoginController>().uid);
+      MyUser? myUser = await signUpServices.checkOtp(
+          context,
+          otp,
+          _register.value != null
+              ? _register.value!.data!.userId!
+              : Get.find<LoginController>().uid);
       _myuser(myUser);
       if (myUser == null) {
         isUpdated = false;
@@ -75,9 +84,11 @@ class SignUpController extends GetxController {
     }
     return isUpdated;
   }
-    Future<bool> resendOtp(
-      BuildContext context,
-      ) async {
+
+  Future<bool> resendOtp(
+    BuildContext context,
+  ) async {
+    _isLoading(true);
     bool isUpdated = false;
     try {
       ResendOtp? resendOtp = await signUpServices.resendOtp(
@@ -89,9 +100,14 @@ class SignUpController extends GetxController {
         isUpdated = true;
       }
     } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Please Try Later',
+        backgroundColor: Colors.grey,
+      );
       debugPrint("API Failed");
       isUpdated = false;
     }
+    _isLoading(false);
 
     return isUpdated;
   }
