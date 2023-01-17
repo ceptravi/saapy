@@ -1,6 +1,7 @@
 // ignore: depend_on_referenced_packages
 import 'dart:convert';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/homeServices.dart';
@@ -15,6 +16,7 @@ class HomeServices extends GetxService {
   final String addWallentMoney = 'AddMoney';
   final String mobilePlans = 'MobilePlan/';
   final String getCharges = 'GetCharges/';
+  final String doChargeAPI = 'MobileRecharge';
 
   static var client = http.Client();
 
@@ -121,5 +123,41 @@ class HomeServices extends GetxService {
       debugPrint("API Calling Failed");
     }
     return charges;
+  }
+
+  Future<DoRechrge?> doRecharge(String token, int amount, String providercode,
+      String type, int paymentMode, int circlCode, String mobile) async {
+    var url = Uri.parse(NewDEVURL + doChargeAPI);
+    var headers = {
+      'Authorization': token,
+      "content-type": "application/json",
+    };
+
+    var data = {
+      "mobilenumber": mobile,
+      "providercode": providercode,
+      "amount": amount,
+      "type": type,
+      "payment_mode": paymentMode,
+      "circle_code": circlCode
+    };
+    var response =
+        await client.post(url, headers: headers, body: jsonEncode(data));
+    DoRechrge? doRechrge;
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      try {
+        doRechrge = DoRechrge.fromJson(jsonDecode(response.body));
+      } catch (e) {
+        Map map = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: '${map['message']}',
+          backgroundColor: Colors.grey,
+        );
+      }
+    } else {
+      debugPrint("API Calling Failed");
+    }
+    return doRechrge;
   }
 }

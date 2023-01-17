@@ -118,7 +118,7 @@ class _RecahargetabState extends State<Recaharge_tab> {
                   margin: EdgeInsets.all(12.h),
                   padding: EdgeInsets.all(10.r),
                   width: double.infinity,
-                  height: 168.h,
+                  height: 188.h,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.r),
                       gradient: const LinearGradient(
@@ -191,7 +191,7 @@ class _RecahargetabState extends State<Recaharge_tab> {
                         height: 3.h,
                       ),
                       Text(
-                          " ${controller.rechargePlans.data![index]!.desc.toString().split('\n')[controller.rechargePlans.data![index]!.desc.toString().split('\n').length - 1]}",
+                          " ${controller.rechargePlans.data![index]!.desc.toString()}",
                           style: GoogleFonts.inter(
                               fontSize: kTenFont,
                               color: lightgrey,

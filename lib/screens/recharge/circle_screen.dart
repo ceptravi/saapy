@@ -118,7 +118,8 @@ class _AllCirclesState extends State<AllCircles> {
                                 onChanged: (value) {
                                   setState(() {
                                     controller.circleSelected(
-                                        controller.circles.data![i].circle!);
+                                        controller.circles.data![i].circle!,
+                                        controller.circles.data![i].id!);
                                     // this.valuesecond = value;
                                   });
                                 },

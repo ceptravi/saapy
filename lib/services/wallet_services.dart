@@ -14,6 +14,7 @@ class WalletServices extends GetxService {
   final String paytoWalletAPIStatus = 'PayToWalletPayMentStatusUpdate/';
   final String myOrdersAPI = 'MyOrders';
   final String myKycTypes = 'KyvTypes';
+  final String addKycData = 'AddKyc';
   final String mybeneficiers = 'Mybeneficiers';
   final String addbeneficiers = 'AddBeneficier';
   final String updatebeneficiers = 'UpdateBeneficier/';
@@ -97,6 +98,43 @@ class WalletServices extends GetxService {
       if (response.statusCode == 200) {
         debugPrint(response.body);
         kycTypes = KycTypes.fromJson(jsonDecode(response.body));
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return kycTypes;
+  }
+
+  Future<KycTypes?> addKycDetails(
+      String token, String number, String image) async {
+    KycTypes? kycTypes;
+
+    var url = Uri.parse(NewDEVURL + addKycData);
+    var headers = {'Authorization': token};
+    var data = {
+      {
+        "basic_or_full_type": "full",
+        "kyctype_id": 1,
+        "number": "112111",
+        "image ": "w34525235255"
+      }
+    };
+    try {
+      var response =
+          await client.post(url, headers: headers, body: jsonEncode(data));
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        kycTypes = KycTypes.fromJson(jsonDecode(response.body));
+        if (kycTypes == null) {
+          Map map = jsonDecode(response.body);
+          Fluttertoast.showToast(
+            msg: '${map['message']}',
+            backgroundColor: Colors.grey,
+          );
+        }
       } else {
         debugPrint("API Calling Failed");
       }

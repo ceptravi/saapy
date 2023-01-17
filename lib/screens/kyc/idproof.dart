@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:image_picker/image_picker.dart';
+
 import '../../controllers/wallet_controller.dart';
 import '../../utils/export_file.dart';
 
@@ -30,6 +32,7 @@ class _MyIdProofState extends State<IdProof> {
   var items = [
     'Select Document',
   ];
+
   @override
   void initState() {
     for (int i = 0; i < controller.kycTypes.data!.length; i++) {
@@ -245,51 +248,52 @@ class _MyIdProofState extends State<IdProof> {
           ),
         ),
         const SizedBox(height: 20),
-        Stack(
-          children: [
-            Image.asset("assets/images/Framethree.png"),
-            GestureDetector(
-              onTap: () {
-                // Get.toNamed(KIDP);
-              },
-              child: Container(
-                margin: const EdgeInsets.only(top: 40),
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      // color: Colors.blue,
-                      width: 200,
-                      margin: const EdgeInsets.only(left: 2, right: 5),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Enter Document No",
-                          hintStyle: GoogleFonts.inter(
-                            fontSize: kFourteenFont,
-                            fontWeight: kFW600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 30),
-                    Container(
-                      padding: const EdgeInsets.only(top: 7),
-                      child: Text(
-                        "Browse +",
-                        style: GoogleFonts.inter(
-                            fontSize: kFourteenFont,
-                            fontWeight: kFW600,
-                            color: darkGrey),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
+        TextButton(onPressed: () async {}, child: Text("Select Image"))
+        // Stack(
+        //   children: [
+        //     Image.asset("assets/images/Framethree.png"),
+        //     GestureDetector(
+        //       onTap: () {
+        //         // Get.toNamed(KIDP);
+        //       },
+        //       child: Container(
+        //         margin: const EdgeInsets.only(top: 40),
+        //         padding: const EdgeInsets.only(left: 20, right: 20),
+        //         child: Row(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           mainAxisAlignment: MainAxisAlignment.start,
+        //           children: [
+        //             Container(
+        //               // color: Colors.blue,
+        //               width: 200,
+        //               margin: const EdgeInsets.only(left: 2, right: 5),
+        //               child: TextField(
+        //                 decoration: InputDecoration(
+        //                   hintText: "Enter Document No",
+        //                   hintStyle: GoogleFonts.inter(
+        //                     fontSize: kFourteenFont,
+        //                     fontWeight: kFW600,
+        //                   ),
+        //                 ),
+        //               ),
+        //             ),
+        //             const SizedBox(width: 30),
+        //             Container(
+        //               padding: const EdgeInsets.only(top: 7),
+        //               child: Text(
+        //                 "Browse +",
+        //                 style: GoogleFonts.inter(
+        //                     fontSize: kFourteenFont,
+        //                     fontWeight: kFW600,
+        //                     color: darkGrey),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     )
+        //   ],
+        // ),
       ],
     );
   }
