@@ -342,3 +342,64 @@ class AddPaymentData {
     return _data;
   }
 }
+
+DoRechrge? doRechrgeFromJson(String str) =>
+    DoRechrge.fromJson(json.decode(str));
+
+String doRechrgeToJson(DoRechrge? data) => json.encode(data!.toJson());
+
+class DoRechrge {
+  DoRechrge({
+    this.data,
+    this.message,
+  });
+
+  DoRechrgeData? data;
+  dynamic message;
+
+  factory DoRechrge.fromJson(Map<String, dynamic> json) => DoRechrge(
+        data: DoRechrgeData.fromJson(json["data"]),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data!.toJson(),
+        "message": message,
+      };
+}
+
+class DoRechrgeData {
+  DoRechrgeData({
+    this.id,
+    this.amount,
+    this.orderid,
+    this.paymentstatus,
+    this.module,
+    this.txnid,
+  });
+
+  int? id;
+  int? amount;
+  int? orderid;
+  int? paymentstatus;
+  String? module;
+  String? txnid;
+
+  factory DoRechrgeData.fromJson(Map<String, dynamic> json) => DoRechrgeData(
+        id: json["id"],
+        amount: json["amount"],
+        orderid: json["orderid"],
+        paymentstatus: json["paymentstatus"],
+        module: json["module"],
+        txnid: json["txnid"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "amount": amount,
+        "orderid": orderid,
+        "paymentstatus": paymentstatus,
+        "module": module,
+        "txnid": txnid,
+      };
+}

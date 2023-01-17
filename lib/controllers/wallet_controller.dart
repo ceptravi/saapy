@@ -109,6 +109,15 @@ class WalletController extends GetxController {
     _isLoading(false);
   }
 
+  addKycDetails(String number, String image) async {
+    _isLoading(true);
+    String token = Get.find<LoginController>().myuser.token!;
+    KycTypes? kycTypes =
+        await walletServices.addKycDetails(token, number, image);
+    _kycTypes(kycTypes);
+    _isLoading(false);
+  }
+
   getMybeneficiersDetails() async {
     _isLoading(true);
     String token = Get.find<LoginController>().myuser.token!;

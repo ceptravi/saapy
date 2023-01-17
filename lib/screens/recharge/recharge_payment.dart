@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types
 
+import '../../controllers/login_controller.dart';
 import '../../controllers/recharge_controller.dart';
 import '../../utils/export_file.dart';
 
@@ -14,6 +15,16 @@ class _RechargepaymentState extends State<Recharge_payment> {
   final RechargeController controller = !Get.isRegistered<RechargeController>()
       ? Get.put(RechargeController())
       : Get.find<RechargeController>();
+  final LoginController loginController = !Get.isRegistered<LoginController>()
+      ? Get.put(LoginController())
+      : Get.find<LoginController>();
+  var isChecked = false.obs;
+  @override
+  void initState() {
+    loginController.getUserInfo();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,7 +212,6 @@ class _RechargepaymentState extends State<Recharge_payment> {
   }
 
   Widget Wallet_balance() {
-    bool isChecked = false;
     return Container(
       padding: EdgeInsets.only(left: 10.w, right: 10.w),
       child: Row(
@@ -209,16 +219,16 @@ class _RechargepaymentState extends State<Recharge_payment> {
         children: [
           Row(
             children: [
-              Checkbox(
-                //overlayColor: purple,
-                checkColor: Colors.white,
-                value: isChecked,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isChecked = value!;
-                  });
-                },
-              ),
+              Obx(() => Checkbox(
+                    //overlayColor: purple,
+                    checkColor: Colors.white,
+                    value: isChecked.value,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked.value = value!;
+                      });
+                    },
+                  )),
               Text(
                 "Wallet Balance",
                 style: GoogleFonts.inter(
@@ -229,11 +239,13 @@ class _RechargepaymentState extends State<Recharge_payment> {
               )
             ],
           ),
-          Text('\u{20B9}${665}',
-              style: GoogleFonts.inter(
-                  fontSize: kEighteenFont,
-                  color: darkGrey,
-                  fontWeight: FontWeight.w600)),
+          Obx(() => loginController.isLoading == false
+              ? Text('\u{20B9}${loginController.userInfo.data!.walletBalance}',
+                  style: GoogleFonts.inter(
+                      fontSize: kEighteenFont,
+                      color: darkGrey,
+                      fontWeight: FontWeight.w600))
+              : CircularProgressIndicator()),
         ],
       ),
     );
@@ -338,7 +350,7 @@ class _RechargepaymentState extends State<Recharge_payment> {
                       ],
                     ),
                     Text(
-                      "\u{20B9}${5152}",
+                      "\u{20B9}${loginController.userInfo.data!.walletBalance}",
                       style: GoogleFonts.inter(
                           fontSize: kEighteenFont,
                           color: darkGrey,
@@ -445,7 +457,9 @@ class _RechargepaymentState extends State<Recharge_payment> {
   Widget Pay_button() {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(kDashboardPage);
+        controller.doRecharge(controller.numberController.text, 15,
+            isChecked.value == true ? 1 : 2);
+        // Get.toNamed(kDashboardPage);
       },
       child: Container(
         height: 42.h,

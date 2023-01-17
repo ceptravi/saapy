@@ -24,6 +24,12 @@ class RechargeController extends GetxController {
   final Rxn<String> _circle = Rxn<String>();
   String get circle => _circle.value ?? "";
 
+  final Rxn<int> _circleCode = Rxn<int>();
+  int get circleCode => _circleCode.value ?? 0;
+
+  final Rxn<DoRechrge> _dorecharge = Rxn<DoRechrge>();
+  DoRechrge get dorecharge => _dorecharge.value ?? DoRechrge();
+
   final Rxn<String> _moduleName = Rxn<String>();
   String get moduleName => _moduleName.value ?? "";
 
@@ -106,7 +112,27 @@ class RechargeController extends GetxController {
     return true;
   }
 
+  doRecharge(String mobile, int amount, int paymentMode) async {
+    _isLoading(true);
+    String token = Get.find<LoginController>().myuser.token!;
+
+    DoRechrge? doRechrge = await _homeServices.doRecharge(
+        token,
+        amount,
+        _providerCode.value!,
+        _preOrPosr.value == 1 ? "prepaid" : "postpaid",
+        paymentMode,
+        _circleCode.value!,
+        mobile);
+    _dorecharge(doRechrge);
+    // _addWalletPayment(addWalletPayment);
+    _isLoading(false);
+  }
+
   getRechargePlans() async {
+    debugPrint("Circle is = ${_circle.value}");
+    debugPrint("Circle code is= ${_circleCode.value}");
+
     _isLoading(true);
     String token = Get.find<LoginController>().myuser.token!;
 
@@ -133,8 +159,9 @@ class RechargeController extends GetxController {
     _providerCode(code);
   }
 
-  circleSelected(String circle) {
+  circleSelected(String circle, int circleCode) {
     _circle(circle);
+    _circleCode(circleCode);
   }
 
   storeRechargePlan(RechargePlansData? rechargePlansData) {
