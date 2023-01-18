@@ -48,6 +48,79 @@ class WalletServices extends GetxService {
   //   return addMoney;
   // }
 
+  // Future<MyPassbook?> getPassBookDetails(String token) async {
+  //   MyPassbook? myPassbook;
+
+  //   var url = Uri.parse(NewDEVURL + passbook);
+  //   var headers = {'Authorization': token};
+  //   try {
+  //     var response = await client.post(url, headers: headers);
+  //     if (response.statusCode == 200) {
+  //       debugPrint(response.body);
+  //       myPassbook = MyPassbook.fromJson(jsonDecode(response.body));
+  //     } else {
+  //       debugPrint("API Calling Failed");
+  //     }
+  //   } catch (e) {
+  //     debugPrint("error $e");
+  //   }
+
+  //   return myPassbook;
+  // }
+
+  // getbankDetails
+
+  Future<MyBankDetails?> getbankDetails(String token) async {
+    MyBankDetails? myBankDetails;
+
+    var url = Uri.parse(NewDEVURL + mybeneficiers);
+    var headers = {'Authorization': token};
+    try {
+      var response = await client.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        myBankDetails = MyBankDetails.fromJson(jsonDecode(response.body));
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return myBankDetails;
+  }
+
+  Future<AddBankDetails?> addBankDetails(String token) async {
+    AddBankDetails? addBankDetails;
+
+    var url = Uri.parse(NewDEVURL + addbeneficiers);
+    var headers = {'Authorization': token, 'Content-Type': 'application/json'};
+    var data = {
+      "beneficiername": "Testingname",
+      "accountnumber": "2311223322",
+      "ifsc": "223222",
+      "bankname": "3233",
+      "mobilenumber": "4433444444",
+      "upiid": "55544",
+      "paytm_number": "6446",
+      "amazon_number": "73477"
+    };
+    try {
+      var response =
+          await client.post(url, headers: headers, body: jsonEncode(data));
+      if (response.statusCode == 200) {
+        debugPrint(response.body);
+        addBankDetails = AddBankDetails.fromJson(jsonDecode(response.body));
+      } else {
+        debugPrint("API Calling Failed");
+      }
+    } catch (e) {
+      debugPrint("error $e");
+    }
+
+    return addBankDetails;
+  }
+
   Future<MyPassbook?> getPassBookDetails(String token) async {
     MyPassbook? myPassbook;
 

@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import '../../controllers/wallet_controller.dart';
 import '../../utils/export_file.dart';
 
 class Self_tranfer extends StatefulWidget {
@@ -10,7 +11,15 @@ class Self_tranfer extends StatefulWidget {
 }
 
 class _SelftranferState extends State<Self_tranfer> {
+  final WalletController controller = !Get.isRegistered<WalletController>()
+      ? Get.put(WalletController())
+      : Get.find<WalletController>();
   @override
+  void initState() {
+    controller.getMyBankDetails();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white,
@@ -58,7 +67,9 @@ class _SelftranferState extends State<Self_tranfer> {
           SizedBox(
             height: 5.h,
           ),
-          transfer_fromback(),
+          Obx(() => controller.isLoading == false
+              ? transfer_fromback()
+              : Container()),
           Container(
               margin: const EdgeInsets.only(left: 15, top: 20),
               child: Text(
@@ -71,14 +82,20 @@ class _SelftranferState extends State<Self_tranfer> {
           SizedBox(
             height: 5.h,
           ),
-          transfer_TOback(),
+          Obx(() =>
+              controller.isLoading == false ? transfer_TOback() : Container()),
           Container(
               margin: const EdgeInsets.only(left: 15, top: 20),
-              child: Text(
-                "Add Bank Account +",
-                style: GoogleFonts.inter(
-                  fontSize: kFourteenFont,
-                  fontWeight: kFW500,
+              child: TextButton(
+                onPressed: () {
+                  controller.addBankDetails();
+                },
+                child: Text(
+                  "Add Bank Account +",
+                  style: GoogleFonts.inter(
+                    fontSize: kFourteenFont,
+                    fontWeight: kFW500,
+                  ),
                 ),
               )),
           SizedBox(height: 250.h),
@@ -126,32 +143,29 @@ class _SelftranferState extends State<Self_tranfer> {
                       height: 20.h,
                     ),
                     title: Text(
-                      'Bank of America',
+                      controller.mybankData.data![0].bankName!,
                       style: GoogleFonts.inter(
                         fontSize: kFourteenFont,
                         fontWeight: kFW500,
                       ),
                     ),
-                    children: const <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 25,
+                    children: <Widget>[
+                      for (int i = 0;
+                          i < controller.mybankData.data!.length;
+                          i++) ...[
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 25,
+                          ),
+                          child: ListTile(
+                            title: Text(
+                                controller.mybankData.data![i].bankName != null
+                                    ? controller.mybankData.data![i].bankName!
+                                    : "UnAuthorized Bank"),
+                            trailing: Icon(Icons.chevron_right),
+                          ),
                         ),
-                        child: ListTile(
-                          title: Text('Swiss Bank'),
-                          //subtitle: Text('child subtitle'),
-                          trailing: Icon(Icons.chevron_right),
-                          //leading:Text("ram")//Image.asset("assets/images/usa.png"),//Image.asset("assets/images/usa.png"),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 25),
-                        child: ListTile(
-                          title: Text('Indian Bank'),
-                          //subtitle: Text('child subtitle'),
-                          trailing: Icon(Icons.chevron_right),
-                        ),
-                      ),
+                      ]
                     ],
                   ),
                 ),
@@ -200,30 +214,61 @@ class _SelftranferState extends State<Self_tranfer> {
                       height: 20.h,
                     ),
                     title: Text(
-                      'SBI',
+                      controller.mybankData.data![0].bankName!,
                       style: GoogleFonts.inter(
                         fontSize: kFourteenFont,
                         fontWeight: kFW500,
                       ),
                     ),
 
-                    children: const <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 25,
+                    children: <Widget>[
+                      for (int i = 0;
+                          i < controller.mybankData.data!.length;
+                          i++) ...[
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: 25,
+                          ),
+                          child: ListTile(
+                            title: Text(
+                                controller.mybankData.data![i].bankName != null
+                                    ? controller.mybankData.data![i].bankName!
+                                    : "UnAuthorized Bank"),
+                            trailing: Icon(Icons.chevron_right),
+                          ),
                         ),
-                        child: ListTile(
-                          title: Text('Swiss Bank'),
-                          trailing: Icon(Icons.chevron_right),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 25),
-                        child: ListTile(
-                          title: Text('Indian Bank'),
-                          trailing: Icon(Icons.chevron_right),
-                        ),
-                      ),
+                      ]
+
+                      // Expanded(
+                      //   child: ListView.builder(
+                      //       itemCount: controller.mybankData.data!.length,
+                      //       itemBuilder: (BuildContext context, int index) {
+                      //         return ListTile(
+                      //             leading: const Icon(Icons.list),
+                      //             trailing: const Text(
+                      //               "GFG",
+                      //               style: TextStyle(
+                      //                   color: Colors.green, fontSize: 15),
+                      //             ),
+                      //             title: Text("List item $index"));
+                      //       }),
+                      // )
+                      // Padding(
+                      //   padding: EdgeInsets.only(
+                      //     left: 25,
+                      //   ),
+                      //   child: ListTile(
+                      //     title: Text('Swiss Bank'),
+                      //     trailing: Icon(Icons.chevron_right),
+                      //   ),
+                      // ),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 25),
+                      //   child: ListTile(
+                      //     title: Text('Indian Bank'),
+                      //     trailing: Icon(Icons.chevron_right),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

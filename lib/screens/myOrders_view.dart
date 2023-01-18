@@ -17,6 +17,7 @@ class _MyOrdersState extends State<MyOrders> {
   @override
   void initState() {
     controller.getMyOrders();
+    controller.myPassbook();
     super.initState();
   }
 
