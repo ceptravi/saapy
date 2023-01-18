@@ -1018,3 +1018,177 @@ class DeleteBeneficierAccount {
         "message": message,
       };
 }
+
+class MyBankDetails {
+  List<MyBankDetailsData>? data;
+
+  MyBankDetails({this.data});
+
+  MyBankDetails.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      data = <MyBankDetailsData>[];
+      json['data'].forEach((v) {
+        data!.add(new MyBankDetailsData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class MyBankDetailsData {
+  int? id;
+  String? beneName;
+  String? beneAccountNumber;
+  String? validatedAt;
+  String? createdAt;
+  int? apiId;
+  int? userId;
+  String? amazonNumber;
+  String? bankName;
+  String? ifsc;
+  bool? isActive;
+  String? paytmNumber;
+  String? upi;
+  String? mobilenumber;
+
+  MyBankDetailsData(
+      {this.id,
+      this.beneName,
+      this.beneAccountNumber,
+      this.validatedAt,
+      this.createdAt,
+      this.apiId,
+      this.userId,
+      this.amazonNumber,
+      this.bankName,
+      this.ifsc,
+      this.isActive,
+      this.paytmNumber,
+      this.upi,
+      this.mobilenumber});
+
+  MyBankDetailsData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    beneName = json['beneName'];
+    beneAccountNumber = json['beneAccountNumber'];
+    validatedAt = json['validated_at'];
+    createdAt = json['created_at'];
+    apiId = json['api_id'];
+    userId = json['user_id'];
+    amazonNumber = json['amazonNumber'];
+    bankName = json['bankName'];
+    ifsc = json['ifsc'];
+    isActive = json['is_active'];
+    paytmNumber = json['paytmNumber'];
+    upi = json['upi'];
+    mobilenumber = json['mobilenumber'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['beneName'] = this.beneName;
+    data['beneAccountNumber'] = this.beneAccountNumber;
+    data['validated_at'] = this.validatedAt;
+    data['created_at'] = this.createdAt;
+    data['api_id'] = this.apiId;
+    data['user_id'] = this.userId;
+    data['amazonNumber'] = this.amazonNumber;
+    data['bankName'] = this.bankName;
+    data['ifsc'] = this.ifsc;
+    data['is_active'] = this.isActive;
+    data['paytmNumber'] = this.paytmNumber;
+    data['upi'] = this.upi;
+    data['mobilenumber'] = this.mobilenumber;
+    return data;
+  }
+}
+
+class AddBankDetails {
+  AddBankData? data;
+  String? message;
+
+  AddBankDetails({this.data, this.message});
+
+  AddBankDetails.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ? new AddBankData.fromJson(json['data']) : null;
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    data['message'] = this.message;
+    return data;
+  }
+}
+
+class AddBankData {
+  int? id;
+  String? beneName;
+  String? createdAt;
+  int? apiId;
+  int? userId;
+  bool? isActive;
+  String? beneAccountNumber;
+  String? ifsc;
+  String? upi;
+  String? paytmNumber;
+  String? amazonNumber;
+  String? mobilenumber;
+
+  AddBankData(
+      {this.id,
+      this.beneName,
+      this.createdAt,
+      this.apiId,
+      this.userId,
+      this.isActive,
+      this.beneAccountNumber,
+      this.ifsc,
+      this.upi,
+      this.paytmNumber,
+      this.amazonNumber,
+      this.mobilenumber});
+
+  AddBankData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    beneName = json['beneName'];
+    createdAt = json['created_at'];
+    apiId = json['api_id'];
+    userId = json['user_id'];
+    isActive = json['is_active'];
+    beneAccountNumber = json['beneAccountNumber'];
+    ifsc = json['ifsc'];
+    upi = json['upi'];
+    paytmNumber = json['paytmNumber'];
+    amazonNumber = json['amazonNumber'];
+    mobilenumber = json['mobilenumber'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['beneName'] = this.beneName;
+    data['created_at'] = this.createdAt;
+    data['api_id'] = this.apiId;
+    data['user_id'] = this.userId;
+    data['is_active'] = this.isActive;
+    data['beneAccountNumber'] = this.beneAccountNumber;
+    data['ifsc'] = this.ifsc;
+    data['upi'] = this.upi;
+    data['paytmNumber'] = this.paytmNumber;
+    data['amazonNumber'] = this.amazonNumber;
+    data['mobilenumber'] = this.mobilenumber;
+    return data;
+  }
+}

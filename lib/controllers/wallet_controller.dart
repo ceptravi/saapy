@@ -21,6 +21,12 @@ class WalletController extends GetxController {
   Rxn<MyPassbook> _myPassBookData = Rxn<MyPassbook>();
   MyPassbook get myPassBookData => _myPassBookData.value ?? MyPassbook();
 
+  Rxn<MyBankDetails> _mybankData = Rxn<MyBankDetails>();
+  MyBankDetails get mybankData => _mybankData.value ?? MyBankDetails();
+
+  Rxn<AddBankDetails> _addbankData = Rxn<AddBankDetails>();
+  AddBankDetails get addbankData => _addbankData.value ?? AddBankDetails();
+
   Rxn<MyPassbook> _myOrders = Rxn<MyPassbook>();
   MyPassbook get myOrders => _myOrders.value ?? MyPassbook();
 
@@ -118,12 +124,28 @@ class WalletController extends GetxController {
     _isLoading(false);
   }
 
-  getMybeneficiersDetails() async {
+  // getMybeneficiersDetails() async {
+  //   _isLoading(true);
+  //   String token = Get.find<LoginController>().myuser.token!;
+  //   MybeneficiersDetails? mybeneficiersDetails =
+  //       await walletServices.getMybeneficiersDetails(token);
+  //   _myBenificerDetails(mybeneficiersDetails);
+  //   _isLoading(false);
+  // }
+
+  getMyBankDetails() async {
     _isLoading(true);
     String token = Get.find<LoginController>().myuser.token!;
-    MybeneficiersDetails? mybeneficiersDetails =
-        await walletServices.getMybeneficiersDetails(token);
-    _myBenificerDetails(mybeneficiersDetails);
+    MyBankDetails? mybeneficiers = await walletServices.getbankDetails(token);
+    _mybankData(mybeneficiers);
+    _isLoading(false);
+  }
+
+  addBankDetails() async {
+    _isLoading(true);
+    String token = Get.find<LoginController>().myuser.token!;
+    AddBankDetails? mybeneficiers = await walletServices.addBankDetails(token);
+    _addbankData(mybeneficiers);
     _isLoading(false);
   }
 
@@ -188,7 +210,7 @@ class WalletController extends GetxController {
     String token = Get.find<LoginController>().myuser.token!;
     DeleteBeneficierAccount? deleteBeneficierAccount =
         await walletServices.deleteMybeneficiersDetails(id, token);
-    getMybeneficiersDetails();
+    getMyBankDetails();
     _isLoading(false);
   }
 
