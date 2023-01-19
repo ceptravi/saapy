@@ -23,7 +23,9 @@ class _RechargeState extends State<Recharge> {
     _fetchContacts();
   }
 
+  var isLoading = false.obs;
   Future _fetchContacts() async {
+    isLoading.value = true;
     if (!await FlutterContacts.requestPermission(readonly: true)) {
       setState(() => _permissionDenied = true);
     } else {
@@ -31,6 +33,7 @@ class _RechargeState extends State<Recharge> {
           withProperties: true, withPhoto: true);
       setState(() => _contacts.value = contacts);
     }
+    isLoading.value = false;
   }
 
   Widget build(BuildContext context) {
@@ -81,56 +84,60 @@ class _RechargeState extends State<Recharge> {
 
   Widget list_data() {
     return Expanded(
-      child: Obx(() => _contacts.value.length > 0
-          ? ListView.builder(
-              itemCount: _contacts.value.length,
-              itemBuilder: ((context, index) {
-                return ListTile(
-                    leading: Image.asset('assets/images/profile.png'),
-                    trailing: SizedBox(
-                      height: 25.h,
-                      //width: 70.w,
-                      child: OutlinedButton(
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                            15.r,
-                          ))),
-                        ),
-                        onPressed: () {
-                          controller.numberController.text = _contacts.value[index].phones[0].number ?? "Enter Number Manually";
-                          Get.toNamed(KPaid_Recharge);
-                        },
-                        child: Text('Recharge',
-                            style: GoogleFonts.inter(
-                                fontSize: kTwelveFont,
-                                color: purple,
-                                fontWeight: FontWeight.w500)),
-                      ),
-                    ),
-                    title: Column(
-                      children: [
-                        Text(_contacts.value[index].displayName,
-                            style: GoogleFonts.inter(
-                                fontSize: kFourteenFont,
-                                color: darkGrey,
-                                fontWeight: FontWeight.w500)),
-                        for (int i = 0;
-                            i < _contacts.value[index].phones.length;
-                            i++) ...[
-                          Text(_contacts.value[index].phones[i].number,
-                              style: GoogleFonts.inter(
-                                  fontSize: kFourteenFont,
-                                  color: darkGrey,
-                                  fontWeight: FontWeight.w500))
-                        ]
-                      ],
-                    ));
-              }))
-          : Center(
-              child: Text("No Contacts Found"),
-            )),
-    );
+        child: Obx(() => isLoading.value == false
+            ? _contacts.value.length > 0
+                ? ListView.builder(
+                    itemCount: _contacts.value.length,
+                    itemBuilder: ((context, index) {
+                      return ListTile(
+                          leading: Image.asset('assets/images/profile.png'),
+                          trailing: SizedBox(
+                            height: 25.h,
+                            //width: 70.w,
+                            child: OutlinedButton(
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                  15.r,
+                                ))),
+                              ),
+                              onPressed: () {
+                                controller.numberController.text =
+                                    _contacts.value[index].phones[0].number ??
+                                        "Enter Number Manually";
+                                Get.toNamed(KPaid_Recharge);
+                              },
+                              child: Text('Recharge',
+                                  style: GoogleFonts.inter(
+                                      fontSize: kTwelveFont,
+                                      color: purple,
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                          ),
+                          title: Column(
+                            children: [
+                              Text(_contacts.value[index].displayName,
+                                  style: GoogleFonts.inter(
+                                      fontSize: kFourteenFont,
+                                      color: darkGrey,
+                                      fontWeight: FontWeight.w500)),
+                              for (int i = 0;
+                                  i < _contacts.value[index].phones.length;
+                                  i++) ...[
+                                Text(_contacts.value[index].phones[i].number,
+                                    style: GoogleFonts.inter(
+                                        fontSize: kFourteenFont,
+                                        color: darkGrey,
+                                        fontWeight: FontWeight.w500))
+                              ]
+                            ],
+                          ));
+                    }))
+                : Center(
+                    child: Text("No Contacts Found"),
+                  )
+            : Container(
+                child: Text("Loading..."))));
   }
 }

@@ -104,7 +104,7 @@ class _RecahargetabState extends State<Recaharge_tab> {
 
   Widget Package_tab() {
     return SizedBox(
-      height: 500.h,
+      height: 600.h,
       child: ListView.builder(
           itemCount: controller.rechargePlans.data!.length,
           itemBuilder: ((context, index) {

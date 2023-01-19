@@ -40,52 +40,53 @@ class _PassbookState extends State<Passbook_view> {
     ];
 
     return SizedBox(
-      height: 95.h,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 4,
-          itemBuilder: ((context, index) {
-            return Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              runAlignment: WrapAlignment.spaceBetween,
-              spacing: 12.w,
-              children: [
-                for (int i = 0; i < categories.length; i++)
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          //categories[i]["image"][0]["wallet1"];
-                          if (categories[i]["name"] == 'Passbook & History') {
-                            controller.buttonPressed(categories[i]["route"]);
-                          }
-                          Get.toNamed(categories[i]["route"]);
-                        },
-                        child: Image.asset(
-                          categories[i]["image"],
-                          width: 75.w,
+        height: 95.h,
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 4,
+            itemBuilder: ((context, index) {
+              return Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                runAlignment: WrapAlignment.spaceBetween,
+                spacing: 12.w,
+                children: [
+                  for (int i = 0; i < categories.length; i++)
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            //categories[i]["image"][0]["wallet1"];
+                            if (categories[i]["name"] ==
+                                'Passbook & History') {
+                              controller
+                                  .buttonPressed(categories[i]["route"]);
+                            }
+                            Get.toNamed(categories[i]["route"]);
+                          },
+                          child: Image.asset(
+                            categories[i]["image"],
+                            width: 75.w,
+                          ),
                         ),
-                      ),
-                      // SizedBox(
-                      //   height: 5.h,
-                      // ),
-                      SizedBox(
-                        width: 115.w,
-                        child: Text(categories[i]["name"],
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            style: GoogleFonts.inter(
-                                fontSize: kTwelveFont,
-                                color: darkGrey,
-                                fontWeight: FontWeight.w600)),
-                      ),
-                    ],
-                  ),
-              ],
-            );
-          })),
-    );
+                        // SizedBox(
+                        //   height: 5.h,
+                        // ),
+                        SizedBox(
+                          width: 115.w,
+                          child: Text(categories[i]["name"],
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              style: GoogleFonts.inter(
+                                  fontSize: kTwelveFont,
+                                  color: darkGrey,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ],
+                    ),
+                ],
+              );
+            })));
   }
 }

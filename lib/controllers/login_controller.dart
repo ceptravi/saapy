@@ -68,6 +68,7 @@ class LoginController extends GetxController {
       BuildContext context, String password, String email, String fcm) async {
     _isLoading(true);
     bool isUpdated = false;
+    _isSkipped(false);
     try {
       MyUser? myUser = await loginServices.login(context, password, email, fcm);
       if (myUser!.data == null) {

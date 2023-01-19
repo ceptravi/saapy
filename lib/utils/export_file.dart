@@ -50,6 +50,7 @@ export 'package:another_xlider/another_xlider.dart';
 export 'package:intro_slider/intro_slider.dart';
 export 'package:scratcher/widgets.dart';
 
+
 ///Screens
 export '../screens/splash_screen.dart';
 export 'package:moon_start_builders/screens/dashboard.dart';
@@ -87,3 +88,5 @@ export 'package:moon_start_builders/screens/chat/personal_chat.dart';
 export 'package:moon_start_builders/screens/scratch_screen.dart';
 export 'package:moon_start_builders/screens/search_view.dart';
 export 'package:moon_start_builders/screens/notify_screen.dart';
+export 'package:moon_start_builders/components/statement.dart';
+export 'package:moon_start_builders/components/skip_menu.dart';
