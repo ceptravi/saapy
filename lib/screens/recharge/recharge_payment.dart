@@ -226,6 +226,7 @@ class _RechargepaymentState extends State<Recharge_payment> {
                     onChanged: (bool? value) {
                       setState(() {
                         isChecked.value = value!;
+                        debugPrint("value is $value");
                       });
                     },
                   )),
@@ -323,43 +324,45 @@ class _RechargepaymentState extends State<Recharge_payment> {
             SizedBox(
               height: 10.h,
             ),
-            Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r)),
-              child: Container(
-                height: 45.h,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(10.r)),
-                padding: EdgeInsets.all(10.r),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          'assets/images/wallet2.png',
-                        ),
-                        Text(
-                          'SaanPay Wallet',
-                          style: GoogleFonts.inter(
-                              fontSize: kFourteenFont,
-                              color: darkGrey,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
+            isChecked.value == true
+                ? Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r)),
+                    child: Container(
+                      height: 45.h,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.r)),
+                      padding: EdgeInsets.all(10.r),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/images/wallet2.png',
+                              ),
+                              Text(
+                                'SaanPay Wallet',
+                                style: GoogleFonts.inter(
+                                    fontSize: kFourteenFont,
+                                    color: darkGrey,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            "\u{20B9}${loginController.userInfo.data!.walletBalance}",
+                            style: GoogleFonts.inter(
+                                fontSize: kEighteenFont,
+                                color: darkGrey,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      "\u{20B9}${loginController.userInfo.data!.walletBalance}",
-                      style: GoogleFonts.inter(
-                          fontSize: kEighteenFont,
-                          color: darkGrey,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+                  )
+                : Container(),
             SizedBox(
               height: 10.h,
             ),
