@@ -42,6 +42,7 @@ const String KPassbook_view = '/passbook_view.dart';
 const String KMyorders = '/myOrders_view.dart';
 const String KScratch = '/screens/scratch_screen.dart';
 const String KNotify = '/screens/notify_screen.dart';
+const String KStatement = '/components/statement.dart';
 
 ///Font sizes
 double kTenFont = MediaQueryData.fromWindow(WidgetsBinding.instance.window)

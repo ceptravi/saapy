@@ -204,5 +204,10 @@ class Routes {
       transition: Transition.rightToLeft,
       page: () => const Notification_view(),
     ),
+    GetPage(
+      name: KStatement,
+      transition: Transition.rightToLeft,
+      page: () => const Statement_history(),
+    ),
   ];
 }

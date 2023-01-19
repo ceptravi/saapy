@@ -1,5 +1,3 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names
-
 import '../controllers/login_controller.dart';
 import '../utils/export_file.dart';
 
@@ -127,7 +125,8 @@ class _LoginformState extends State<Login_form> {
                           fontWeight: FontWeight.w700,
                           fontSize: 15)),
                 )
-              : CircularProgressIndicator()),
+              : Container(
+                  height: 30, width: 30, child: CircularProgressIndicator())),
         ),
         Container(
             margin: const EdgeInsets.only(top: 10),

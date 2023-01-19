@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names, camel_case_types
-
 import '../../utils/export_file.dart';
 import '../controllers/login_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -59,18 +57,16 @@ class _MenuComponentState extends State<Menu_Component> {
               ],
             )
           : Column(
-              children: [
-                // menu_Profile(),
-                // My_wallet(),
-                // PayMoney(),
-                // menu_list(),
-                const Text(
-                  "Please Provide the Design when user Entered by clicking skip button",
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
+              children: const[
+                 Skipmenu(),
+
+                // const Text(
+                //   "Please Provide the Design when user Entered by clicking skip button",
+                //   textAlign: TextAlign.center,
+                // ),
+                // SizedBox(
+                //   height: 20.h,
+                // ),
               ],
             ),
     );

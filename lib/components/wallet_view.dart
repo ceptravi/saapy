@@ -66,9 +66,6 @@ class _WalletviewState extends State<Wallet_view> {
                     : CircularProgressIndicator(),
               ),
               wallet_card(),
-              SizedBox(
-                height: 200.h,
-              ),
             ],
           ),
         ),
@@ -202,7 +199,9 @@ class _WalletviewState extends State<Wallet_view> {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(KStatement);
+                    },
                     child: Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),

@@ -38,90 +38,92 @@ class _ScratchScreenState extends State<Scratch_Screen> {
                 fontSize: kEighteenFont, color: darkGrey, fontWeight: kFW600)),
       ),
       body: Obx(() => controller.isLoading == false
-          ? Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(top: 20.h, left: 20.h),
-                  child: Text(
-                    "Amount",
-                    style: GoogleFonts.inter(
-                        fontSize: kFourteenFont,
-                        color: lightgrey,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10.h, left: 20.h),
-                  child: Row(
-                    children: [
-                      // Text('\u{20B9}',
-                      //     style: GoogleFonts.inter(
-                      //         fontSize: kTwentyFourFont,
-                      //         color: darkGrey,
-                      //         fontWeight: FontWeight.w300)),
-                      // SizedBox(width: 4.w),
-                      Obx(
-                        () => loginController.isLoading == false
-                            ? Row(
-                                children: [
-                                  Text('\u{20B9}',
-                                      style: GoogleFonts.inter(
-                                          fontSize: kTwentyFourFont,
-                                          color: darkGrey,
-                                          fontWeight: FontWeight.w300)),
-                                  Text(
-                                      '${loginController.userInfo.data!.walletBalance}',
-                                      style: GoogleFonts.inter(
-                                          fontSize: kTwentyFourFont,
-                                          color: darkGrey,
-                                          fontWeight: FontWeight.w700)),
-                                ],
-                              )
-                            : CircularProgressIndicator(),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
+          ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
                     alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(top: 30.h, left: 10.h),
-                    child: Text("My Rewards",
-                        style: GoogleFonts.inter(
-                            fontSize: kSixteenFont,
-                            color: darkGrey,
-                            fontWeight: kFW600))),
-                Expanded(
-                    child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                childAspectRatio: 1.5,
-                                crossAxisSpacing: 20,
-                                mainAxisSpacing: 1),
-                        itemCount:
-                            controller.myScratchCards.data!.scratchCard!.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  backgroundColor: white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10.r)),
-                                  builder: (BuildContext context) {
-                                    return Bottom_sheet(controller
-                                        .myScratchCards
-                                        .data!
-                                        .scratchCard![index]!);
-                                  });
-                            },
+                    margin: EdgeInsets.only(top: 20.h, left: 20.h),
+                    child: Text(
+                      "Amount",
+                      style: GoogleFonts.inter(
+                          fontSize: kFourteenFont,
+                          color: lightgrey,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10.h, left: 20.h),
+                    child: Row(
+                      children: [
+                        // Text('\u{20B9}',
+                        //     style: GoogleFonts.inter(
+                        //         fontSize: kTwentyFourFont,
+                        //         color: darkGrey,
+                        //         fontWeight: FontWeight.w300)),
+                        // SizedBox(width: 4.w),
+                        Obx(
+                          () => loginController.isLoading == false
+                              ? Row(
+                                  children: [
+                                    Text('\u{20B9}',
+                                        style: GoogleFonts.inter(
+                                            fontSize: kTwentyFourFont,
+                                            color: darkGrey,
+                                            fontWeight: FontWeight.w300)),
+                                    Text(
+                                        '${loginController.userInfo.data!.walletBalance}',
+                                        style: GoogleFonts.inter(
+                                            fontSize: kTwentyFourFont,
+                                            color: darkGrey,
+                                            fontWeight: FontWeight.w700)),
+                                  ],
+                                )
+                              : const CircularProgressIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(top: 30.h, left: 10.h),
+                      child: Text("My Rewards",
+                          style: GoogleFonts.inter(
+                              fontSize: kSixteenFont,
+                              color: darkGrey,
+                              fontWeight: kFW600))),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              // maxCrossAxisExtent: 200,
+                              childAspectRatio: 1.5,
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 0.5,
+                              mainAxisSpacing: 0.2),
+                      itemCount:
+                          controller.myScratchCards.data!.scratchCard!.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                backgroundColor: white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.r)),
+                                builder: (BuildContext context) {
+                                  return Bottom_sheet(controller.myScratchCards
+                                      .data!.scratchCard![index]!);
+                                });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(10.r),
                             child: Stack(
                               children: [
-                                SizedBox(
-                                  width: 10.w,
-                                ),
                                 Container(
                                     width: 160.w,
                                     child:
@@ -135,78 +137,80 @@ class _ScratchScreenState extends State<Scratch_Screen> {
                                 ),
                               ],
                             ),
-                          );
-                        })),
+                          ),
+                        );
+                      }),
 
-                // Container(
-                //   margin: EdgeInsets.all(10.r),
-                //   child: Column(
-                //     children: [
-                //       GestureDetector(
-                //         onTap: () {
-                //           showModalBottomSheet(
-                //               context: context,
-                //               backgroundColor: white,
-                //               shape: RoundedRectangleBorder(
-                //                   borderRadius: BorderRadius.circular(10.r)),
-                //               builder: (BuildContext context) {
-                //                 return Bottom_sheet();
-                //               });
-                //         },
-                //         child: Row(
-                //           children: [
-                //             Container(
-                //               // height: 250.h,
-                //               width: 160.w,
-                //               child: Image.asset(
-                //                 'assets/images/blur1.png',
-                //               ),
-                //             ),
-                //             SizedBox(
-                //               width: 10.w,
-                //             ),
-                //             Container(
-                //                 width: 160.w,
-                //                 child: Image.asset('assets/images/blur2.png')),
-                //           ],
-                //         ),
-                //       ),
-                //       SizedBox(
-                //         height: 10.h,
-                //       ),
-                //       GestureDetector(
-                //         onTap: () {
-                //           showModalBottomSheet(
-                //               context: context,
-                //               backgroundColor: white,
-                //               shape: RoundedRectangleBorder(
-                //                   borderRadius: BorderRadius.circular(10.r)),
-                //               builder: (BuildContext context) {
-                //                 return Bottom_sheet();
-                //               });
-                //         },
-                //         child: Row(
-                //           children: [
-                //             Container(
-                //               // height: 250.h,
-                //               width: 160.w,
-                //               child: Image.asset(
-                //                 'assets/images/blur2.png',
-                //               ),
-                //             ),
-                //             SizedBox(
-                //               width: 10.w,
-                //             ),
-                //             Container(
-                //                 width: 160.w,
-                //                 child: Image.asset('assets/images/blur1.png')),
-                //           ],
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-              ],
+                  // Container(
+                  //   margin: EdgeInsets.all(10.r),
+                  //   child: Column(
+                  //     children: [
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           showModalBottomSheet(
+                  //               context: context,
+                  //               backgroundColor: white,
+                  //               shape: RoundedRectangleBorder(
+                  //                   borderRadius: BorderRadius.circular(10.r)),
+                  //               builder: (BuildContext context) {
+                  //                 return Bottom_sheet();
+                  //               });
+                  //         },
+                  //         child: Row(
+                  //           children: [
+                  //             Container(
+                  //               // height: 250.h,
+                  //               width: 160.w,
+                  //               child: Image.asset(
+                  //                 'assets/images/blur1.png',
+                  //               ),
+                  //             ),
+                  //             SizedBox(
+                  //               width: 10.w,
+                  //             ),
+                  //             Container(
+                  //                 width: 160.w,
+                  //                 child: Image.asset('assets/images/blur2.png')),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         height: 10.h,
+                  //       ),
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           showModalBottomSheet(
+                  //               context: context,
+                  //               backgroundColor: white,
+                  //               shape: RoundedRectangleBorder(
+                  //                   borderRadius: BorderRadius.circular(10.r)),
+                  //               builder: (BuildContext context) {
+                  //                 return Bottom_sheet();
+                  //               });
+                  //         },
+                  //         child: Row(
+                  //           children: [
+                  //             Container(
+                  //               // height: 250.h,
+                  //               width: 160.w,
+                  //               child: Image.asset(
+                  //                 'assets/images/blur2.png',
+                  //               ),
+                  //             ),
+                  //             SizedBox(
+                  //               width: 10.w,
+                  //             ),
+                  //             Container(
+                  //                 width: 160.w,
+                  //                 child: Image.asset('assets/images/blur1.png')),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                ],
+              ),
             )
           : CircularProgressIndicator()),
     );

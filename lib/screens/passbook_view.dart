@@ -65,10 +65,10 @@ class _PassbookState extends State<Passbook> {
                                   controller.myPassBookData.data!.balance
                                       .toString(),
                                   style: GoogleFonts.inter(
-                                      fontSize: kTwentyFourFont,
+                                      fontSize: 22.sp,
                                       color: darkGrey,
                                       fontWeight: FontWeight.w700))
-                              : CircularProgressIndicator()),
+                              : const CircularProgressIndicator()),
                         ],
                       ),
                       SizedBox(
@@ -459,13 +459,17 @@ class _PassbookState extends State<Passbook> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                  controller.myPassBookData.data!.all![index]!
-                                      .message!,
-                                  style: GoogleFonts.inter(
-                                      fontSize: kFourteenFont,
-                                      color: darkGrey,
-                                      fontWeight: kFW600)),
+                              Container(
+                                width: 150.w,
+                                child: Text(
+                                    controller.myPassBookData.data!.all![index]!
+                                        .message!,
+                                    maxLines: 2,
+                                    style: GoogleFonts.inter(
+                                        fontSize: kFourteenFont,
+                                        color: darkGrey,
+                                        fontWeight: kFW600)),
+                              ),
                               SizedBox(height: 5.h),
                               Text(
                                   "Via ${controller.myPassBookData.data!.all![index]!.paymentModeId == 1 ? "Wallet" : "UPI"}",
@@ -473,7 +477,7 @@ class _PassbookState extends State<Passbook> {
                                       fontSize: kTwelveFont,
                                       color: darkGrey,
                                       fontWeight: kFW500)),
-                              SizedBox(height: 20.h),
+                              SizedBox(height: 10.h),
                               Text(
                                   "${controller.myPassBookData.data!.all![index]!.paymentDate!.day.toString()}th - ${controller.myPassBookData.data!.all![index]!.paymentDate!.month.toString()}- ${controller.myPassBookData.data!.all![index]!.paymentDate!.year.toString()}",
                                   style: GoogleFonts.inter(
