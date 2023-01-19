@@ -81,7 +81,7 @@ class _RechargeState extends State<Recharge> {
   Widget list_data() {
     return Expanded(
       child: ListView.builder(
-          itemCount: 5,
+          itemCount: _contacts!.length,
           itemBuilder: ((context, index) {
             return ListTile(
                 leading: Image.asset('assets/images/profile.png'),
@@ -96,6 +96,7 @@ class _RechargeState extends State<Recharge> {
                       ))),
                     ),
                     onPressed: () {
+                      // controller.numberController.text = _contacts[index].
                       Get.toNamed(KPaid_Recharge);
                     },
                     child: Text('Recharge',
@@ -105,7 +106,7 @@ class _RechargeState extends State<Recharge> {
                             fontWeight: FontWeight.w500)),
                   ),
                 ),
-                title: Text('Bharath',
+                title: Text(_contacts![index].displayName,
                     style: GoogleFonts.inter(
                         fontSize: kFourteenFont,
                         color: darkGrey,
