@@ -43,6 +43,13 @@ class LoginServices extends GetxService {
       if (response.statusCode == 200) {
         try {
           myUser = MyUser.fromJson(jsonDecode(response.body));
+          if (myUser == null) {
+            Map map = jsonDecode(response.body);
+            Fluttertoast.showToast(
+              msg: '${map['message']}',
+              backgroundColor: Colors.grey,
+            );
+          }
         } on Exception catch (e) {
           debugPrint('Exception while parsing the json $e');
           throw Exception(e);
