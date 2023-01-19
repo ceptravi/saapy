@@ -424,104 +424,111 @@ class _PassbookState extends State<Passbook> {
   }
 
   Widget history_list() {
-    return ListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: controller.myPassBookData.data!.all!.length,
-        itemBuilder: ((context, index) {
-          return Container(
-            //alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 5.h, right: 10.h),
-            height: 104.h,
-            width: double.infinity,
-            margin: EdgeInsets.all(10.r),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(13.r),
-                gradient: const LinearGradient(
-                    colors: [kblue, kgreen],
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(top: 20.h),
-                        child:
-                            Image.asset("assets/images/boy.png", height: 30.h)),
-                    SizedBox(width: 10.h),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            controller
-                                .myPassBookData.data!.all![index]!.message!,
-                            style: GoogleFonts.inter(
-                                fontSize: kFourteenFont,
-                                color: darkGrey,
-                                fontWeight: kFW600)),
-                        SizedBox(height: 5.h),
-                        Text(
-                            "Via ${controller.myPassBookData.data!.all![index]!.paymentModeId == 1 ? "Wallet" : "UPI"}",
-                            style: GoogleFonts.inter(
-                                fontSize: kTwelveFont,
-                                color: darkGrey,
-                                fontWeight: kFW500)),
-                        SizedBox(height: 20.h),
-                        Text(
-                            "${controller.myPassBookData.data!.all![index]!.paymentDate!.day.toString()}th - ${controller.myPassBookData.data!.all![index]!.paymentDate!.month.toString()}- ${controller.myPassBookData.data!.all![index]!.paymentDate!.year.toString()}",
-                            style: GoogleFonts.inter(
-                                fontSize: kTenFont,
-                                color: lightgrey,
-                                fontWeight: kFW500)),
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text('\u{20B9}',
-                                style: GoogleFonts.inter(
-                                    fontSize: kSixteenFont,
-                                    color: darkGrey,
-                                    fontWeight: FontWeight.w300)),
-                            SizedBox(width: 4.w),
-                            Text(
-                                controller
-                                    .myPassBookData.data!.all![index]!.amount!,
-                                style: GoogleFonts.inter(
-                                    fontSize: kSixteenFont,
-                                    color: darkGrey,
-                                    fontWeight: FontWeight.w700)),
-                          ],
-                        ),
-                        SizedBox(height: 13.h),
-                        Row(children: [
-                          Image.asset("assets/images/done2.png", height: 20.h),
-                          SizedBox(width: 7.w),
-                          Text("Success",
-                              style: GoogleFonts.inter(
-                                  fontSize: kTenFont,
-                                  color: darkGrey,
-                                  fontWeight: kFW500))
-                        ]),
-                      ],
-                    ),
-                  ],
-                )
-              ],
+    return Obx(
+      () => controller.myPassBookData.data!.all!.length > 0
+          ? ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: controller.myPassBookData.data!.all!.length,
+              itemBuilder: ((context, index) {
+                return Container(
+                  //alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 5.h, right: 10.h),
+                  height: 104.h,
+                  width: double.infinity,
+                  margin: EdgeInsets.all(10.r),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(13.r),
+                      gradient: const LinearGradient(
+                          colors: [kblue, kgreen],
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                              alignment: Alignment.topLeft,
+                              margin: EdgeInsets.only(top: 20.h),
+                              child: Image.asset("assets/images/boy.png",
+                                  height: 30.h)),
+                          SizedBox(width: 10.h),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  controller.myPassBookData.data!.all![index]!
+                                      .message!,
+                                  style: GoogleFonts.inter(
+                                      fontSize: kFourteenFont,
+                                      color: darkGrey,
+                                      fontWeight: kFW600)),
+                              SizedBox(height: 5.h),
+                              Text(
+                                  "Via ${controller.myPassBookData.data!.all![index]!.paymentModeId == 1 ? "Wallet" : "UPI"}",
+                                  style: GoogleFonts.inter(
+                                      fontSize: kTwelveFont,
+                                      color: darkGrey,
+                                      fontWeight: kFW500)),
+                              SizedBox(height: 20.h),
+                              Text(
+                                  "${controller.myPassBookData.data!.all![index]!.paymentDate!.day.toString()}th - ${controller.myPassBookData.data!.all![index]!.paymentDate!.month.toString()}- ${controller.myPassBookData.data!.all![index]!.paymentDate!.year.toString()}",
+                                  style: GoogleFonts.inter(
+                                      fontSize: kTenFont,
+                                      color: lightgrey,
+                                      fontWeight: kFW500)),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text('\u{20B9}',
+                                      style: GoogleFonts.inter(
+                                          fontSize: kSixteenFont,
+                                          color: darkGrey,
+                                          fontWeight: FontWeight.w300)),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                      controller.myPassBookData.data!
+                                          .all![index]!.amount!,
+                                      style: GoogleFonts.inter(
+                                          fontSize: kSixteenFont,
+                                          color: darkGrey,
+                                          fontWeight: FontWeight.w700)),
+                                ],
+                              ),
+                              SizedBox(height: 13.h),
+                              Row(children: [
+                                Image.asset("assets/images/done2.png",
+                                    height: 20.h),
+                                SizedBox(width: 7.w),
+                                Text("Success",
+                                    style: GoogleFonts.inter(
+                                        fontSize: kTenFont,
+                                        color: darkGrey,
+                                        fontWeight: kFW500))
+                              ]),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              }))
+          : Center(
+              child: Text("No Transactions Found"),
             ),
-          );
-        }));
+    );
   }
 }

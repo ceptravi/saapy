@@ -50,57 +50,62 @@ class _SelftranferState extends State<Self_tranfer> {
                       color: darkGrey,
                     )))),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 10.h,
-          ),
-          Container(
-              margin: const EdgeInsets.only(left: 15, top: 20),
-              child: Text(
-                "Select bank account to transfer from",
-                style: GoogleFonts.inter(
-                    fontSize: kTwelveFont, fontWeight: kFW400, color: darkGrey),
-              )),
-          SizedBox(
-            height: 5.h,
-          ),
-          Obx(() => controller.isLoading == false
-              ? transfer_fromback()
-              : Container()),
-          Container(
-              margin: const EdgeInsets.only(left: 15, top: 20),
-              child: Text(
-                "Select bank account to transfer Recivce",
-                style: GoogleFonts.inter(
-                  fontSize: kTwelveFont,
-                  fontWeight: kFW400,
-                ),
-              )),
-          SizedBox(
-            height: 5.h,
-          ),
-          Obx(() =>
-              controller.isLoading == false ? transfer_TOback() : Container()),
-          Container(
-              margin: const EdgeInsets.only(left: 15, top: 20),
-              child: TextButton(
-                onPressed: () {
-                  controller.addBankDetails();
-                },
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 10.h,
+            ),
+            Container(
+                margin: const EdgeInsets.only(left: 15, top: 20),
                 child: Text(
-                  "Add Bank Account +",
+                  "Select bank account to transfer from",
                   style: GoogleFonts.inter(
-                    fontSize: kFourteenFont,
-                    fontWeight: kFW500,
+                      fontSize: kTwelveFont,
+                      fontWeight: kFW400,
+                      color: darkGrey),
+                )),
+            SizedBox(
+              height: 5.h,
+            ),
+            Obx(() => controller.isLoading == false
+                ? transfer_fromback()
+                : Container()),
+            Container(
+                margin: const EdgeInsets.only(left: 15, top: 20),
+                child: Text(
+                  "Select bank account to transfer Recivce",
+                  style: GoogleFonts.inter(
+                    fontSize: kTwelveFont,
+                    fontWeight: kFW400,
                   ),
-                ),
-              )),
-          SizedBox(height: 250.h),
-          Procees_button(),
-        ],
+                )),
+            SizedBox(
+              height: 5.h,
+            ),
+            Obx(() => controller.isLoading == false
+                ? transfer_TOback()
+                : Container()),
+            Container(
+                margin: const EdgeInsets.only(left: 15, top: 20),
+                child: TextButton(
+                  onPressed: () {
+                    controller.addBankDetails();
+                  },
+                  child: Text(
+                    "Add Bank Account +",
+                    style: GoogleFonts.inter(
+                      fontSize: kFourteenFont,
+                      fontWeight: kFW500,
+                    ),
+                  ),
+                )),
+            SizedBox(height: 250.h),
+            Procees_button(),
+          ],
+        ),
       ),
     );
   }

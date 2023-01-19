@@ -90,9 +90,15 @@ class SignUpController extends GetxController {
   ) async {
     _isLoading(true);
     bool isUpdated = false;
+    ResendOtp? resendOtp;
     try {
-      ResendOtp? resendOtp = await signUpServices.resendOtp(
-          context, _register.value!.data!.userId!);
+      try {
+        resendOtp = await signUpServices.resendOtp(
+            context, _register.value!.data!.userId!);
+      } catch (e) {
+        resendOtp = await signUpServices.resendOtp(
+            context, Get.find<LoginController>().uid);
+      }
       _resendOtp(resendOtp);
       if (resendOtp == null) {
         isUpdated = false;

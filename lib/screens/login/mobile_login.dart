@@ -53,7 +53,7 @@ class _MobileloginState extends State<Mobile_login> {
             children: [
               TextFormField(
                 controller: controller.mobileController,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   //prefixIcon:
                   //contentPadding:EdgeInsets.only(top:15),

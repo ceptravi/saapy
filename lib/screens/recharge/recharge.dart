@@ -2,6 +2,7 @@
 
 import '../../controllers/recharge_controller.dart';
 import '../../utils/export_file.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 
 class Recharge extends StatefulWidget {
   const Recharge({super.key});
@@ -11,10 +12,26 @@ class Recharge extends StatefulWidget {
 }
 
 class _RechargeState extends State<Recharge> {
-      final RechargeController controller = !Get.isRegistered<RechargeController>()
+  final RechargeController controller = !Get.isRegistered<RechargeController>()
       ? Get.put(RechargeController())
       : Get.find<RechargeController>();
   @override
+  List<Contact>? _contacts;
+  bool _permissionDenied = false;
+  void initState() {
+    super.initState();
+    _fetchContacts();
+  }
+
+  Future _fetchContacts() async {
+    if (!await FlutterContacts.requestPermission(readonly: true)) {
+      setState(() => _permissionDenied = true);
+    } else {
+      final contacts = await FlutterContacts.getContacts();
+      setState(() => _contacts = contacts);
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: white,
