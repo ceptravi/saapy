@@ -154,14 +154,14 @@ class _RecahargetabState extends State<Recaharge_tab> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${controller.rechargePlans.data![index]!.desc.toString().split('\n')[0].contains('Data') ? controller.rechargePlans.data![index]!.desc.toString().split('\n')[0] : controller.rechargePlans.data![index]!.desc.toString().split('\n')[1]}',
-                            style: GoogleFonts.inter(
-                                fontSize: kFourteenFont,
-                                color: darkGrey,
-                                fontWeight: FontWeight.w600),
-                            maxLines: 2,
-                          ),
+                          // Container(child: Text(
+                          //   '${controller.rechargePlans.data![index]!.desc}',
+                          //   style: GoogleFonts.inter(
+                          //       fontSize: kFourteenFont,
+                          //       color: darkGrey,
+                          //       fontWeight: FontWeight.w600),
+                          //   maxLines: 2,
+                          // ),),
                           Text(
                               '\u{20B9}${controller.rechargePlans.data![index]!.rs!}',
                               style: GoogleFonts.inter(

@@ -16,7 +16,7 @@ class _RechargeState extends State<Recharge> {
       ? Get.put(RechargeController())
       : Get.find<RechargeController>();
   @override
-  List<Contact>? _contacts;
+  var _contacts = [].obs;
   bool _permissionDenied = false;
   void initState() {
     super.initState();
@@ -27,8 +27,9 @@ class _RechargeState extends State<Recharge> {
     if (!await FlutterContacts.requestPermission(readonly: true)) {
       setState(() => _permissionDenied = true);
     } else {
-      final contacts = await FlutterContacts.getContacts();
-      setState(() => _contacts = contacts);
+      final contacts = await FlutterContacts.getContacts(
+          withProperties: true, withPhoto: true);
+      setState(() => _contacts.value = contacts);
     }
   }
 
@@ -80,38 +81,56 @@ class _RechargeState extends State<Recharge> {
 
   Widget list_data() {
     return Expanded(
-      child: ListView.builder(
-          itemCount: _contacts!.length,
-          itemBuilder: ((context, index) {
-            return ListTile(
-                leading: Image.asset('assets/images/profile.png'),
-                trailing: SizedBox(
-                  height: 25.h,
-                  //width: 70.w,
-                  child: OutlinedButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                        15.r,
-                      ))),
+      child: Obx(() => _contacts.value.length > 0
+          ? ListView.builder(
+              itemCount: _contacts.value.length,
+              itemBuilder: ((context, index) {
+                return ListTile(
+                    leading: Image.asset('assets/images/profile.png'),
+                    trailing: SizedBox(
+                      height: 25.h,
+                      //width: 70.w,
+                      child: OutlinedButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all(RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                            15.r,
+                          ))),
+                        ),
+                        onPressed: () {
+                          controller.numberController.text = _contacts.value[index].phones[0].number ?? "Enter Number Manually";
+                          Get.toNamed(KPaid_Recharge);
+                        },
+                        child: Text('Recharge',
+                            style: GoogleFonts.inter(
+                                fontSize: kTwelveFont,
+                                color: purple,
+                                fontWeight: FontWeight.w500)),
+                      ),
                     ),
-                    onPressed: () {
-                      // controller.numberController.text = _contacts[index].
-                      Get.toNamed(KPaid_Recharge);
-                    },
-                    child: Text('Recharge',
-                        style: GoogleFonts.inter(
-                            fontSize: kTwelveFont,
-                            color: purple,
-                            fontWeight: FontWeight.w500)),
-                  ),
-                ),
-                title: Text(_contacts![index].displayName,
-                    style: GoogleFonts.inter(
-                        fontSize: kFourteenFont,
-                        color: darkGrey,
-                        fontWeight: FontWeight.w500)));
-          })),
+                    title: Column(
+                      children: [
+                        Text(_contacts.value[index].displayName,
+                            style: GoogleFonts.inter(
+                                fontSize: kFourteenFont,
+                                color: darkGrey,
+                                fontWeight: FontWeight.w500)),
+                        for (int i = 0;
+                            i < _contacts.value[index].phones.length;
+                            i++) ...[
+                          Text(_contacts.value[index].phones[i].number,
+                              style: GoogleFonts.inter(
+                                  fontSize: kFourteenFont,
+                                  color: darkGrey,
+                                  fontWeight: FontWeight.w500))
+                        ]
+                      ],
+                    ));
+              }))
+          : Center(
+              child: Text("No Contacts Found"),
+            )),
     );
   }
 }
