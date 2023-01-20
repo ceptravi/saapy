@@ -135,8 +135,28 @@ class _RechargeState extends State<Recharge> {
                           ));
                     }))
                 : Center(
-                    child: Text("No Contacts Found"),
-                  )
+                    child: Column(
+                    children: [
+                      Text("No Contacts Found"),
+                      OutlinedButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all(RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                            15.r,
+                          ))),
+                        ),
+                        onPressed: () {
+                          Get.toNamed(KPaid_Recharge);
+                        },
+                        child: Text('Recharge',
+                            style: GoogleFonts.inter(
+                                fontSize: kTwelveFont,
+                                color: purple,
+                                fontWeight: FontWeight.w500)),
+                      )
+                    ],
+                  ))
             : Container(
                 child: Text("Loading..."))));
   }

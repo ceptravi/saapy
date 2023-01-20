@@ -3,6 +3,8 @@
 import '../../controllers/login_controller.dart';
 import '../../controllers/recharge_controller.dart';
 import '../../utils/export_file.dart';
+import '../../gateway/home.dart' as paymentAPI;
+
 
 class Recharge_payment extends StatefulWidget {
   const Recharge_payment({super.key});
@@ -18,6 +20,7 @@ class _RechargepaymentState extends State<Recharge_payment> {
   final LoginController loginController = !Get.isRegistered<LoginController>()
       ? Get.put(LoginController())
       : Get.find<LoginController>();
+     
   var isChecked = false.obs;
   @override
   void initState() {
@@ -479,13 +482,25 @@ class _RechargepaymentState extends State<Recharge_payment> {
           ],
         ),
         child: Center(
-          child: Text(
-            'Pay Now',
-            style: GoogleFonts.inter(
-                fontSize: kSixteenFont,
-                color: Colors.white,
-                fontWeight: FontWeight.w700),
-          ),
+           child:  OutlinedButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all(RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                            15.r,
+                          ))),
+                        ),
+                         
+                          onPressed: () {
+                     paymentAPI.handleURLButtonPress(context, "KEYRESP123657234");
+                    },
+                        child: Text('Pay Now',
+                            style: GoogleFonts.inter(
+                                fontSize: kTwelveFont,
+                                color: white,
+                                fontWeight: FontWeight.w500)),
+                      ),
+
         ),
       ),
     );
